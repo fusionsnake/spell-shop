@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>松韵法术超市 - 传承上古秘法</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- 背景装饰 -->
+    <div class="bg-decoration">
+        <div class="sakura-container"></div>
+        <div class="ink-wash"></div>
+    </div>
+
+    <!-- 导航栏 -->
+    <nav class="main-nav">
+        <div class="nav-container">
+            <div class="logo">
+                <span class="logo-icon">⛩️</span>
+                <span class="logo-text">松韵法术超市</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#home" class="active">首页</a></li>
+                <li><a href="#spells">法术</a></li>
+                <li><a href="#calendar">通胜黄历</a></li>
+                <li><a href="#about">关于</a></li>
+            </ul>
+            <button class="mobile-menu-btn">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- 英雄区域 -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <div class="torii-gate">
+                <div class="torii-top"></div>
+                <div class="torii-pillars">
+                    <div class="pillar left"></div>
+                    <div class="pillar right"></div>
+                </div>
+            </div>
+            <h1 class="hero-title">
+                <span class="title-main">松韵法术超市</span>
+                <span class="title-sub">上古秘法 · 传承千年</span>
+            </h1>
+            <p class="hero-desc">
+                汇聚九黎巫术、北斗星法、五行禁法<br>
+                共 <strong id="spell-count">199</strong> 种秘传法术，助您趋吉避凶、招财纳福
+            </p>
+            <div class="hero-buttons">
+                <a href="#spells" class="btn btn-primary">浏览法术</a>
+                <a href="#calendar" class="btn btn-secondary">查看黄历</a>
+            </div>
+        </div>
+        <div class="scroll-indicator">
+            <span>向下滚动</span>
+            <div class="scroll-arrow"></div>
+        </div>
+    </section>
+
+    <!-- 分类统计 -->
+    <section class="categories-section">
+        <div class="container">
+            <h2 class="section-title">法术分类</h2>
+            <div class="category-grid" id="category-grid">
+                <!-- 动态生成 -->
+            </div>
+        </div>
+    </section>
+
+    <!-- 搜索区域 -->
+    <section id="spells" class="search-section">
+        <div class="container">
+            <div class="search-box">
+                <input type="text" id="search-input" placeholder="搜索法术名称..." autocomplete="off">
+                <button class="search-btn">🔍</button>
+            </div>
+            <div class="filter-tags" id="filter-tags">
+                <button class="filter-tag active" data-category="all">全部</button>
+                <button class="filter-tag" data-category="财运">财运</button>
+                <button class="filter-tag" data-category="雷法">雷法</button>
+                <button class="filter-tag" data-category="祈福">祈福</button>
+                <button class="filter-tag" data-category="驱邪">驱邪</button>
+                <button class="filter-tag" data-category="护身">护身</button>
+                <button class="filter-tag" data-category="五行">五行</button>
+                <button class="filter-tag" data-category="星斗">星斗</button>
+                <button class="filter-tag" data-category="巫术">巫术</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- 法术列表 -->
+    <section class="spells-section">
+        <div class="container">
+            <div class="spells-grid" id="spells-grid">
+                <!-- 动态生成 -->
+            </div>
+            <div class="pagination" id="pagination">
+                <!-- 动态生成 -->
+            </div>
+        </div>
+    </section>
+
+    <!-- 通胜黄历 -->
+    <section id="calendar" class="calendar-section">
+        <div class="container">
+            <h2 class="section-title">通胜黄历</h2>
+            <div class="calendar-container">
+                <div class="calendar-header">
+                    <button class="calendar-nav" id="prev-month">◀</button>
+                    <div class="calendar-title">
+                        <span id="calendar-year">2025</span>年
+                        <span id="calendar-month">2</span>月
+                    </div>
+                    <button class="calendar-nav" id="next-month">▶</button>
+                </div>
+                <div class="calendar-body">
+                    <div class="weekdays">
+                        <span>日</span><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span>
+                    </div>
+                    <div class="days" id="calendar-days">
+                        <!-- 动态生成 -->
+                    </div>
+                </div>
+                <div class="calendar-info" id="calendar-info">
+                    <div class="info-item">
+                        <span class="label">农历</span>
+                        <span class="value" id="lunar-date">正月初十</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="label">干支</span>
+                        <span class="value" id="ganzhi">乙巳年 戊寅月 丁未日</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="label">宜</span>
+                        <span class="value yi" id="yi">祭祀,祈福,求嗣,开光</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="label">忌</span>
+                        <span class="value ji" id="ji">嫁娶,安葬,行丧,词讼</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="label">吉神</span>
+                        <span class="value" id="jishen">天德,月德,天恩,母仓</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="label">凶煞</span>
+                        <span class="value" id="xiongsha">月煞,月虚,血支,天贼</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 关于区域 -->
+    <section id="about" class="about-section">
+        <div class="container">
+            <div class="about-content">
+                <div class="about-text">
+                    <h2 class="section-title">关于松韵</h2>
+                    <p>松韵法术超市传承上古巫教秘法，融合九黎、北斗、五行等正统法门。</p>
+                    <p>我们致力于将传统文化中的智慧结晶传承下去，让更多人能够受益于这些古老的智慧。</p>
+                    <div class="stats">
+                        <div class="stat-item">
+                            <span class="stat-number">199</span>
+                            <span class="stat-label">秘传法术</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">9</span>
+                            <span class="stat-label">法术分类</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">1000+</span>
+                            <span class="stat-label">受益信众</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="about-image">
+                    <div class="zen-circle"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer class="main-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <span class="logo-icon">⛩️</span>
+                    <span class="logo-text">松韵法术超市</span>
+                </div>
+                <p class="footer-desc">传承上古秘法 · 祈福纳祥 · 趋吉避凶</p>
+                <div class="footer-links">
+                    <a href="#home">首页</a>
+                    <a href="#spells">法术</a>
+                    <a href="#calendar">黄历</a>
+                    <a href="#about">关于</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 松韵法术超市. 保留所有权利.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 法术详情模态框 -->
+    <div class="modal" id="spell-modal">
+        <div class="modal-overlay"></div>
+        <div class="modal-content">
+            <button class="modal-close">&times;</button>
+            <div class="modal-body">
+                <div class="spell-header">
+                    <span class="spell-category" id="modal-category">财运</span>
+                    <h2 class="spell-title" id="modal-title">法术名称</h2>
+                    <p class="spell-course" id="modal-course">来源课程</p>
+                </div>
+                <div class="spell-details">
+                    <div class="detail-section">
+                        <h3>法术简介</h3>
+                        <p id="modal-description"></p>
+                    </div>
+                    <div class="detail-section">
+                        <h3>功效效果</h3>
+                        <div class="effects-list" id="modal-effects">
+                            <!-- 动态生成 -->
+                        </div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-item">
+                            <span class="label">难度等级</span>
+                            <span class="value" id="modal-difficulty">中级</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="label">法术价格</span>
+                            <span class="value price" id="modal-price">¥888</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="spell-actions">
+                    <button class="btn btn-primary btn-large">预约法事</button>
+                    <button class="btn btn-secondary btn-large">咨询详情</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="spells_data.js"></script>
+    <script src="calendar.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
