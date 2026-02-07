@@ -82,6 +82,90 @@
             color: var(--dark-bg);
         }
         
+        /* 法会通知广告栏 */
+        .notice-section {
+            max-width: 1000px;
+            margin: 20px auto;
+            padding: 0 20px;
+        }
+        
+        .notice-banner {
+            background: linear-gradient(135deg, var(--primary-red) 0%, #6b0011 100%);
+            border-radius: 12px;
+            padding: 20px 25px;
+            box-shadow: 0 5px 20px rgba(139, 0, 0, 0.3);
+            border: 2px solid var(--primary-gold);
+        }
+        
+        .notice-title {
+            color: var(--primary-gold);
+            font-size: 1.3rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .notice-title::before,
+        .notice-title::after {
+            content: "🏮";
+        }
+        
+        .notice-list {
+            display: grid;
+            gap: 12px;
+        }
+        
+        .notice-item {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            transition: all 0.3s;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+        }
+        
+        .notice-item:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateX(5px);
+        }
+        
+        .notice-icon {
+            font-size: 1.8rem;
+            flex-shrink: 0;
+        }
+        
+        .notice-content {
+            flex: 1;
+            color: white;
+        }
+        
+        .notice-content h4 {
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+            color: var(--primary-gold);
+        }
+        
+        .notice-content p {
+            font-size: 0.95rem;
+            opacity: 0.9;
+        }
+        
+        .notice-badge {
+            background: var(--primary-gold);
+            color: var(--dark-bg);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+        
         /* 每日摇签区域 */
         .qian-section {
             max-width: 800px;
@@ -614,6 +698,39 @@
             <li data-category="其他">其他</li>
         </ul>
     </nav>
+    
+    <!-- 法会通知广告栏 -->
+    <section class="notice-section">
+        <div class="notice-banner">
+            <div class="notice-title">法会通知</div>
+            <div class="notice-list">
+                <div class="notice-item">
+                    <div class="notice-icon">💰</div>
+                    <div class="notice-content">
+                        <h4>初五迎财神法会</h4>
+                        <p>开始登记报名，招财进宝，财源广进</p>
+                    </div>
+                    <div class="notice-badge">报名中</div>
+                </div>
+                <div class="notice-item">
+                    <div class="notice-icon">⭐</div>
+                    <div class="notice-content">
+                        <h4>2026化太岁服务</h4>
+                        <p>每星期1-2场，化解流年不利，趋吉避凶</p>
+                    </div>
+                    <div class="notice-badge">进行中</div>
+                </div>
+                <div class="notice-item">
+                    <div class="notice-icon">🧧</div>
+                    <div class="notice-content">
+                        <h4>新春全家祈福活动</h4>
+                        <p>8600元（全家5人都可同时参加）</p>
+                    </div>
+                    <div class="notice-badge">报名中</div>
+                </div>
+            </div>
+        </div>
+    </section>
     
     <!-- 每日摇签 -->
     <section class="qian-section">
