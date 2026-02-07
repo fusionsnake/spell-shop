@@ -3,258 +3,1714 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>松韵法术超市 - 传承上古秘法</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
+    <title>元一森秘传 · 法术超市</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'STKaiti', 'KaiTi', 'SimKaiti', serif;
+            background: linear-gradient(135deg, #1a0a2e 0%, #2d1b4e 50%, #1a0a2e 100%);
+            min-height: 100vh;
+            color: #f0e6d3;
+        }
+        
+        /* 头部 */
+        header {
+            background: linear-gradient(180deg, rgba(180,140,50,0.3) 0%, rgba(26,10,46,0.9) 100%);
+            padding: 40px 20px;
+            text-align: center;
+            border-bottom: 3px solid #b48c32;
+            box-shadow: 0 4px 30px rgba(180,140,50,0.3);
+        }
+        
+        header h1 {
+            font-size: 3rem;
+            background: linear-gradient(45deg, #FFD700, #b48c32, #FFD700);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 30px rgba(255,215,0,0.3);
+            margin-bottom: 10px;
+        }
+        
+        header p {
+            color: #b48c32;
+            font-size: 1.2rem;
+            letter-spacing: 8px;
+        }
+        
+        /* 导航 */
+        nav {
+            background: rgba(45,27,78,0.95);
+            padding: 15px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid #b48c32;
+        }
+        
+        nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        nav li {
+            cursor: pointer;
+            padding: 10px 25px;
+            background: linear-gradient(135deg, rgba(180,140,50,0.2) 0%, rgba(180,140,50,0.05) 100%);
+            border: 1px solid #b48c32;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+        
+        nav li:hover, nav li.active {
+            background: linear-gradient(135deg, #b48c32 0%, #FFD700 100%);
+            color: #1a0a2e;
+            box-shadow: 0 0 20px rgba(180,140,50,0.5);
+        }
+        
+        /* 抽签区域 */
+        .fortune-section {
+            max-width: 600px;
+            margin: 40px auto;
+            padding: 30px;
+            background: rgba(45,27,78,0.6);
+            border: 2px solid #b48c32;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        }
+        
+        .fortune-section h2 {
+            color: #FFD700;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+        }
+        
+        .draw-btn {
+            background: linear-gradient(135deg, #b48c32 0%, #FFD700 50%, #b48c32 100%);
+            color: #1a0a2e;
+            border: none;
+            padding: 15px 50px;
+            font-size: 1.3rem;
+            border-radius: 50px;
+            cursor: pointer;
+            font-family: inherit;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 20px rgba(180,140,50,0.4);
+        }
+        
+        .draw-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(180,140,50,0.6);
+        }
+        
+        .fortune-result {
+            margin-top: 25px;
+            padding: 25px;
+            background: rgba(26,10,46,0.8);
+            border-radius: 15px;
+            display: none;
+            border: 1px solid;
+        }
+        
+        .fortune-result.show {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .fortune-type {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        
+        .fortune-content {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            color: #f0e6d3;
+        }
+        
+        /* 法术卡片区域 */
+        .spells-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        .category-section {
+            margin-bottom: 50px;
+        }
+        
+        .category-title {
+            font-size: 2rem;
+            color: #FFD700;
+            margin-bottom: 25px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #b48c32;
+            display: inline-block;
+        }
+        
+        .spells-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 25px;
+        }
+        
+        .spell-card {
+            background: linear-gradient(145deg, rgba(45,27,78,0.9) 0%, rgba(26,10,46,0.9) 100%);
+            border: 1px solid rgba(180,140,50,0.3);
+            border-radius: 15px;
+            padding: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .spell-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #b48c32, #FFD700, #b48c32, transparent);
+        }
+        
+        .spell-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(180,140,50,0.3);
+            border-color: #b48c32;
+        }
+        
+        .spell-category-tag {
+            display: inline-block;
+            padding: 5px 15px;
+            background: rgba(180,140,50,0.2);
+            color: #b48c32;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            margin-bottom: 12px;
+            border: 1px solid rgba(180,140,50,0.3);
+        }
+        
+        .spell-name {
+            font-size: 1.4rem;
+            color: #FFD700;
+            margin-bottom: 12px;
+            font-weight: bold;
+        }
+        
+        .spell-desc {
+            color: #c9b896;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 15px;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        
+        .spell-price {
+            font-size: 1.5rem;
+            color: #FFD700;
+            font-weight: bold;
+        }
+        
+        .spell-price span {
+            font-size: 0.9rem;
+            color: #b48c32;
+        }
+        
+        /* 弹窗 */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.85);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .modal.show {
+            display: flex;
+        }
+        
+        .modal-content {
+            background: linear-gradient(145deg, #2d1b4e 0%, #1a0a2e 100%);
+            border: 2px solid #b48c32;
+            border-radius: 20px;
+            max-width: 600px;
+            width: 100%;
+            max-height: 80vh;
+            overflow-y: auto;
+            padding: 40px;
+            position: relative;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+        }
+        
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 2rem;
+            color: #b48c32;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+        
+        .modal-close:hover {
+            color: #FFD700;
+        }
+        
+        .modal-title {
+            font-size: 1.8rem;
+            color: #FFD700;
+            margin-bottom: 10px;
+        }
+        
+        .modal-category {
+            color: #b48c32;
+            font-size: 1rem;
+            margin-bottom: 20px;
+        }
+        
+        .modal-desc {
+            color: #f0e6d3;
+            line-height: 1.8;
+            font-size: 1.1rem;
+            margin-bottom: 25px;
+            padding: 20px;
+            background: rgba(180,140,50,0.1);
+            border-radius: 10px;
+            border-left: 3px solid #b48c32;
+        }
+        
+        .modal-price {
+            font-size: 2rem;
+            color: #FFD700;
+            text-align: center;
+            padding: 20px;
+            border-top: 1px solid rgba(180,140,50,0.3);
+        }
+        
+        .modal-price span {
+            font-size: 1rem;
+            color: #b48c32;
+        }
+        
+        .modal-note {
+            color: #888;
+            font-size: 0.9rem;
+            text-align: center;
+            margin-top: 15px;
+            font-style: italic;
+        }
+        
+        /* 页脚 */
+        footer {
+            text-align: center;
+            padding: 30px;
+            background: rgba(26,10,46,0.9);
+            border-top: 1px solid #b48c32;
+            color: #b48c32;
+        }
+        
+        /* 响应式 */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2rem;
+            }
+            
+            nav li {
+                padding: 8px 15px;
+                font-size: 0.9rem;
+            }
+            
+            .spells-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* 隐藏分类 */
+        .category-section.hidden {
+            display: none;
+        }
+    </style>
 </head>
 <body>
-    <!-- 背景装饰 -->
-    <div class="bg-decoration">
-        <div class="sakura-container"></div>
-        <div class="ink-wash"></div>
-    </div>
-
-    <!-- 导航栏 -->
-    <nav class="main-nav">
-        <div class="nav-container">
-            <div class="logo">
-                <span class="logo-icon">⛩️</span>
-                <span class="logo-text">松韵法术超市</span>
-            </div>
-            <ul class="nav-links">
-                <li><a href="#home" class="active">首页</a></li>
-                <li><a href="#spells">法术</a></li>
-                <li><a href="#calendar">通胜黄历</a></li>
-                <li><a href="#about">关于</a></li>
-            </ul>
-            <button class="mobile-menu-btn">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
-        </div>
+    <header>
+        <h1>元一森秘传</h1>
+        <p>法 术 超 市</p>
+    </header>
+    
+    <nav>
+        <ul>
+            <li class="active" data-category="all">全部</li>
+            <li data-category="护身">护身</li>
+            <li data-category="桃花">桃花</li>
+            <li data-category="祈福">祈福</li>
+            <li data-category="综合">综合</li>
+            <li data-category="财运">财运</li>
+            <li data-category="雷法">雷法</li>
+            <li data-category="驱邪">驱邪</li>
+        </ul>
     </nav>
-
-    <!-- 英雄区域 -->
-    <section id="home" class="hero">
-        <div class="hero-content">
-            <div class="torii-gate">
-                <div class="torii-top"></div>
-                <div class="torii-pillars">
-                    <div class="pillar left"></div>
-                    <div class="pillar right"></div>
+    
+    <!-- 每日摇签 -->
+    <div class="fortune-section">
+        <h2>🔮 每日灵签</h2>
+        <p style="color: #b48c32; margin-bottom: 20px;">心诚则灵，求一支签看看今日运势</p>
+        <button class="draw-btn" onclick="drawFortune()">求 签</button>
+        <div class="fortune-result" id="fortuneResult">
+            <div class="fortune-type" id="fortuneType"></div>
+            <div class="fortune-content" id="fortuneContent"></div>
+        </div>
+    </div>
+    
+    <div class="spells-container">
+        <div class="category-section" data-category="护身">
+            <h2 class="category-title">护身法阵</h2>
+            <div class="spells-grid">
+                <div class="spell-card" onclick="openModal('日月咒水术', '护身', `日咒水：提升阳气，增强胆量，安魂定魄，驱邪护身。`, 621)">
+                    <span class="spell-category-tag">护身</span>
+                    <h3 class="spell-name">日月咒水术</h3>
+                    <p class="spell-desc">日咒水：提升阳气，增强胆量，安魂定魄，驱邪护身。</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>621</div>
                 </div>
-            </div>
-            <h1 class="hero-title">
-                <span class="title-main">松韵法术超市</span>
-                <span class="title-sub">上古秘法 · 传承千年</span>
-            </h1>
-            <p class="hero-desc">
-                汇聚九黎巫术、北斗星法、五行禁法<br>
-                共 <strong id="spell-count">199</strong> 种秘传法术，助您趋吉避凶、招财纳福
-            </p>
-            <div class="hero-buttons">
-                <a href="#spells" class="btn btn-primary">浏览法术</a>
-                <a href="#calendar" class="btn btn-secondary">查看黄历</a>
-            </div>
-        </div>
-        <div class="scroll-indicator">
-            <span>向下滚动</span>
-            <div class="scroll-arrow"></div>
-        </div>
-    </section>
-
-    <!-- 分类统计 -->
-    <section class="categories-section">
-        <div class="container">
-            <h2 class="section-title">法术分类</h2>
-            <div class="category-grid" id="category-grid">
-                <!-- 动态生成 -->
-            </div>
-        </div>
-    </section>
-
-    <!-- 搜索区域 -->
-    <section id="spells" class="search-section">
-        <div class="container">
-            <div class="search-box">
-                <input type="text" id="search-input" placeholder="搜索法术名称..." autocomplete="off">
-                <button class="search-btn">🔍</button>
-            </div>
-            <div class="filter-tags" id="filter-tags">
-                <button class="filter-tag active" data-category="all">全部</button>
-                <button class="filter-tag" data-category="财运">财运</button>
-                <button class="filter-tag" data-category="雷法">雷法</button>
-                <button class="filter-tag" data-category="祈福">祈福</button>
-                <button class="filter-tag" data-category="驱邪">驱邪</button>
-                <button class="filter-tag" data-category="护身">护身</button>
-                <button class="filter-tag" data-category="五行">五行</button>
-                <button class="filter-tag" data-category="星斗">星斗</button>
-                <button class="filter-tag" data-category="巫术">巫术</button>
-            </div>
-        </div>
-    </section>
-
-    <!-- 法术列表 -->
-    <section class="spells-section">
-        <div class="container">
-            <div class="spells-grid" id="spells-grid">
-                <!-- 动态生成 -->
-            </div>
-            <div class="pagination" id="pagination">
-                <!-- 动态生成 -->
-            </div>
-        </div>
-    </section>
-
-    <!-- 通胜黄历 -->
-    <section id="calendar" class="calendar-section">
-        <div class="container">
-            <h2 class="section-title">通胜黄历</h2>
-            <div class="calendar-container">
-                <div class="calendar-header">
-                    <button class="calendar-nav" id="prev-month">◀</button>
-                    <div class="calendar-title">
-                        <span id="calendar-year">2025</span>年
-                        <span id="calendar-month">2</span>月
-                    </div>
-                    <button class="calendar-nav" id="next-month">▶</button>
+                <div class="spell-card" onclick="openModal('黑山仙师禁法：龙虎将军水', '护身', `敕此法水，服下增强胆气护身庇佑，禁身中作乱邪气，有龙虎之威将邪气去除体内，或撒于家宅之中，有可退家中强邪，身中强邪，鬼神见之，自退避三舍，水中有龙虎吞邪噬咬鬼精！不同于普通水法，本水法主杀伐之用！`, 758)">
+                    <span class="spell-category-tag">护身</span>
+                    <h3 class="spell-name">黑山仙师禁法：龙虎将军水</h3>
+                    <p class="spell-desc">敕此法水，服下增强胆气护身庇佑，禁身中作乱邪气，有龙虎之威将邪气去除体内，或撒于家宅之中，有可退家中强邪，身中强邪，鬼神见之，自退避三舍，水中有龙虎吞邪噬咬鬼精！不同于普通水法，本水法主杀伐之用！</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>758</div>
                 </div>
-                <div class="calendar-body">
-                    <div class="weekdays">
-                        <span>日</span><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span>
-                    </div>
-                    <div class="days" id="calendar-days">
-                        <!-- 动态生成 -->
-                    </div>
+                <div class="spell-card" onclick="openModal('巫教天雷朱红封身术', '护身', `巫的文化中，有朱红也就是朱砂用来画在人的身上，用以辟邪的作用。这也是封身的起源之一，而本法是以法师手中朱砂加持法力，为善信孩子弟子，进行封身。且时间不短，可以隔绝邪祟，仙家，精怪骚扰，如同一道无形的护身符时时刻刻在身上显现抵挡，且本法蕴含巫教雷法，一般邪祟碰上反而会损其神形，极为凶猛。`, 617)">
+                    <span class="spell-category-tag">护身</span>
+                    <h3 class="spell-name">巫教天雷朱红封身术</h3>
+                    <p class="spell-desc">巫的文化中，有朱红也就是朱砂用来画在人的身上，用以辟邪的作用。这也是封身的起源之一，而本法是以法师手中朱砂加持法力，为善信孩子弟子，进行封身。且时间不短，可以隔绝邪祟，仙家，精怪骚扰，如同一道无形的护身符时时刻刻在身上显现抵挡，且本法蕴含巫教雷法，一般邪祟碰上反而会损其神形，极为凶猛。</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>617</div>
                 </div>
-                <div class="calendar-info" id="calendar-info">
-                    <div class="info-item">
-                        <span class="label">农历</span>
-                        <span class="value" id="lunar-date">正月初十</span>
-                    </div>
-                    <div class="info-item">
-                        <span class="label">干支</span>
-                        <span class="value" id="ganzhi">乙巳年 戊寅月 丁未日</span>
-                    </div>
-                    <div class="info-item">
-                        <span class="label">宜</span>
-                        <span class="value yi" id="yi">祭祀,祈福,求嗣,开光</span>
-                    </div>
-                    <div class="info-item">
-                        <span class="label">忌</span>
-                        <span class="value ji" id="ji">嫁娶,安葬,行丧,词讼</span>
-                    </div>
-                    <div class="info-item">
-                        <span class="label">吉神</span>
-                        <span class="value" id="jishen">天德,月德,天恩,母仓</span>
-                    </div>
-                    <div class="info-item">
-                        <span class="label">凶煞</span>
-                        <span class="value" id="xiongsha">月煞,月虚,血支,天贼</span>
-                    </div>
+                <div class="spell-card" onclick="openModal('巫教丰隆天神记打法', '护身', `“丰隆”在楚时被称为云君又命雷师，云雷之神，是万物生发之神，本法主神便是此神明，成天雷打邪，成云雨护身结法，云雨在天即可扶持法师，轰雷行法，且行此法练此法，可感召云雷之神，加强行法威力。`, 765)">
+                    <span class="spell-category-tag">护身</span>
+                    <h3 class="spell-name">巫教丰隆天神记打法</h3>
+                    <p class="spell-desc">“丰隆”在楚时被称为云君又命雷师，云雷之神，是万物生发之神，本法主神便是此神明，成天雷打邪，成云雨护身结法，云雨在天即可扶持法师，轰雷行法，且行此法练此法，可感召云雷之神，加强行法威力。</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>765</div>
+                </div>
+                <div class="spell-card" onclick="openModal('巫教摄山鬼河伯法', '护身', `县官不如现管，这句话在神鬼之间依旧有用，在巫文化中，和神鬼打好关系是极其必要的，也是所有法师的基本功，但是很多法师不知其所以然，不知其妙处颇多，本法摄山中山鬼山精，河中河伯，请这些神灵鬼怪前来帮助法师或者协助法师行法，小到法师走夜路护身，大到帮助退附体作恶，如果使用得当，神鬼皆会给予一份薄面，自行退走，通行阴阳。`, 602)">
+                    <span class="spell-category-tag">护身</span>
+                    <h3 class="spell-name">巫教摄山鬼河伯法</h3>
+                    <p class="spell-desc">县官不如现管，这句话在神鬼之间依旧有用，在巫文化中，和神鬼打好关系是极其必要的，也是所有法师的基本功，但是很多法师不知其所以然，不知其妙处颇多，本法摄山中山鬼山精，河中河伯，请这些神灵鬼怪前来帮助法师或者协助法师行法，小到法师走夜路护身，大到帮助退附体作恶，如果使用得当，神鬼皆会给予一份薄面，自行退走，通行阴阳。</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>602</div>
+                </div>
+                <div class="spell-card" onclick="openModal('巫教雷王降神术', '护身', `召请雷王降神加持自身， 或者善信，可以做完某一个升运法事中最重要的一环。雷王降身，可增强自身运势，胆魄，气场，驱逐自身沾染的阴性能量，且得到雷王的庇佑，雷王是极为威严的神明象征，有这对雷无与伦比对权柄，对于邪祟更是极大的克星。若有人身上有邪气阴风导致运势不顺，可以用此法，在外法师若无足够的实力，可通过此法让雷王降神扶持自身，同时起当庇佑护身藏身的效果！`, 791)">
+                    <span class="spell-category-tag">护身</span>
+                    <h3 class="spell-name">巫教雷王降神术</h3>
+                    <p class="spell-desc">召请雷王降神加持自身， 或者善信，可以做完某一个升运法事中最重要的一环。雷王降身，可增强自身运势，胆魄，气场，驱逐自身沾染的阴性能量，且得到雷王的庇佑，雷王是极为威严的神明象征，有这对雷无与伦比对权柄，对于邪祟更是极大的克星。若有人身上有邪气阴风导致运势不顺，可以用此法，在外法师若无足够的实力，可通过此法让雷王降神扶持自身，同时起当庇佑护身藏身的效果！</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>791</div>
+                </div>
+                <div class="spell-card" onclick="openModal('巫教月神化阴术', '护身', `月是为极阴，同太阳为极阳一般，本法请月神赐下月华，让我们自身稳定在阴阳平衡的状态，不会随意的被负面的东西所影响，因为阴阳一旦不平衡，就会出现很多状况，如过于亢奋，过于低沉，而月华便可以扶回阴阳平衡，可以从容的去判断，同时有护身的能力，且一些游离鬼怪也不会来过于侵扰法师，是十分实用的。`, 624)">
+                    <span class="spell-category-tag">护身</span>
+                    <h3 class="spell-name">巫教月神化阴术</h3>
+                    <p class="spell-desc">月是为极阴，同太阳为极阳一般，本法请月神赐下月华，让我们自身稳定在阴阳平衡的状态，不会随意的被负面的东西所影响，因为阴阳一旦不平衡，就会出现很多状况，如过于亢奋，过于低沉，而月华便可以扶回阴阳平衡，可以从容的去判断，同时有护身的能力，且一些游离鬼怪也不会来过于侵扰法师，是十分实用的。</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>624</div>
+                </div>
+                <div class="spell-card" onclick="openModal('巫教春神孚佑心诀', '护身', `上古的文化中，在春天时尊春神句芒为祭祀大神，春天，万物复苏生灵出洞，有契合万灵，吸引生灵的作用。本诀合万灵，吸引万灵，收纳万物的气补充身体，恢复法力护身挡霉运，并不需要打坐，可以散步时，静坐时运用，有缘者可能会吸引精灵来见。`, 650)">
+                    <span class="spell-category-tag">护身</span>
+                    <h3 class="spell-name">巫教春神孚佑心诀</h3>
+                    <p class="spell-desc">上古的文化中，在春天时尊春神句芒为祭祀大神，春天，万物复苏生灵出洞，有契合万灵，吸引生灵的作用。本诀合万灵，吸引万灵，收纳万物的气补充身体，恢复法力护身挡霉运，并不需要打坐，可以散步时，静坐时运用，有缘者可能会吸引精灵来见。</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>650</div>
+                </div>
+                <div class="spell-card" onclick="openModal('巫教后土后德法', '护身', `历史中，后土皇地祇，也就是我们的后土娘娘，是大地的化身，大地厚德载物生养万物，也是深厚德行的表现，本法取于文化中的后土娘娘，在文化中运用，有护身挡除灾祸，行善法可积累功德，通得神明，并记下阴德，得阴神扶持，增强超度等效果。`, 728)">
+                    <span class="spell-category-tag">护身</span>
+                    <h3 class="spell-name">巫教后土后德法</h3>
+                    <p class="spell-desc">历史中，后土皇地祇，也就是我们的后土娘娘，是大地的化身，大地厚德载物生养万物，也是深厚德行的表现，本法取于文化中的后土娘娘，在文化中运用，有护身挡除灾祸，行善法可积累功德，通得神明，并记下阴德，得阴神扶持，增强超度等效果。</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>728</div>
+                </div>
+                <div class="spell-card" onclick="openModal('上古巫法：震雷天罡符', '护身', `本法取自震雷卦象，对道法来说，可引九天雷气，对巫法来说，取雷神之威，天罡即为破除，用时可激荡天雷，契合震卦，加之天罡。破除小人事业阻隔，增强个人权威性话语权信服性，并给予自身护持，天罡也可以增强个人的威严，并护身，不胆怯，震慑小人邪气，若遇见气场不好的人，可直接免疫其影响。`, 608)">
+                    <span class="spell-category-tag">护身</span>
+                    <h3 class="spell-name">上古巫法：震雷天罡符</h3>
+                    <p class="spell-desc">本法取自震雷卦象，对道法来说，可引九天雷气，对巫法来说，取雷神之威，天罡即为破除，用时可激荡天雷，契合震卦，加之天罡。破除小人事业阻隔，增强个人权威性话语权信服性，并给予自身护持，天罡也可以增强个人的威严，并护身，不胆怯，震慑小人邪气，若遇见气场不好的人，可直接免疫其影响。</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>608</div>
+                </div>
+                <div class="spell-card" onclick="openModal('五百雷公手', '护身', `此术是雷法精要之一，雷法奇术，专练阳雷之法，以法师自身雷法引动天上雷神，取巫教天地雷神，道教三十六雷将等雷法天神，调此神力驱邪除鬼，护身庇佑，打人伤人。若长久召请一位雷神可结下善缘，随后便是护法之神将，招喊立应！`, 700)">
+                    <span class="spell-category-tag">护身</span>
+                    <h3 class="spell-name">五百雷公手</h3>
+                    <p class="spell-desc">此术是雷法精要之一，雷法奇术，专练阳雷之法，以法师自身雷法引动天上雷神，取巫教天地雷神，道教三十六雷将等雷法天神，调此神力驱邪除鬼，护身庇佑，打人伤人。若长久召请一位雷神可结下善缘，随后便是护法之神将，招喊立应！</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>700</div>
+                </div>
+                <div class="spell-card" onclick="openModal('华盖宝伞四符', '护身', `华盖乃庇护帝王之物，代表华天之物，对于法师更是可以庇佑法师，挡除天煞之物，此四符，画于伞上敕伞变化结界，直接庇佑伞下之人万般周全，挡天煞，鬼煞，邪煞，地煞，挡他人鬼祟，下法，法伞之下自得庇佑。法伞转动则运转，去除厄运，法伞乃自身法器之威仪！`, 698)">
+                    <span class="spell-category-tag">护身</span>
+                    <h3 class="spell-name">华盖宝伞四符</h3>
+                    <p class="spell-desc">华盖乃庇护帝王之物，代表华天之物，对于法师更是可以庇佑法师，挡除天煞之物，此四符，画于伞上敕伞变化结界，直接庇佑伞下之人万般周全，挡天煞，鬼煞，邪煞，地煞，挡他人鬼祟，下法，法伞之下自得庇佑。法伞转动则运转，去除厄运，法伞乃自身法器之威仪！</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>698</div>
+                </div>
+                <div class="spell-card" onclick="openModal('祭金乌火术', '护身', `行法之时状如火神，赫赫威灵，增强自身魂魄，护魂破恶法，身如烈日。此火可破邪障鬼祟迷人之术，内练神魂，外诛邪祟恶鬼，焚好运厄运，文用护身庇佑他人，武用画符行法时放出金乌火光，焚烧鬼怪精邪。`, 690)">
+                    <span class="spell-category-tag">护身</span>
+                    <h3 class="spell-name">祭金乌火术</h3>
+                    <p class="spell-desc">行法之时状如火神，赫赫威灵，增强自身魂魄，护魂破恶法，身如烈日。此火可破邪障鬼祟迷人之术，内练神魂，外诛邪祟恶鬼，焚好运厄运，文用护身庇佑他人，武用画符行法时放出金乌火光，焚烧鬼怪精邪。</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>690</div>
+                </div>
+                <div class="spell-card" onclick="openModal('星君五雷社令术', '护身', `此乃神斗之阵法，以五雷为定四方之阵，可攻可守，布在坛场灯火中，神威化显，无用时隐于灯中，发动时遍布房间，显以雷霆，灯火星光化为雷网,庇佑坛场，房间，防止邪术恶鬼随意进入坛场，挡邪法，挡邪术`, 681)">
+                    <span class="spell-category-tag">护身</span>
+                    <h3 class="spell-name">星君五雷社令术</h3>
+                    <p class="spell-desc">此乃神斗之阵法，以五雷为定四方之阵，可攻可守，布在坛场灯火中，神威化显，无用时隐于灯中，发动时遍布房间，显以雷霆，灯火星光化为雷网,庇佑坛场，房间，防止邪术恶鬼随意进入坛场，挡邪法，挡邪术</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>681</div>
+                </div>
+                <div class="spell-card" onclick="openModal('巫教三天五行总旨:蓐收炼金定神术', '护身', `本法请金之正神蓐收，外用可炼法器增强法器威能，更加锋芒锐利，如可加持金刚杵，师刀，法剑等。内用可安心定神护身，金光流转于身，若有学员会金光法便可用此法增强并灵活调用自身修来的金光，本功效非一般法可比，因可加强自身的金光所以也有一定的稳固身体的功效和击破邪祟的功效。安住自己的心神，不会轻易被外来的事物惊扰更好的进行内修，内练，打坐，通灵，安神定心。`, 710)">
+                    <span class="spell-category-tag">护身</span>
+                    <h3 class="spell-name">巫教三天五行总旨:蓐收炼金定神术</h3>
+                    <p class="spell-desc">本法请金之正神蓐收，外用可炼法器增强法器威能，更加锋芒锐利，如可加持金刚杵，师刀，法剑等。内用可安心定神护身，金光流转于身，若有学员会金光法便可用此法增强并灵活调用自身修来的金光，本功效非一般法可比，因可加强自身的金光所以也有一定的稳固身体的功效和击破邪祟的功效。安住自己的心神，不会轻易被外来的事物惊扰更好的进行内修，内练，打坐，通灵，安神定心。</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>710</div>
+                </div>
+                <div class="spell-card" onclick="openModal('巫教日光起阳诀', '护身', `金乌有日光，借用太阳金乌之阳气，旺人自身之阳气，充盈自身驱逐邪气阴气煞气，阳气充盈神明气清。阳气充盈者，平日出行无需护身便可驱赶邪祟！`, 723)">
+                    <span class="spell-category-tag">护身</span>
+                    <h3 class="spell-name">巫教日光起阳诀</h3>
+                    <p class="spell-desc">金乌有日光，借用太阳金乌之阳气，旺人自身之阳气，充盈自身驱逐邪气阴气煞气，阳气充盈神明气清。阳气充盈者，平日出行无需护身便可驱赶邪祟！</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>723</div>
                 </div>
             </div>
         </div>
-    </section>
-
-    <!-- 关于区域 -->
-    <section id="about" class="about-section">
-        <div class="container">
-            <div class="about-content">
-                <div class="about-text">
-                    <h2 class="section-title">关于松韵</h2>
-                    <p>松韵法术超市传承上古巫教秘法，融合九黎、北斗、五行等正统法门。</p>
-                    <p>我们致力于将传统文化中的智慧结晶传承下去，让更多人能够受益于这些古老的智慧。</p>
-                    <div class="stats">
-                        <div class="stat-item">
-                            <span class="stat-number">199</span>
-                            <span class="stat-label">秘传法术</span>
-                        </div>
-                        <div class="stat-item">
-                            <span class="stat-number">9</span>
-                            <span class="stat-label">法术分类</span>
-                        </div>
-                        <div class="stat-item">
-                            <span class="stat-number">1000+</span>
-                            <span class="stat-label">受益信众</span>
-                        </div>
-                    </div>
+        <div class="category-section" data-category="桃花">
+            <h2 class="category-title">桃花法阵</h2>
+            <div class="spells-grid">
+                <div class="spell-card" onclick="openModal('黑山禁法：狐媚禁', '桃花', `在芭蕉树或桃花树下做此法，闭气念咒语三遍，将符对着这个人的纸人虚画七遍，然后加画将此纸人焚烧掉，或埋在树下即可。`, 788)">
+                    <span class="spell-category-tag">桃花</span>
+                    <h3 class="spell-name">黑山禁法：狐媚禁</h3>
+                    <p class="spell-desc">在芭蕉树或桃花树下做此法，闭气念咒语三遍，将符对着这个人的纸人虚画七遍，然后加画将此纸人焚烧掉，或埋在树下即可。</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>788</div>
                 </div>
-                <div class="about-image">
-                    <div class="zen-circle"></div>
+                <div class="spell-card" onclick="openModal('黑山禁法：青红二狐摄魅术', '桃花', `禁法中少有的狐魅之术，佩戴在身旺魅力人缘，青红二位狐仙自然庇佑，且吸引气质不错的异性，本法区别于普通的狐仙之法，可敕入人身，将狐仙之法打入身体，让其外貌气质得到改变，可吸引贵人财运！`, 764)">
+                    <span class="spell-category-tag">桃花</span>
+                    <h3 class="spell-name">黑山禁法：青红二狐摄魅术</h3>
+                    <p class="spell-desc">禁法中少有的狐魅之术，佩戴在身旺魅力人缘，青红二位狐仙自然庇佑，且吸引气质不错的异性，本法区别于普通的狐仙之法，可敕入人身，将狐仙之法打入身体，让其外貌气质得到改变，可吸引贵人财运！</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>764</div>
+                </div>
+                <div class="spell-card" onclick="openModal('阴差阳错神煞化解术', '桃花', `此术主解自身一年中阴差阳错的神煞影响，主影响自身婚姻事业和日常琐事。化解一年的阴差阳错影响提升自身运势，本术只有化解！`, 705)">
+                    <span class="spell-category-tag">桃花</span>
+                    <h3 class="spell-name">阴差阳错神煞化解术</h3>
+                    <p class="spell-desc">此术主解自身一年中阴差阳错的神煞影响，主影响自身婚姻事业和日常琐事。化解一年的阴差阳错影响提升自身运势，本术只有化解！</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>705</div>
+                </div>
+                <div class="spell-card" onclick="openModal('九天翻山魔王术', '桃花', `翻山寻精怪，千里难逃离，可千里寻精，吞吃仇仙，一嗅可寻精怪本身，若本有心通眼通者，见此魔王速生心魔，吞恶人三魂七魄，让其神经迷乱，情绪失控。`, 827)">
+                    <span class="spell-category-tag">桃花</span>
+                    <h3 class="spell-name">九天翻山魔王术</h3>
+                    <p class="spell-desc">翻山寻精怪，千里难逃离，可千里寻精，吞吃仇仙，一嗅可寻精怪本身，若本有心通眼通者，见此魔王速生心魔，吞恶人三魂七魄，让其神经迷乱，情绪失控。</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>827</div>
+                </div>
+                <div class="spell-card" onclick="openModal('青狐仙寄愿术', '桃花', `此术只有一个效果，便是成愿！寄愿望于青狐狐仙，得到其帮助得以成愿，青狐不同于红狐，青为天青之色，在古代是最容易在玄学等术法，怪异之事上得以成愿，如：得到当地某神明或鬼祟青睐，某种仙家缘分，某种玄学上的契机等，无论善恶之愿皆可成，此法若用得当，可成大用！`, 817)">
+                    <span class="spell-category-tag">桃花</span>
+                    <h3 class="spell-name">青狐仙寄愿术</h3>
+                    <p class="spell-desc">此术只有一个效果，便是成愿！寄愿望于青狐狐仙，得到其帮助得以成愿，青狐不同于红狐，青为天青之色，在古代是最容易在玄学等术法，怪异之事上得以成愿，如：得到当地某神明或鬼祟青睐，某种仙家缘分，某种玄学上的契机等，无论善恶之愿皆可成，此法若用得当，可成大用！</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>817</div>
+                </div>
+                <div class="spell-card" onclick="openModal('用法：', '桃花', `葫芦中藏千军万马，乃兵马葫芦，葫芦即为神兵兵营，若遇到邪祟将葫芦打开，便有千军万马斩邪灭怪，放于坛上可镇阴阳之气，乃阴阳兵马，上秉天之阳气，下承地之阴气，可斩邪神鬼魅，纳仙怪化作兵马。乃天地阴阳收兵用兵之法器！`, 856)">
+                    <span class="spell-category-tag">桃花</span>
+                    <h3 class="spell-name">用法：</h3>
+                    <p class="spell-desc">葫芦中藏千军万马，乃兵马葫芦，葫芦即为神兵兵营，若遇到邪祟将葫芦打开，便有千军万马斩邪灭怪，放于坛上可镇阴阳之气，乃阴阳兵马，上秉天之阳气，下承地之阴气，可斩邪神鬼魅，纳仙怪化作兵马。乃天地阴阳收兵用兵之法器！</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>856</div>
+                </div>
+                <div class="spell-card" onclick="openModal('六和花神妙法', '桃花', `花神之术向来以人缘桃花为主，以花为根，花神为辅助，加持于人身则可增强男女自身所带的魅力，气场。非常适合去社交，谈判，交友，且花神妙法带有加持平安之效果，可让被加持之人的烂桃花起到一定程度的化解作用，可佩戴或加持香水。`, 692)">
+                    <span class="spell-category-tag">桃花</span>
+                    <h3 class="spell-name">六和花神妙法</h3>
+                    <p class="spell-desc">花神之术向来以人缘桃花为主，以花为根，花神为辅助，加持于人身则可增强男女自身所带的魅力，气场。非常适合去社交，谈判，交友，且花神妙法带有加持平安之效果，可让被加持之人的烂桃花起到一定程度的化解作用，可佩戴或加持香水。</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>692</div>
+                </div>
+                <div class="spell-card" onclick="openModal('巫教三天五行总旨：仙公妙言总符', '桃花', `人口是为言，神口是为旨，以符为令，请仙人开口行法，是为妙言，也为点拨。和金口诀有异曲同工之妙，请神明开金口，言妙诀，在暗处辅助我们的所作所为，以及即将遇见的事情，如招财，招人缘桃花，招事业贵人等。便为妙言妙语，是非常适合平时运用的“小金口”且不会有过度的情况，以及怕自身说错话的情况发生！`, 773)">
+                    <span class="spell-category-tag">桃花</span>
+                    <h3 class="spell-name">巫教三天五行总旨：仙公妙言总符</h3>
+                    <p class="spell-desc">人口是为言，神口是为旨，以符为令，请仙人开口行法，是为妙言，也为点拨。和金口诀有异曲同工之妙，请神明开金口，言妙诀，在暗处辅助我们的所作所为，以及即将遇见的事情，如招财，招人缘桃花，招事业贵人等。便为妙言妙语，是非常适合平时运用的“小金口”且不会有过度的情况，以及怕自身说错话的情况发生！</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>773</div>
                 </div>
             </div>
         </div>
-    </section>
-
-    <!-- 页脚 -->
-    <footer class="main-footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-logo">
-                    <span class="logo-icon">⛩️</span>
-                    <span class="logo-text">松韵法术超市</span>
+        <div class="category-section" data-category="祈福">
+            <h2 class="category-title">祈福法阵</h2>
+            <div class="spells-grid">
+                <div class="spell-card" onclick="openModal('巫教火祈游魂法', '祈福', `游离孤魂十分悲苦，本法是巫教文化中的办法，以香烛为引，吸引十方游离魂魄，以符法火供焚烧祭祀游魂，以天上神明加持火供之火可明其魂魄之意，让其得意前往鬼门投胎，非普通的超度仪式可比，以佛教文化来讲此法是积攒大福报之法，以道教文化来讲是积攒阴阳功德之妙法，是在寒衣节清明节，首选普祭的不二之选。`, 538)">
+                    <span class="spell-category-tag">祈福</span>
+                    <h3 class="spell-name">巫教火祈游魂法</h3>
+                    <p class="spell-desc">游离孤魂十分悲苦，本法是巫教文化中的办法，以香烛为引，吸引十方游离魂魄，以符法火供焚烧祭祀游魂，以天上神明加持火供之火可明其魂魄之意，让其得意前往鬼门投胎，非普通的超度仪式可比，以佛教文化来讲此法是积攒大福报之法，以道教文化来讲是积攒阴阳功德之妙法，是在寒衣节清明节，首选普祭的不二之选。</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>538</div>
                 </div>
-                <p class="footer-desc">传承上古秘法 · 祈福纳祥 · 趋吉避凶</p>
-                <div class="footer-links">
-                    <a href="#home">首页</a>
-                    <a href="#spells">法术</a>
-                    <a href="#calendar">黄历</a>
-                    <a href="#about">关于</a>
+                <div class="spell-card" onclick="openModal('符：', '祈福', `本法原是古人在外为祭祀祖先之用，通过火焰以传递，神明以帮助，将我们的焚烧的东西送于祖先，并得到祖先的帮助，和神明的祝福，帮助自己提升诸多福报，福德，运势，机会，化解灾难等诸多不可言说的妙法，让这些福德发挥自己应该有的效果，这就是祭祀祖先的好处！且操作简单没有纷杂的程序`, 529)">
+                    <span class="spell-category-tag">祈福</span>
+                    <h3 class="spell-name">符：</h3>
+                    <p class="spell-desc">本法原是古人在外为祭祀祖先之用，通过火焰以传递，神明以帮助，将我们的焚烧的东西送于祖先，并得到祖先的帮助，和神明的祝福，帮助自己提升诸多福报，福德，运势，机会，化解灾难等诸多不可言说的妙法，让这些福德发挥自己应该有的效果，这就是祭祀祖先的好处！且操作简单没有纷杂的程序</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>529</div>
                 </div>
-            </div>
-            <div class="footer-bottom">
-                <p>&copy; 2025 松韵法术超市. 保留所有权利.</p>
+                <div class="spell-card" onclick="openModal('巫教祈靈水碗', '祈福', `本法是巫教文化中，极有寓意之水，水映照万物，生万物，此水碗练后喝下，可以增强人对于外界的感知灵性，增强自身的通灵感应，水本身就有清净感知的寓意，巫教之中又盛行祈祷祝念，祝水碗，以求祝福增强自身的能力，且此水碗在某些情况，可以映出附近的一些灵体，十分有趣。`, 645)">
+                    <span class="spell-category-tag">祈福</span>
+                    <h3 class="spell-name">巫教祈靈水碗</h3>
+                    <p class="spell-desc">本法是巫教文化中，极有寓意之水，水映照万物，生万物，此水碗练后喝下，可以增强人对于外界的感知灵性，增强自身的通灵感应，水本身就有清净感知的寓意，巫教之中又盛行祈祷祝念，祝水碗，以求祝福增强自身的能力，且此水碗在某些情况，可以映出附近的一些灵体，十分有趣。</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>645</div>
+                </div>
+                <div class="spell-card" onclick="openModal('收摄福神法', '祈福', `本法原本是禁法正式课中的内容，因可引动福神护持自身，或者善信，可以作为法事运用，以家宅为点布下法阵，为全家祈福，也可以作为单法专门为人祈福转运。以福神扶持，化解凶灾人祸，得以贵人扶持，财运来身，福神避祸，百种运用，非常适合需要转运贵人等帮助的人`, 523)">
+                    <span class="spell-category-tag">祈福</span>
+                    <h3 class="spell-name">收摄福神法</h3>
+                    <p class="spell-desc">本法原本是禁法正式课中的内容，因可引动福神护持自身，或者善信，可以作为法事运用，以家宅为点布下法阵，为全家祈福，也可以作为单法专门为人祈福转运。以福神扶持，化解凶灾人祸，得以贵人扶持，财运来身，福神避祸，百种运用，非常适合需要转运贵人等帮助的人</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>523</div>
+                </div>
+                <div class="spell-card" onclick="openModal('司命小乾坤灯', '祈福', `司命司掌天地万物的命运，自古便有祭祀司命以求一线生机之法，以定乾坤之局，此法以小乾坤为名，虽然没有大乾坤灯阵，有长久效果，但小乾坤可在短时间为自己扭转厄运，度过不好的运气，平定疾厄之气，此为定乾坤，阴阳平衡，造万物安宁之像！`, 498)">
+                    <span class="spell-category-tag">祈福</span>
+                    <h3 class="spell-name">司命小乾坤灯</h3>
+                    <p class="spell-desc">司命司掌天地万物的命运，自古便有祭祀司命以求一线生机之法，以定乾坤之局，此法以小乾坤为名，虽然没有大乾坤灯阵，有长久效果，但小乾坤可在短时间为自己扭转厄运，度过不好的运气，平定疾厄之气，此为定乾坤，阴阳平衡，造万物安宁之像！</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>498</div>
+                </div>
+                <div class="spell-card" onclick="openModal('司命大乾坤灯术', '祈福', `司命司掌天地万物的命运，自古便有祭祀司命以求一线生机之法，以定乾坤之局，此法为大乾坤，以借天地之势为乾坤之象为主。祭祀司命大神得以庇护，改善自身势能，能量，运势。指定天地之力汇聚于灯阵之上，成此愿望，如招财，便集合天地之力主升财运！成愿，转运，消灾皆可运用。为千变万化之大乾坤！`, 626)">
+                    <span class="spell-category-tag">祈福</span>
+                    <h3 class="spell-name">司命大乾坤灯术</h3>
+                    <p class="spell-desc">司命司掌天地万物的命运，自古便有祭祀司命以求一线生机之法，以定乾坤之局，此法为大乾坤，以借天地之势为乾坤之象为主。祭祀司命大神得以庇护，改善自身势能，能量，运势。指定天地之力汇聚于灯阵之上，成此愿望，如招财，便集合天地之力主升财运！成愿，转运，消灾皆可运用。为千变万化之大乾坤！</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>626</div>
+                </div>
+                <div class="spell-card" onclick="openModal('祝由', '祈福', `他这个可以改善心脏的一些问题的`, 606)">
+                    <span class="spell-category-tag">祈福</span>
+                    <h3 class="spell-name">祝由</h3>
+                    <p class="spell-desc">他这个可以改善心脏的一些问题的</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>606</div>
+                </div>
             </div>
         </div>
-    </footer>
-
-    <!-- 法术详情模态框 -->
-    <div class="modal" id="spell-modal">
-        <div class="modal-overlay"></div>
-        <div class="modal-content">
-            <button class="modal-close">&times;</button>
-            <div class="modal-body">
-                <div class="spell-header">
-                    <span class="spell-category" id="modal-category">财运</span>
-                    <h2 class="spell-title" id="modal-title">法术名称</h2>
-                    <p class="spell-course" id="modal-course">来源课程</p>
+        <div class="category-section" data-category="综合">
+            <h2 class="category-title">综合法阵</h2>
+            <div class="spells-grid">
+                <div class="spell-card" onclick="openModal('黑山禁法：红白二蛇结吉凶术', '综合', `红蛇掌福禄绵长，白蛇掌灾祸不绝，此法两种方法，请红蛇庇佑善信，得福得财得禄，请白蛇，遭灾遭难遭劫，红白二蛇又互为解法，请动二蛇帮助法师治恶扬善，行妙诀行善事，且长久秉持正行，消自身灾障，得五福加身。`, 775)">
+                    <span class="spell-category-tag">综合</span>
+                    <h3 class="spell-name">黑山禁法：红白二蛇结吉凶术</h3>
+                    <p class="spell-desc">红蛇掌福禄绵长，白蛇掌灾祸不绝，此法两种方法，请红蛇庇佑善信，得福得财得禄，请白蛇，遭灾遭难遭劫，红白二蛇又互为解法，请动二蛇帮助法师治恶扬善，行妙诀行善事，且长久秉持正行，消自身灾障，得五福加身。</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>775</div>
                 </div>
-                <div class="spell-details">
-                    <div class="detail-section">
-                        <h3>法术简介</h3>
-                        <p id="modal-description"></p>
-                    </div>
-                    <div class="detail-section">
-                        <h3>功效效果</h3>
-                        <div class="effects-list" id="modal-effects">
-                            <!-- 动态生成 -->
-                        </div>
-                    </div>
-                    <div class="detail-row">
-                        <div class="detail-item">
-                            <span class="label">难度等级</span>
-                            <span class="value" id="modal-difficulty">中级</span>
-                        </div>
-                        <div class="detail-item">
-                            <span class="label">法术价格</span>
-                            <span class="value price" id="modal-price">¥888</span>
-                        </div>
-                    </div>
+                <div class="spell-card" onclick="openModal('黑山禁法：八十八雷摄灵术', '综合', `雷法八十八，此法专治灵体，炼灵为自身所用，前四十四雷给予法师行斩一切阳间灵体，后四十四雷给予法师摄阴间一切游荡鬼魂，是阴阳公存之雷法，将法师所收的灵体将其炼为能量滋养下坛一切，增强下坛供奉兵马之能力，或精灵之能力。`, 732)">
+                    <span class="spell-category-tag">综合</span>
+                    <h3 class="spell-name">黑山禁法：八十八雷摄灵术</h3>
+                    <p class="spell-desc">雷法八十八，此法专治灵体，炼灵为自身所用，前四十四雷给予法师行斩一切阳间灵体，后四十四雷给予法师摄阴间一切游荡鬼魂，是阴阳公存之雷法，将法师所收的灵体将其炼为能量滋养下坛一切，增强下坛供奉兵马之能力，或精灵之能力。</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>732</div>
                 </div>
-                <div class="spell-actions">
-                    <button class="btn btn-primary btn-large">预约法事</button>
-                    <button class="btn btn-secondary btn-large">咨询详情</button>
+                <div class="spell-card" onclick="openModal('黑山禁法：白龙七子术', '综合', `遣白龙，兴云布雨，催龙口，吞金吐宝，本术有两大用，一焚符可召请天地龙神兴旺布雨，广济生灵。二焚符入水中，撒在工作之地，聚财收金，白龙庇佑。或请到白龙亲身庇佑善信不受仙家精怪骚扰，仙家见龙则惧，特别是蛇虫一类。`, 745)">
+                    <span class="spell-category-tag">综合</span>
+                    <h3 class="spell-name">黑山禁法：白龙七子术</h3>
+                    <p class="spell-desc">遣白龙，兴云布雨，催龙口，吞金吐宝，本术有两大用，一焚符可召请天地龙神兴旺布雨，广济生灵。二焚符入水中，撒在工作之地，聚财收金，白龙庇佑。或请到白龙亲身庇佑善信不受仙家精怪骚扰，仙家见龙则惧，特别是蛇虫一类。</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>745</div>
+                </div>
+                <div class="spell-card" onclick="openModal('黑山禁法：黄斑恶虎诀', '综合', `本术最大作用就是专克龙蛇之物，最简单便是结印放出黄斑恶虎撕咬仙家魂魄，山神土地，地脉龙神。作为惩神打恶之术，可破当地家宅之中的镇术镇物，吃掉镇物之上的阴寒邪法，包括躲藏于器物之上的精怪古气，如附身于玩偶之上的妖魔邪鬼。`, 802)">
+                    <span class="spell-category-tag">综合</span>
+                    <h3 class="spell-name">黑山禁法：黄斑恶虎诀</h3>
+                    <p class="spell-desc">本术最大作用就是专克龙蛇之物，最简单便是结印放出黄斑恶虎撕咬仙家魂魄，山神土地，地脉龙神。作为惩神打恶之术，可破当地家宅之中的镇术镇物，吃掉镇物之上的阴寒邪法，包括躲藏于器物之上的精怪古气，如附身于玩偶之上的妖魔邪鬼。</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>802</div>
+                </div>
+                <div class="spell-card" onclick="openModal('黑山禁法：蛇王禁', '综合', `本法是黑山禁法之中，蛇毒之禁法，调山中蛇王，荼毒恶人。被蛇王所毒，病灾随身而至，特别是皮肤肠胃之疾，紧紧缠住恶人百事不顺，毒蛇入身自心存怨毒，情绪失控，见人则伤，中此禁者如同下蛊一般，连绵不绝，此法经常是给当地贼首而下，乱起心智可一网打尽。`, 773)">
+                    <span class="spell-category-tag">综合</span>
+                    <h3 class="spell-name">黑山禁法：蛇王禁</h3>
+                    <p class="spell-desc">本法是黑山禁法之中，蛇毒之禁法，调山中蛇王，荼毒恶人。被蛇王所毒，病灾随身而至，特别是皮肤肠胃之疾，紧紧缠住恶人百事不顺，毒蛇入身自心存怨毒，情绪失控，见人则伤，中此禁者如同下蛊一般，连绵不绝，此法经常是给当地贼首而下，乱起心智可一网打尽。</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>773</div>
+                </div>
+                <div class="spell-card" onclick="openModal('巫教金镜挡师术', '综合', `敕金镜，挡恶咒，挡恶法，挡邪神，挡邪精，挡仙家，挡兵马，做风水之物可反挡煞气，放坛场上则挡住一切对自己坛场的不利之物，主为防护，镇守，守护之用的宝镜！是巫教道教佛教都可以通用庇佑的宝物！`, 713)">
+                    <span class="spell-category-tag">综合</span>
+                    <h3 class="spell-name">巫教金镜挡师术</h3>
+                    <p class="spell-desc">敕金镜，挡恶咒，挡恶法，挡邪神，挡邪精，挡仙家，挡兵马，做风水之物可反挡煞气，放坛场上则挡住一切对自己坛场的不利之物，主为防护，镇守，守护之用的宝镜！是巫教道教佛教都可以通用庇佑的宝物！</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>713</div>
+                </div>
+                <div class="spell-card" onclick="openModal('4.巫教雷公渡解术', '综合', `渡解皆为善事，平常渡解不需雷公之威，但此法有雷公之威，为压当地强邪，恶煞，恶鬼，渡解身上一切怨气恶念，降服此地恶魔魔头，适合用于当地有水鬼，恶鬼，邪庙，死人数量之多的地方，为浩大威严的渡解之术，此乃功德，也是积攒阴德，积攒福报的大法，是降服恶鬼，造福一方之法`, 755)">
+                    <span class="spell-category-tag">综合</span>
+                    <h3 class="spell-name">4.巫教雷公渡解术</h3>
+                    <p class="spell-desc">渡解皆为善事，平常渡解不需雷公之威，但此法有雷公之威，为压当地强邪，恶煞，恶鬼，渡解身上一切怨气恶念，降服此地恶魔魔头，适合用于当地有水鬼，恶鬼，邪庙，死人数量之多的地方，为浩大威严的渡解之术，此乃功德，也是积攒阴德，积攒福报的大法，是降服恶鬼，造福一方之法</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>755</div>
+                </div>
+                <div class="spell-card" onclick="openModal('巫教司命赦罪法', '综合', `司命大神，赦解他人身上罪恶，减弱恶果，恶业，化解在命中，未来的潜在恶果，也减轻过往生活中所做的恶事，错事，化解心魔，为自身修行排忧解难，同时减弱自身心结心魔，赦罪解恶，开运升运！`, 793)">
+                    <span class="spell-category-tag">综合</span>
+                    <h3 class="spell-name">巫教司命赦罪法</h3>
+                    <p class="spell-desc">司命大神，赦解他人身上罪恶，减弱恶果，恶业，化解在命中，未来的潜在恶果，也减轻过往生活中所做的恶事，错事，化解心魔，为自身修行排忧解难，同时减弱自身心结心魔，赦罪解恶，开运升运！</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>793</div>
+                </div>
+                <div class="spell-card" onclick="openModal('巫教灵巫水术', '综合', `巫师常用之水法，以驱邪驱病为之用，扫他人身中作乱邪气病气，一咒一术便可解他人身中邪气症结，若用艾草加此水煮沸，可化他人家中作乱瘟鬼，增强家中阳气！`, 685)">
+                    <span class="spell-category-tag">综合</span>
+                    <h3 class="spell-name">巫教灵巫水术</h3>
+                    <p class="spell-desc">巫师常用之水法，以驱邪驱病为之用，扫他人身中作乱邪气病气，一咒一术便可解他人身中邪气症结，若用艾草加此水煮沸，可化他人家中作乱瘟鬼，增强家中阳气！</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>685</div>
+                </div>
+                <div class="spell-card" onclick="openModal('黑山禁法：葫芦摄狱法', '综合', `葫芦在影视作品中，常常作为法宝使用，可收摄精怪，此法便是如此，只不过此葫芦中被火毒祭炼过后，则其内如十八层地狱，消磨其中鬼怪，让其魂飞魄散，是对鬼怪的困杀之法，同时此葫芦不用时，需以红布盖之，以防惊扰善人。`, 721)">
+                    <span class="spell-category-tag">综合</span>
+                    <h3 class="spell-name">黑山禁法：葫芦摄狱法</h3>
+                    <p class="spell-desc">葫芦在影视作品中，常常作为法宝使用，可收摄精怪，此法便是如此，只不过此葫芦中被火毒祭炼过后，则其内如十八层地狱，消磨其中鬼怪，让其魂飞魄散，是对鬼怪的困杀之法，同时此葫芦不用时，需以红布盖之，以防惊扰善人。</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>721</div>
+                </div>
+                <div class="spell-card" onclick="openModal('巫教太一水术', '综合', `太一，为天者，此水法常用，引太一加持，增功练法，平定心神，心魔，驱逐身体一切邪气，为天，为浩大，可容下一切，回归正轨，若长时间心神不安，可以用此法回归心神，若身中有他人恶意放法，也可以用此化解。`, 785)">
+                    <span class="spell-category-tag">综合</span>
+                    <h3 class="spell-name">巫教太一水术</h3>
+                    <p class="spell-desc">太一，为天者，此水法常用，引太一加持，增功练法，平定心神，心魔，驱逐身体一切邪气，为天，为浩大，可容下一切，回归正轨，若长时间心神不安，可以用此法回归心神，若身中有他人恶意放法，也可以用此化解。</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>785</div>
+                </div>
+                <div class="spell-card" onclick="openModal('黑山禁法：收阳黄旗禁', '综合', `此法可调动地气与死气，聚地气煞气以惩恶害人之家，以死气冲他人身体安康，阳宅阴宅皆可冲，损其地脉之气，但需慎重使用，黄旗一展，摄当地土煞恶气，正用可以压当地如乱葬岗等地方的鬼魅，或阴气邪气，一旗摄下万万邪！`, 813)">
+                    <span class="spell-category-tag">综合</span>
+                    <h3 class="spell-name">黑山禁法：收阳黄旗禁</h3>
+                    <p class="spell-desc">此法可调动地气与死气，聚地气煞气以惩恶害人之家，以死气冲他人身体安康，阳宅阴宅皆可冲，损其地脉之气，但需慎重使用，黄旗一展，摄当地土煞恶气，正用可以压当地如乱葬岗等地方的鬼魅，或阴气邪气，一旗摄下万万邪！</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>813</div>
+                </div>
+                <div class="spell-card" onclick="openModal('黑山禁法：走花勾魂术', '综合', `1.画符方式：黄纸墨书画符，画好后三支香描画一遍，盖任何印都可以。`, 756)">
+                    <span class="spell-category-tag">综合</span>
+                    <h3 class="spell-name">黑山禁法：走花勾魂术</h3>
+                    <p class="spell-desc">1.画符方式：黄纸墨书画符，画好后三支香描画一遍，盖任何印都可以。</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>756</div>
+                </div>
+                <div class="spell-card" onclick="openModal('黑山禁法：团风火状符', '综合', `团风火以迅速，结此状告天地雷神，人间冤情可由此状告上苍天，无论大小，只要犯天地自然人伦，即可使用。焚烧之后自有雷神受此，纠察恶人评判是非曲直，降下惩戒，小则压运，大则杀身，但本法必须要行正义之事，不得有丝毫歪理！`, 796)">
+                    <span class="spell-category-tag">综合</span>
+                    <h3 class="spell-name">黑山禁法：团风火状符</h3>
+                    <p class="spell-desc">团风火以迅速，结此状告天地雷神，人间冤情可由此状告上苍天，无论大小，只要犯天地自然人伦，即可使用。焚烧之后自有雷神受此，纠察恶人评判是非曲直，降下惩戒，小则压运，大则杀身，但本法必须要行正义之事，不得有丝毫歪理！</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>796</div>
+                </div>
+                <div class="spell-card" onclick="openModal('巫教制阳术', '综合', `黄纸朱书画符，画好后用三支香描画一遍符，将符可盖印可不盖印，将符烧在矿泉水上，不需要烧在水里面，直接烧在瓶身就可以，随后在端午节午时，晒满一个时辰即可。`, 717)">
+                    <span class="spell-category-tag">综合</span>
+                    <h3 class="spell-name">巫教制阳术</h3>
+                    <p class="spell-desc">黄纸朱书画符，画好后用三支香描画一遍符，将符可盖印可不盖印，将符烧在矿泉水上，不需要烧在水里面，直接烧在瓶身就可以，随后在端午节午时，晒满一个时辰即可。</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>717</div>
+                </div>
+                <div class="spell-card" onclick="openModal('黑山禁法：骷髅罗禁术', '综合', `本法需祭炼一个黑骷髅，做为下禁之用，且此骷髅长久用法可生凶灵，但不会反噬法师，容易控制，被骷髅罗禁禁下之人，百鬼缠身，病痛不绝！若有法师想为此人解法，必背骷髅凶灵所伤，所以懂得禁法之人遇到此法，基本闭口不谈。`, 724)">
+                    <span class="spell-category-tag">综合</span>
+                    <h3 class="spell-name">黑山禁法：骷髅罗禁术</h3>
+                    <p class="spell-desc">本法需祭炼一个黑骷髅，做为下禁之用，且此骷髅长久用法可生凶灵，但不会反噬法师，容易控制，被骷髅罗禁禁下之人，百鬼缠身，病痛不绝！若有法师想为此人解法，必背骷髅凶灵所伤，所以懂得禁法之人遇到此法，基本闭口不谈。</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>724</div>
+                </div>
+                <div class="spell-card" onclick="openModal('巫公敕身术', '综合', `念咒语三遍，将符画在自己的手掌上一遍，握拳即可。`, 846)">
+                    <span class="spell-category-tag">综合</span>
+                    <h3 class="spell-name">巫公敕身术</h3>
+                    <p class="spell-desc">念咒语三遍，将符画在自己的手掌上一遍，握拳即可。</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>846</div>
+                </div>
+                <div class="spell-card" onclick="openModal('黑山禁法：结气禁', '综合', `黑山禁法中的第一禁，无需材料，随时可放此禁法，一口劲气化灵箭，结在口中速伤人，被气禁打中者，则身体血气固致，古代学法练武者专门用此法暗箭伤人，受内外之伤而不得已痊愈，必须长期服用活血化瘀之药方可解，此法不得随便动用！`, 732)">
+                    <span class="spell-category-tag">综合</span>
+                    <h3 class="spell-name">黑山禁法：结气禁</h3>
+                    <p class="spell-desc">黑山禁法中的第一禁，无需材料，随时可放此禁法，一口劲气化灵箭，结在口中速伤人，被气禁打中者，则身体血气固致，古代学法练武者专门用此法暗箭伤人，受内外之伤而不得已痊愈，必须长期服用活血化瘀之药方可解，此法不得随便动用！</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>732</div>
+                </div>
+                <div class="spell-card" onclick="openModal('黑山禁法： 化人三毒术', '综合', `此三毒为怨毒，妄想，害人三毒，心中藏以怨毒，害人之意。心性不稳，被诸多恶念所缠绕，日日不得脱困，深陷其中，或家中有人因此性情而变，可运用此法，化解他人或自己心中一切怨毒信念，归正心态，不知不觉间化掉一切恶念，如春风化雨抚慰人心。`, 831)">
+                    <span class="spell-category-tag">综合</span>
+                    <h3 class="spell-name">黑山禁法： 化人三毒术</h3>
+                    <p class="spell-desc">此三毒为怨毒，妄想，害人三毒，心中藏以怨毒，害人之意。心性不稳，被诸多恶念所缠绕，日日不得脱困，深陷其中，或家中有人因此性情而变，可运用此法，化解他人或自己心中一切怨毒信念，归正心态，不知不觉间化掉一切恶念，如春风化雨抚慰人心。</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>831</div>
+                </div>
+                <div class="spell-card" onclick="openModal('黑山禁法：祭符千里术', '综合', `将符烧于坛上，可祭符在他人身上，无符但有效，哪怕相隔千里，哪怕身在国外，皆可用此法将任何教脉法符祭于此人身上，发挥功效，斩邪除精，治病救人，转运消灾，万法可通。`, 788)">
+                    <span class="spell-category-tag">综合</span>
+                    <h3 class="spell-name">黑山禁法：祭符千里术</h3>
+                    <p class="spell-desc">将符烧于坛上，可祭符在他人身上，无符但有效，哪怕相隔千里，哪怕身在国外，皆可用此法将任何教脉法符祭于此人身上，发挥功效，斩邪除精，治病救人，转运消灾，万法可通。</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>788</div>
+                </div>
+                <div class="spell-card" onclick="openModal('黑山禁法：送横死鬼术', '综合', `若家中有人突然离世，或横死（一切不正常死亡），因此出现家中运势，小儿，事业多灾多难，多为横死者心中有怨，在家宅之中怨气难消，结气成煞鬼，则用此法，可保起被送走，且后续煞气可解，庇佑后代子孙安康无灾。`, 709)">
+                    <span class="spell-category-tag">综合</span>
+                    <h3 class="spell-name">黑山禁法：送横死鬼术</h3>
+                    <p class="spell-desc">若家中有人突然离世，或横死（一切不正常死亡），因此出现家中运势，小儿，事业多灾多难，多为横死者心中有怨，在家宅之中怨气难消，结气成煞鬼，则用此法，可保起被送走，且后续煞气可解，庇佑后代子孙安康无灾。</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>709</div>
+                </div>
+                <div class="spell-card" onclick="openModal('黑山禁法:落桥禁', '综合', `一枚青石可摄恶人魂魄下法，将其扔入桥下，此石寄恶人魂魄，水鬼见之，便会对此恶人摄魄拿魂，迷惑其自入水中，增加水灾水险水难几率，更容易被各方水鬼水怪所扰，魂魄被鬼怪所侵，本脉曾有先人用此法将欺行霸市之恶徒，落入桥下河中！此法只可用于惩恶，万万不得随意运用！`, 719)">
+                    <span class="spell-category-tag">综合</span>
+                    <h3 class="spell-name">黑山禁法:落桥禁</h3>
+                    <p class="spell-desc">一枚青石可摄恶人魂魄下法，将其扔入桥下，此石寄恶人魂魄，水鬼见之，便会对此恶人摄魄拿魂，迷惑其自入水中，增加水灾水险水难几率，更容易被各方水鬼水怪所扰，魂魄被鬼怪所侵，本脉曾有先人用此法将欺行霸市之恶徒，落入桥下河中！此法只可用于惩恶，万万不得随意运用！</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>719</div>
+                </div>
+                <div class="spell-card" onclick="openModal('黑山禁法：黑旗阴源禁', '综合', `此旗号寒潭之阴，湿冷水气凝结，可堵人肾气不通，中此法者，性情阴郁，见鬼神迷乱，可在此人家中积蓄凝结，黑旗立于此地，水气凝结，人无法长久活于水气凝结阴冷之地。但此旗也可以吸当地不好的寒潭之气，甚至管控，对于人可将其心中阴霾压制。`, 776)">
+                    <span class="spell-category-tag">综合</span>
+                    <h3 class="spell-name">黑山禁法：黑旗阴源禁</h3>
+                    <p class="spell-desc">此旗号寒潭之阴，湿冷水气凝结，可堵人肾气不通，中此法者，性情阴郁，见鬼神迷乱，可在此人家中积蓄凝结，黑旗立于此地，水气凝结，人无法长久活于水气凝结阴冷之地。但此旗也可以吸当地不好的寒潭之气，甚至管控，对于人可将其心中阴霾压制。</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>776</div>
+                </div>
+                <div class="spell-card" onclick="openModal('黑山禁法：八猿取财术', '综合', `山上八猿猴，取水捞月敛财宝，八只猿猴收揽山上水中，人间一切财宝，抓附近之人身上财运，可让佩戴之人得入水中月的财宝，若是团队工作更适合此法，猿猴勾手结尾结力而取，牢固团队，集团能力，凝聚力，取得硕果`, 827)">
+                    <span class="spell-category-tag">综合</span>
+                    <h3 class="spell-name">黑山禁法：八猿取财术</h3>
+                    <p class="spell-desc">山上八猿猴，取水捞月敛财宝，八只猿猴收揽山上水中，人间一切财宝，抓附近之人身上财运，可让佩戴之人得入水中月的财宝，若是团队工作更适合此法，猿猴勾手结尾结力而取，牢固团队，集团能力，凝聚力，取得硕果</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>827</div>
+                </div>
+                <div class="spell-card" onclick="openModal('黑山禁法：召山妖术', '综合', `怪庇护法师，便知法师神威德高望重，便不会打扰，这是一般兵马所不能做到的，若有打扰，山妖自然将其打退，当地的大鬼也不会来找事，只会惩戒打扰的鬼怪。`, 749)">
+                    <span class="spell-category-tag">综合</span>
+                    <h3 class="spell-name">黑山禁法：召山妖术</h3>
+                    <p class="spell-desc">怪庇护法师，便知法师神威德高望重，便不会打扰，这是一般兵马所不能做到的，若有打扰，山妖自然将其打退，当地的大鬼也不会来找事，只会惩戒打扰的鬼怪。</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>749</div>
+                </div>
+                <div class="spell-card" onclick="openModal('黑山禁法：败退白旗禁', '综合', `此法是黑山禁法之中的败退之法，何为败退，败退而归，百厄加身，古代军队以立白旗而退，是败兵之象，用此法可败退竞争对手，小人，恶人，与自身有利益牵扯，竞争之人，让其败退而归，白旗一立，百事百败，事事皆败，如丧家之犬，败退而归，此为白旗之禁，也是五旗禁之一`, 751)">
+                    <span class="spell-category-tag">综合</span>
+                    <h3 class="spell-name">黑山禁法：败退白旗禁</h3>
+                    <p class="spell-desc">此法是黑山禁法之中的败退之法，何为败退，败退而归，百厄加身，古代军队以立白旗而退，是败兵之象，用此法可败退竞争对手，小人，恶人，与自身有利益牵扯，竞争之人，让其败退而归，白旗一立，百事百败，事事皆败，如丧家之犬，败退而归，此为白旗之禁，也是五旗禁之一</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>751</div>
+                </div>
+                <div class="spell-card" onclick="openModal('4.黑山禁法：青旗怨毒禁', '综合', `又叫青旗禁，青，主瘴气毒雾，心中怨毒，放青旗禁于他人家中，或者门前，则风水会败，家中湿障之气渐生，人长久待在此环境下，心中压抑的怨毒之意会爆发，对于家庭，修士，等都是极为惧怕的。但青旗禁还可以做极好之事造福一方，将此旗丢于易有瘴气毒雾之地，青旗可镇毒雾瘴气不生！`, 707)">
+                    <span class="spell-category-tag">综合</span>
+                    <h3 class="spell-name">4.黑山禁法：青旗怨毒禁</h3>
+                    <p class="spell-desc">又叫青旗禁，青，主瘴气毒雾，心中怨毒，放青旗禁于他人家中，或者门前，则风水会败，家中湿障之气渐生，人长久待在此环境下，心中压抑的怨毒之意会爆发，对于家庭，修士，等都是极为惧怕的。但青旗禁还可以做极好之事造福一方，将此旗丢于易有瘴气毒雾之地，青旗可镇毒雾瘴气不生！</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>707</div>
+                </div>
+                <div class="spell-card" onclick="openModal('巫法阳雷内秘:练雷将', '综合', `本法可不是道教的引三十六雷将，而是通过巫法和自身的修持，练出一位自身以阳雷聚集出的护法神将，一位巫法的老师父就练出过护法神，邪祟皆不敢进他身前，在练法行法之时，护法神将会以雷威护持法师不受邪魔影响，亦调用护法神将前去斩退邪祟鬼怪，随时护住自`, 721)">
+                    <span class="spell-category-tag">综合</span>
+                    <h3 class="spell-name">巫法阳雷内秘:练雷将</h3>
+                    <p class="spell-desc">本法可不是道教的引三十六雷将，而是通过巫法和自身的修持，练出一位自身以阳雷聚集出的护法神将，一位巫法的老师父就练出过护法神，邪祟皆不敢进他身前，在练法行法之时，护法神将会以雷威护持法师不受邪魔影响，亦调用护法神将前去斩退邪祟鬼怪，随时护住自</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>721</div>
+                </div>
+                <div class="spell-card" onclick="openModal('巫教九龙飞符术', '综合', `应学员要求特此传出巫教飞符，飞符并非十分神秘高深，而是将符的效果远程投射到善信身上，但是远程效果就会因为距离而减弱，但是本法可以更多的保持飞符的作用，且极为快捷方便，九龙飞行，巫的诸多神明便是踏龙而行，风雨随行。`, 793)">
+                    <span class="spell-category-tag">综合</span>
+                    <h3 class="spell-name">巫教九龙飞符术</h3>
+                    <p class="spell-desc">应学员要求特此传出巫教飞符，飞符并非十分神秘高深，而是将符的效果远程投射到善信身上，但是远程效果就会因为距离而减弱，但是本法可以更多的保持飞符的作用，且极为快捷方便，九龙飞行，巫的诸多神明便是踏龙而行，风雨随行。</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>793</div>
+                </div>
+                <div class="spell-card" onclick="openModal('巫教北斗照运术', '综合', `本法供奉巫教北斗大神，中华未断的古老信仰，北斗之神是对于人有极大影响之神，本法可为万用，画水消灾，带符解难护身，画符行法加持皆可以用本法，且本法也可以作为武法使用，打恶人小人运势，或于夜晚，对准北斗之位，用此法逐渐改善自身运势，补充不足，进行调整，是万用法，但记住法只是辅助，并非万能，更多在于事在人为，本法也是承诺给大家的福利，也是巫教北斗之法第一次的传授给大家。`, 787)">
+                    <span class="spell-category-tag">综合</span>
+                    <h3 class="spell-name">巫教北斗照运术</h3>
+                    <p class="spell-desc">本法供奉巫教北斗大神，中华未断的古老信仰，北斗之神是对于人有极大影响之神，本法可为万用，画水消灾，带符解难护身，画符行法加持皆可以用本法，且本法也可以作为武法使用，打恶人小人运势，或于夜晚，对准北斗之位，用此法逐渐改善自身运势，补充不足，进行调整，是万用法，但记住法只是辅助，并非万能，更多在于事在人为，本法也是承诺给大家的福利，也是巫教北斗之法第一次的传授给大家。</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>787</div>
+                </div>
+                <div class="spell-card" onclick="openModal('司命恶咒判恶纸人术', '综合', `司命审判善恶，本法是专治恶人，对其进行咒诅，对白纸人 咒下恶诅，请司命大神检察善恶对其判下诸多恶业，灾难， 霉运，减寿，剃福等且可结合你所学的任意的惩恶之法，只 要用到纸人草人皆可运用，是可以灵活结合的妙法惩恶法， 本次传出结合前一福利作为阴阳调和之道，也是阴阳八卦的理念！`, 828)">
+                    <span class="spell-category-tag">综合</span>
+                    <h3 class="spell-name">司命恶咒判恶纸人术</h3>
+                    <p class="spell-desc">司命审判善恶，本法是专治恶人，对其进行咒诅，对白纸人 咒下恶诅，请司命大神检察善恶对其判下诸多恶业，灾难， 霉运，减寿，剃福等且可结合你所学的任意的惩恶之法，只 要用到纸人草人皆可运用，是可以灵活结合的妙法惩恶法， 本次传出结合前一福利作为阴阳调和之道，也是阴阳八卦的理念！</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>828</div>
+                </div>
+                <div class="spell-card" onclick="openModal('这个法，叫做火翁诀', '综合', `这个法怎么加强活法在用法之前啊，念3遍咒，或者起火的时候念三遍，在有火的地方念3遍咒都可以加强`, 742)">
+                    <span class="spell-category-tag">综合</span>
+                    <h3 class="spell-name">这个法，叫做火翁诀</h3>
+                    <p class="spell-desc">这个法怎么加强活法在用法之前啊，念3遍咒，或者起火的时候念三遍，在有火的地方念3遍咒都可以加强</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>742</div>
+                </div>
+                <div class="spell-card" onclick="openModal('禁法小合练禁法', '综合', `本法是应群中学员要求，给大家学禁法练禁，包括其他所有道教文化法脉，佛教文化法脉等打基础内练之法。对于禁的加持更加有效，适合任何阶段的人进行修持内练。可以增强自身的对法力的体感。`, 716)">
+                    <span class="spell-category-tag">综合</span>
+                    <h3 class="spell-name">禁法小合练禁法</h3>
+                    <p class="spell-desc">本法是应群中学员要求，给大家学禁法练禁，包括其他所有道教文化法脉，佛教文化法脉等打基础内练之法。对于禁的加持更加有效，适合任何阶段的人进行修持内练。可以增强自身的对法力的体感。</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>716</div>
+                </div>
+                <div class="spell-card" onclick="openModal('闭气念咒语三遍，剑指对手掌画花字一遍，然后对人轻拍轻点轻打即可，本法亦可以因此方法打邪。', '综合', `本法是巫教之中的武法，落叶意味小巧不足看见又凶猛，本法练成，可轻拍轻点对其打法下法，中法者身体气血不通，小病不断。本法灵巧快捷，是伤人伤邪之法。本法需修炼，且本法附带解法。`, 742)">
+                    <span class="spell-category-tag">综合</span>
+                    <h3 class="spell-name">闭气念咒语三遍，剑指对手掌画花字一遍，然后对人轻拍轻点轻打即可，本法亦可以因此方法打邪。</h3>
+                    <p class="spell-desc">本法是巫教之中的武法，落叶意味小巧不足看见又凶猛，本法练成，可轻拍轻点对其打法下法，中法者身体气血不通，小病不断。本法灵巧快捷，是伤人伤邪之法。本法需修炼，且本法附带解法。</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>742</div>
+                </div>
+                <div class="spell-card" onclick="openModal('巫教起阴阳禁水碗', '综合', `本法是可解阴法害人，也可以解自身的虚病以及减弱邪气入身导致的病症，以及中煞所导致的病症。因为本法水中阴阳相存，喝下后，对于附体中邪身体虚弱之人也有扶正身体正气恢复精力，增强身体阳气，稳固魂魄，阻挡后续阴邪侵犯等效果，且十分实用。`, 816)">
+                    <span class="spell-category-tag">综合</span>
+                    <h3 class="spell-name">巫教起阴阳禁水碗</h3>
+                    <p class="spell-desc">本法是可解阴法害人，也可以解自身的虚病以及减弱邪气入身导致的病症，以及中煞所导致的病症。因为本法水中阴阳相存，喝下后，对于附体中邪身体虚弱之人也有扶正身体正气恢复精力，增强身体阳气，稳固魂魄，阻挡后续阴邪侵犯等效果，且十分实用。</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>816</div>
+                </div>
+                <div class="spell-card" onclick="openModal('巫教劫雷震魂术', '综合', `若被鬼祟迷魂，失神不明。用此法打出可将邪祟影响打破，若有人因为受到阴性能量影响，而精神低迷抑郁焦虑，便可用此法引动劫雷将其一切阴性能量震散回神。若惩恶打邪，则可以将对方打落魂魄失神，打他人附体邪祟则可以直接将其打出体外，并轰击邪祟，劫雷运用得当则为万用之妙诀！且特别是仙家出马极为害怕劫雷，因为是他们渡劫所经历，是生死大劫！`, 793)">
+                    <span class="spell-category-tag">综合</span>
+                    <h3 class="spell-name">巫教劫雷震魂术</h3>
+                    <p class="spell-desc">若被鬼祟迷魂，失神不明。用此法打出可将邪祟影响打破，若有人因为受到阴性能量影响，而精神低迷抑郁焦虑，便可用此法引动劫雷将其一切阴性能量震散回神。若惩恶打邪，则可以将对方打落魂魄失神，打他人附体邪祟则可以直接将其打出体外，并轰击邪祟，劫雷运用得当则为万用之妙诀！且特别是仙家出马极为害怕劫雷，因为是他们渡劫所经历，是生死大劫！</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>793</div>
+                </div>
+                <div class="spell-card" onclick="openModal('巫教地雷治仙精术', '综合', `起地雷治一切仙精恶鬼，地雷为制约地上精邪仙家，其山中精怪对地雷极为惧怕，地雷凶悍是精怪成仙时会经历的一种重大劫难！驱使地雷震慑一切作恶仇仙精怪仙家，以此治仙精恶鬼，能力强者可用此法以跺脚一声地发雷音，以驱邪震仙家，退出马上身，附体！且极为狠戾，仙家会对此人惧怕异常！`, 738)">
+                    <span class="spell-category-tag">综合</span>
+                    <h3 class="spell-name">巫教地雷治仙精术</h3>
+                    <p class="spell-desc">起地雷治一切仙精恶鬼，地雷为制约地上精邪仙家，其山中精怪对地雷极为惧怕，地雷凶悍是精怪成仙时会经历的一种重大劫难！驱使地雷震慑一切作恶仇仙精怪仙家，以此治仙精恶鬼，能力强者可用此法以跺脚一声地发雷音，以驱邪震仙家，退出马上身，附体！且极为狠戾，仙家会对此人惧怕异常！</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>738</div>
+                </div>
+                <div class="spell-card" onclick="openModal('巫教天地雷枷术', '综合', `天地为雷，合禁阴阳百鬼万邪，枷锁可扣鬼怪精邪，天雷为顶，地雷为底，可对坛场邪鬼精怪进行封禁扣锁，甚至可锁他人身中病气，以及作恶的仙家仇仙，不分善恶一律扣下，雷枷锁雷枷锁，邪鬼被扣则不能随意挣脱，同时对恶人可用此惩恶，枷其祖先之荫庇，容易被外邪入侵，或对容易失魂之人作为防护，一法多用！是极为便携且威武之法！`, 829)">
+                    <span class="spell-category-tag">综合</span>
+                    <h3 class="spell-name">巫教天地雷枷术</h3>
+                    <p class="spell-desc">天地为雷，合禁阴阳百鬼万邪，枷锁可扣鬼怪精邪，天雷为顶，地雷为底，可对坛场邪鬼精怪进行封禁扣锁，甚至可锁他人身中病气，以及作恶的仙家仇仙，不分善恶一律扣下，雷枷锁雷枷锁，邪鬼被扣则不能随意挣脱，同时对恶人可用此惩恶，枷其祖先之荫庇，容易被外邪入侵，或对容易失魂之人作为防护，一法多用！是极为便携且威武之法！</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>829</div>
+                </div>
+                <div class="spell-card" onclick="openModal('巫教金鸡鸣榜术', '综合', `金鸡啼鸣，招引太阳，代表希望，个人能力，超越他人的契机，本法可以运用在工作和文昌上，可让人一鸣惊人，突破苦难阻碍，不会轻易受到他人的故意加害和影响，稳固自己的心神，对未来的困难都可以有一战之力，对于学生而言，学习遇到瓶颈，容易钻牛角尖，就可以用此来寻找突破的契机，一鸣惊人打败竞争者，工作也是如此，功效可对应诸多情况，本次一福利放出`, 716)">
+                    <span class="spell-category-tag">综合</span>
+                    <h3 class="spell-name">巫教金鸡鸣榜术</h3>
+                    <p class="spell-desc">金鸡啼鸣，招引太阳，代表希望，个人能力，超越他人的契机，本法可以运用在工作和文昌上，可让人一鸣惊人，突破苦难阻碍，不会轻易受到他人的故意加害和影响，稳固自己的心神，对未来的困难都可以有一战之力，对于学生而言，学习遇到瓶颈，容易钻牛角尖，就可以用此来寻找突破的契机，一鸣惊人打败竞争者，工作也是如此，功效可对应诸多情况，本次一福利放出</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>716</div>
+                </div>
+                <div class="spell-card" onclick="openModal('巫教天罡正气术', '综合', `巫文化中对天罡的描述极为广泛，说他是邪祟和一切负能量的克星也不为过。天罡也是天地正气的一种，代表了压制邪气破除邪气，打破封禁邪祟影响，加持一切雷法正法之符，为其增强正气，对人来说，正气充足在生活上是可以体现的，还能稳固自身的心性，对于小人会自行溃散。且本法还是一种武法可打邪破恶。`, 811)">
+                    <span class="spell-category-tag">综合</span>
+                    <h3 class="spell-name">巫教天罡正气术</h3>
+                    <p class="spell-desc">巫文化中对天罡的描述极为广泛，说他是邪祟和一切负能量的克星也不为过。天罡也是天地正气的一种，代表了压制邪气破除邪气，打破封禁邪祟影响，加持一切雷法正法之符，为其增强正气，对人来说，正气充足在生活上是可以体现的，还能稳固自身的心性，对于小人会自行溃散。且本法还是一种武法可打邪破恶。</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>811</div>
+                </div>
+                <div class="spell-card" onclick="openModal('巫教敕山河龙神水术', '综合', `敕下水碗，请到山川龙神，吐出神水可撒于大地滋养万物生灵，可用此法对于一些外出不适，或身上有戾气邪气之人将其洗刷干净，净化他人磁场，同时通过本法清洗将身上厄运，因为他人接触所受到的负面影响洗除，同时可旺自身或他人生机，去除病气，排出浊气恶气燥气。`, 795)">
+                    <span class="spell-category-tag">综合</span>
+                    <h3 class="spell-name">巫教敕山河龙神水术</h3>
+                    <p class="spell-desc">敕下水碗，请到山川龙神，吐出神水可撒于大地滋养万物生灵，可用此法对于一些外出不适，或身上有戾气邪气之人将其洗刷干净，净化他人磁场，同时通过本法清洗将身上厄运，因为他人接触所受到的负面影响洗除，同时可旺自身或他人生机，去除病气，排出浊气恶气燥气。</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>795</div>
+                </div>
+                <div class="spell-card" onclick="openModal('群内答疑：', '综合', `问：老师今天你说不能放没开光的神像在坛上，我就把没开光的拿走请祖师降临，结果出了三个阳卦`, 683)">
+                    <span class="spell-category-tag">综合</span>
+                    <h3 class="spell-name">群内答疑：</h3>
+                    <p class="spell-desc">问：老师今天你说不能放没开光的神像在坛上，我就把没开光的拿走请祖师降临，结果出了三个阳卦</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>683</div>
+                </div>
+                <div class="spell-card" onclick="openModal('巫教供祖妙诀', '综合', `本法是巫教供奉之法，供奉祖先牌位以得到庇佑，加持阴德在身，孝道傍身，我们常说孝感三天，彰显我们的孝道，供奉祖先增强祖先的福荫，扶持自身财运，事业运，贵人运，供奉祖先如同供奉神明！神明所可以做到的，祖先基本上都可以！供奉祖先也是巫教最古老的祖先崇拜！是我们华夏的根，上至帝王，下至乞丐，祖先是我们自己的荣耀和根，供奉祖先妙用无穷！`, 767)">
+                    <span class="spell-category-tag">综合</span>
+                    <h3 class="spell-name">巫教供祖妙诀</h3>
+                    <p class="spell-desc">本法是巫教供奉之法，供奉祖先牌位以得到庇佑，加持阴德在身，孝道傍身，我们常说孝感三天，彰显我们的孝道，供奉祖先增强祖先的福荫，扶持自身财运，事业运，贵人运，供奉祖先如同供奉神明！神明所可以做到的，祖先基本上都可以！供奉祖先也是巫教最古老的祖先崇拜！是我们华夏的根，上至帝王，下至乞丐，祖先是我们自己的荣耀和根，供奉祖先妙用无穷！</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>767</div>
+                </div>
+                <div class="spell-card" onclick="openModal('用法：', '综合', `石王结下铁栅子，所结所放，禁鬼囚神，作为结界可放于家宅之外阻挡一切鬼怪，可直接运用路边的石子土块作为结界使用，在野外极为方便！上禁邪神猖鬼，下禁恶鬼猛卒，随手便禁随手便囚，石子化作铁栅围禁八方，囚禁仇仙恶鬼，随后用此法可长久镇压于坛下或某地，结合地气行阵法长久扣押，若有邪师想将其救出，因合地气则查无所查，自认倒霉！`, 748)">
+                    <span class="spell-category-tag">综合</span>
+                    <h3 class="spell-name">用法：</h3>
+                    <p class="spell-desc">石王结下铁栅子，所结所放，禁鬼囚神，作为结界可放于家宅之外阻挡一切鬼怪，可直接运用路边的石子土块作为结界使用，在野外极为方便！上禁邪神猖鬼，下禁恶鬼猛卒，随手便禁随手便囚，石子化作铁栅围禁八方，囚禁仇仙恶鬼，随后用此法可长久镇压于坛下或某地，结合地气行阵法长久扣押，若有邪师想将其救出，因合地气则查无所查，自认倒霉！</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>748</div>
+                </div>
+                <div class="spell-card" onclick="openModal('巫教金童玉女追魂术', '综合', `召请金童玉女来到此，扶持法师千里追魂，将游离世间的魂魄追魂，可用于祖先魂魄不在墓前，失魂，丢魂，，金童玉女随此人气息追魂拿魄，若有邪祟困人魂魄，金童玉女便会将其打退，安稳护送魂魄回归身体，是法师必会的技能，同时本法有安魂定心作用，金童玉女搜查范围极大，并非普通的追魂法可比，且护送回归当事人会有反应，极为便利！`, 697)">
+                    <span class="spell-category-tag">综合</span>
+                    <h3 class="spell-name">巫教金童玉女追魂术</h3>
+                    <p class="spell-desc">召请金童玉女来到此，扶持法师千里追魂，将游离世间的魂魄追魂，可用于祖先魂魄不在墓前，失魂，丢魂，，金童玉女随此人气息追魂拿魄，若有邪祟困人魂魄，金童玉女便会将其打退，安稳护送魂魄回归身体，是法师必会的技能，同时本法有安魂定心作用，金童玉女搜查范围极大，并非普通的追魂法可比，且护送回归当事人会有反应，极为便利！</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>697</div>
+                </div>
+                <div class="spell-card" onclick="openModal('巫教通行祭神鬼术', '综合', `本术为敕香，敕香化为灵香，供奉则天地神人鬼精妖兵马皆受其益，香烟过处，鬼养鬼精，兵养身躯，神养神法，仙养法力，出马仙也可以供奉于坛上运用，滋养仙家，神明，鬼怪的法力，将此香供奉祖先更为灵验沟通祖先，香自古就是通天彻幽的必要物品，本术专门敕本香用于一切法事！更是古巫在举行仪式前所用的重要法术！`, 714)">
+                    <span class="spell-category-tag">综合</span>
+                    <h3 class="spell-name">巫教通行祭神鬼术</h3>
+                    <p class="spell-desc">本术为敕香，敕香化为灵香，供奉则天地神人鬼精妖兵马皆受其益，香烟过处，鬼养鬼精，兵养身躯，神养神法，仙养法力，出马仙也可以供奉于坛上运用，滋养仙家，神明，鬼怪的法力，将此香供奉祖先更为灵验沟通祖先，香自古就是通天彻幽的必要物品，本术专门敕本香用于一切法事！更是古巫在举行仪式前所用的重要法术！</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>714</div>
+                </div>
+                <div class="spell-card" onclick="openModal('用法：', '综合', `作用1：将石头往前抛出的时候念：石王石王，稳座八方。石头扔出去，路上鬼怪见了都会躲开！`, 746)">
+                    <span class="spell-category-tag">综合</span>
+                    <h3 class="spell-name">用法：</h3>
+                    <p class="spell-desc">作用1：将石头往前抛出的时候念：石王石王，稳座八方。石头扔出去，路上鬼怪见了都会躲开！</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>746</div>
+                </div>
+                <div class="spell-card" onclick="openModal('禁法：召三将凶兵诀', '综合', `我们在用本法的时候，先闭气念一遍咒语，或者三遍。这个按照你们的情况做选择，灵活运用（如果想更容易请到，点燃三支香，然后在用，这个香就是兵马香连天地）。念完咒语，右手剑指对左手掌画符一遍之后，将符朝天上打出，随后打卦问兵马到了没有，然后诉说情况，跺右脚发兵即可。`, 775)">
+                    <span class="spell-category-tag">综合</span>
+                    <h3 class="spell-name">禁法：召三将凶兵诀</h3>
+                    <p class="spell-desc">我们在用本法的时候，先闭气念一遍咒语，或者三遍。这个按照你们的情况做选择，灵活运用（如果想更容易请到，点燃三支香，然后在用，这个香就是兵马香连天地）。念完咒语，右手剑指对左手掌画符一遍之后，将符朝天上打出，随后打卦问兵马到了没有，然后诉说情况，跺右脚发兵即可。</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>775</div>
+                </div>
+                <div class="spell-card" onclick="openModal('巫教凶兵起诀', '综合', `唤巫教凶兵，到坛前行法，在野外也可以呼唤此兵马下降，压阵护坛，压住邪祟返回天上，凶兵十万法中有兵，法中带兵，随时可点随时可用。适合目前还没有任何兵马，或兵马旗的法师。`, 800)">
+                    <span class="spell-category-tag">综合</span>
+                    <h3 class="spell-name">巫教凶兵起诀</h3>
+                    <p class="spell-desc">唤巫教凶兵，到坛前行法，在野外也可以呼唤此兵马下降，压阵护坛，压住邪祟返回天上，凶兵十万法中有兵，法中带兵，随时可点随时可用。适合目前还没有任何兵马，或兵马旗的法师。</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>800</div>
+                </div>
+                <div class="spell-card" onclick="openModal('巫教天罡除魅法', '综合', `古时巫教便有天罡之说，无论是巫教还是道教，天罡都有极为刚猛的象征，本法以天罡震慑心魂，破除他人迷惘，归魂，安心，恢复正气，提升智慧可破固执，一法多用，但是属于巫教天罡之中的初级运用。`, 802)">
+                    <span class="spell-category-tag">综合</span>
+                    <h3 class="spell-name">巫教天罡除魅法</h3>
+                    <p class="spell-desc">古时巫教便有天罡之说，无论是巫教还是道教，天罡都有极为刚猛的象征，本法以天罡震慑心魂，破除他人迷惘，归魂，安心，恢复正气，提升智慧可破固执，一法多用，但是属于巫教天罡之中的初级运用。</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>802</div>
+                </div>
+                <div class="spell-card" onclick="openModal('巫教麒麟压煞术', '综合', `麒麟自古以来，便是瑞兽，有这着人极大的帮助，在家中也会摆放麒麟来趋吉避凶，但是人只知道麒麟可以趋吉避凶，但是不知道麒麟在风水上，家宅上有极为强大的作用。麒麟可以解极多的风水煞，若是强大的煞则可以压制抵挡，而本法便是取麒麟之威，镇压驱散家中的风水恶煞，以及带来好运，但是仅限于阳宅，且运用极为方便。`, 793)">
+                    <span class="spell-category-tag">综合</span>
+                    <h3 class="spell-name">巫教麒麟压煞术</h3>
+                    <p class="spell-desc">麒麟自古以来，便是瑞兽，有这着人极大的帮助，在家中也会摆放麒麟来趋吉避凶，但是人只知道麒麟可以趋吉避凶，但是不知道麒麟在风水上，家宅上有极为强大的作用。麒麟可以解极多的风水煞，若是强大的煞则可以压制抵挡，而本法便是取麒麟之威，镇压驱散家中的风水恶煞，以及带来好运，但是仅限于阳宅，且运用极为方便。</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>793</div>
+                </div>
+                <div class="spell-card" onclick="openModal('巫教春神行风掌', '综合', `本法在文化中，主神是春神句芒大神，本掌行法生发，可打散身体之中的潜在病气，可对附体之后的人，或中邪的人，驱散身体残存的阴气邪气，并可以打邪。同时可以打入水中喝下，驱赶身体病气，恢复身体。`, 831)">
+                    <span class="spell-category-tag">综合</span>
+                    <h3 class="spell-name">巫教春神行风掌</h3>
+                    <p class="spell-desc">本法在文化中，主神是春神句芒大神，本掌行法生发，可打散身体之中的潜在病气，可对附体之后的人，或中邪的人，驱散身体残存的阴气邪气，并可以打邪。同时可以打入水中喝下，驱赶身体病气，恢复身体。</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>831</div>
+                </div>
+                <div class="spell-card" onclick="openModal('巫教虎神喝退小人法', '综合', `本法非符法，而是可以自身随手去用的实用惩恶小人之法，用此法之后虎神在身，喝退小人鼠辈，不敢加害，若感觉加害虎神喝起小人神魂。（本法是禁法虎神中的一个小妙招）`, 797)">
+                    <span class="spell-category-tag">综合</span>
+                    <h3 class="spell-name">巫教虎神喝退小人法</h3>
+                    <p class="spell-desc">本法非符法，而是可以自身随手去用的实用惩恶小人之法，用此法之后虎神在身，喝退小人鼠辈，不敢加害，若感觉加害虎神喝起小人神魂。（本法是禁法虎神中的一个小妙招）</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>797</div>
+                </div>
+                <div class="spell-card" onclick="openModal('巫教摄陰陽法', '综合', `本法以天地之意在手，统摄阴阳二气，可以摄精怪，鬼怪出体。也可以摄他人阳气归于他人。摄他人病气于体外，摄万物阳气滋养自身。`, 770)">
+                    <span class="spell-category-tag">综合</span>
+                    <h3 class="spell-name">巫教摄陰陽法</h3>
+                    <p class="spell-desc">本法以天地之意在手，统摄阴阳二气，可以摄精怪，鬼怪出体。也可以摄他人阳气归于他人。摄他人病气于体外，摄万物阳气滋养自身。</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>770</div>
+                </div>
+                <div class="spell-card" onclick="openModal('巫法回阳蛋', '综合', `对鸡蛋加入巫教秘法，可作用入人的身上，为人提升阳气，安稳心神，更可以收摄他人身上的邪气邪祟，一个鸡蛋即可快速搞定。`, 825)">
+                    <span class="spell-category-tag">综合</span>
+                    <h3 class="spell-name">巫法回阳蛋</h3>
+                    <p class="spell-desc">对鸡蛋加入巫教秘法，可作用入人的身上，为人提升阳气，安稳心神，更可以收摄他人身上的邪气邪祟，一个鸡蛋即可快速搞定。</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>825</div>
+                </div>
+                <div class="spell-card" onclick="openModal('念咒语三遍，闭气画符在左手心一遍，然后对你要的灵体，用意念去发令。', '综合', `作为一个法师甚至巫师，必须要和灵去打交道，如果没有，那就不算合格的法师，此法是可控制作乱的灵体，用处极为广泛，一个是控制坛下鬼怪，为我所用，一个是控制他人或荒野鬼祟，本法是以阴制阴之法。`, 866)">
+                    <span class="spell-category-tag">综合</span>
+                    <h3 class="spell-name">念咒语三遍，闭气画符在左手心一遍，然后对你要的灵体，用意念去发令。</h3>
+                    <p class="spell-desc">作为一个法师甚至巫师，必须要和灵去打交道，如果没有，那就不算合格的法师，此法是可控制作乱的灵体，用处极为广泛，一个是控制坛下鬼怪，为我所用，一个是控制他人或荒野鬼祟，本法是以阴制阴之法。</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>866</div>
+                </div>
+                <div class="spell-card" onclick="openModal('八宝桃王术', '综合', `八宝桃王乃奇术之一，为何而奇，因此术对任何桃木制品皆可加持，且效果奇好。加持入各类法术，制作成桃符等神妙之物，皆可用此术加持！`, 771)">
+                    <span class="spell-category-tag">综合</span>
+                    <h3 class="spell-name">八宝桃王术</h3>
+                    <p class="spell-desc">八宝桃王乃奇术之一，为何而奇，因此术对任何桃木制品皆可加持，且效果奇好。加持入各类法术，制作成桃符等神妙之物，皆可用此术加持！</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>771</div>
+                </div>
+                <div class="spell-card" onclick="openModal('虎皮禁', '综合', `黄纸墨书，或白纸墨书画出此符，三支香描画一遍，便可运用，无需盖印。`, 840)">
+                    <span class="spell-category-tag">综合</span>
+                    <h3 class="spell-name">虎皮禁</h3>
+                    <p class="spell-desc">黄纸墨书，或白纸墨书画出此符，三支香描画一遍，便可运用，无需盖印。</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>840</div>
+                </div>
+                <div class="spell-card" onclick="openModal('画符方式：黄纸墨书画符，三支香描画一遍，盖三个印即可。', '综合', `画符方式：黄纸墨书画符，三支香描画一遍，盖三个印即可。`, 859)">
+                    <span class="spell-category-tag">综合</span>
+                    <h3 class="spell-name">画符方式：黄纸墨书画符，三支香描画一遍，盖三个印即可。</h3>
+                    <p class="spell-desc">画符方式：黄纸墨书画符，三支香描画一遍，盖三个印即可。</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>859</div>
+                </div>
+                <div class="spell-card" onclick="openModal('画符方式：黄纸墨书画符，三支香描画一遍，盖三个印即可。', '综合', `流霞神煞乃是让自身有血光之神煞，主张在自己的生命中容易受到磕碰，也代表了粗心大意和意外受伤，但不会有生命危险。`, 806)">
+                    <span class="spell-category-tag">综合</span>
+                    <h3 class="spell-name">画符方式：黄纸墨书画符，三支香描画一遍，盖三个印即可。</h3>
+                    <p class="spell-desc">流霞神煞乃是让自身有血光之神煞，主张在自己的生命中容易受到磕碰，也代表了粗心大意和意外受伤，但不会有生命危险。</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>806</div>
+                </div>
+                <div class="spell-card" onclick="openModal('二十四神煞应术（上）-转写', '综合', `元一森道人(00:01:43): 那种不算被人看到了不算？你们很可能很难了解到盗法拼法偷法到底算什么？`, 712)">
+                    <span class="spell-category-tag">综合</span>
+                    <h3 class="spell-name">二十四神煞应术（上）-转写</h3>
+                    <p class="spell-desc">元一森道人(00:01:43): 那种不算被人看到了不算？你们很可能很难了解到盗法拼法偷法到底算什么？</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>712</div>
+                </div>
+                <div class="spell-card" onclick="openModal('奇门奇术：三奇妙将术', '综合', `此术用乙丙丁三奇三位神将，化解万般危难难成之事，遇兵化将，遇水搭桥，遇火下雨，自成妙术。`, 678)">
+                    <span class="spell-category-tag">综合</span>
+                    <h3 class="spell-name">奇门奇术：三奇妙将术</h3>
+                    <p class="spell-desc">此术用乙丙丁三奇三位神将，化解万般危难难成之事，遇兵化将，遇水搭桥，遇火下雨，自成妙术。</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>678</div>
+                </div>
+                <div class="spell-card" onclick="openModal('先锋箭术', '综合', `更有人坛上有神将护法也可以一箭号令而来，千里来救援，千里速伐邪，可用此法远程请兵马来此办事，若当地有神明，野神，地方神，地方兵马若愿尊服，也可一箭号令千里前来，行法护持！`, 821)">
+                    <span class="spell-category-tag">综合</span>
+                    <h3 class="spell-name">先锋箭术</h3>
+                    <p class="spell-desc">更有人坛上有神将护法也可以一箭号令而来，千里来救援，千里速伐邪，可用此法远程请兵马来此办事，若当地有神明，野神，地方神，地方兵马若愿尊服，也可一箭号令千里前来，行法护持！</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>821</div>
+                </div>
+                <div class="spell-card" onclick="openModal('扣三堂禁', '综合', `本禁法乃仙堂三十六禁中，天地神人鬼妖六堂禁，人法六禁之一。专克恶人祖辈福德，对头祠堂香火，恶人祖上阴宅！破他人祖先累代福德，招恶鬼邪魔吞德吐毒，因此法可影响三代人，自叫三堂禁，也叫三子禁，本术不可轻用，虽无任何反噬，但更需注重自身德行不可身怀利剑而肆意伤人！`, 801)">
+                    <span class="spell-category-tag">综合</span>
+                    <h3 class="spell-name">扣三堂禁</h3>
+                    <p class="spell-desc">本禁法乃仙堂三十六禁中，天地神人鬼妖六堂禁，人法六禁之一。专克恶人祖辈福德，对头祠堂香火，恶人祖上阴宅！破他人祖先累代福德，招恶鬼邪魔吞德吐毒，因此法可影响三代人，自叫三堂禁，也叫三子禁，本术不可轻用，虽无任何反噬，但更需注重自身德行不可身怀利剑而肆意伤人！</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>801</div>
+                </div>
+                <div class="spell-card" onclick="openModal('九窍仙灵符', '综合', `何为仙何为灵，此符可为真正有灵之物作为辅助，若出马或法师身边有有灵之物见此符皆有感应，焚烧可增强其修为，能力。`, 750)">
+                    <span class="spell-category-tag">综合</span>
+                    <h3 class="spell-name">九窍仙灵符</h3>
+                    <p class="spell-desc">何为仙何为灵，此符可为真正有灵之物作为辅助，若出马或法师身边有有灵之物见此符皆有感应，焚烧可增强其修为，能力。</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>750</div>
+                </div>
+                <div class="spell-card" onclick="openModal('巫教斗君术（八）-转写', '综合', `元一森道人(00:01:40): 五取经五起经令这个以前形容武状元身体强壮，孔武有力，就可以用五曲精明。五行七宝阵术这个呢是可以帮人的，也可以呢，去专门为了一个法器去制作这个阵。最后苍龙星宿雷术这个呢是星斗里面四个雷法里面唯 11 个富含生机的第六个酒神度解术是画法的解法画法的。`, 734)">
+                    <span class="spell-category-tag">综合</span>
+                    <h3 class="spell-name">巫教斗君术（八）-转写</h3>
+                    <p class="spell-desc">元一森道人(00:01:40): 五取经五起经令这个以前形容武状元身体强壮，孔武有力，就可以用五曲精明。五行七宝阵术这个呢是可以帮人的，也可以呢，去专门为了一个法器去制作这个阵。最后苍龙星宿雷术这个呢是星斗里面四个雷法里面唯 11 个富含生机的第六个酒神度解术是画法的解法画法的。</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>734</div>
+                </div>
+                <div class="spell-card" onclick="openModal('斗光解地煞术', '综合', `以天上星斗之力，覆映大地之上，星光所到之处，禳解地煞煞气，用于家宅（阳宅），工地，居住地之外的风水煞气，星光藏于符中，解诸多风水地煞，是风水师的得力之法，此术有一特殊用法，在外用法时，焚此符一道，引星斗之光，可瞬息安定土地精怪骚乱之象！`, 776)">
+                    <span class="spell-category-tag">综合</span>
+                    <h3 class="spell-name">斗光解地煞术</h3>
+                    <p class="spell-desc">以天上星斗之力，覆映大地之上，星光所到之处，禳解地煞煞气，用于家宅（阳宅），工地，居住地之外的风水煞气，星光藏于符中，解诸多风水地煞，是风水师的得力之法，此术有一特殊用法，在外用法时，焚此符一道，引星斗之光，可瞬息安定土地精怪骚乱之象！</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>776</div>
+                </div>
+                <div class="spell-card" onclick="openModal('放青龙符术', '综合', `画符方法：黄纸朱书画符，画好后三支香描画一遍，将此符盖印（可盖道经师宝，太上老君，禁令，五行八卦印，巫尤星斗印等）`, 732)">
+                    <span class="spell-category-tag">综合</span>
+                    <h3 class="spell-name">放青龙符术</h3>
+                    <p class="spell-desc">画符方法：黄纸朱书画符，画好后三支香描画一遍，将此符盖印（可盖道经师宝，太上老君，禁令，五行八卦印，巫尤星斗印等）</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>732</div>
+                </div>
+                <div class="spell-card" onclick="openModal('日月仙主印符', '综合', `日月二仙之术，调动日月阴阳二气，克万般邪魔恶鬼，以日月二气为妙法大印，化水化火，化火阴气退散，邪鬼无踪，化水平衡阴阳，温养身体，焚此符于仙家灵体可顶三年苦修，因其调动日精月华恰恰是仙家灵体精怪精灵最需要之宝物！法师来说练法后取此符中日精月华，可增修法效果！`, 805)">
+                    <span class="spell-category-tag">综合</span>
+                    <h3 class="spell-name">日月仙主印符</h3>
+                    <p class="spell-desc">日月二仙之术，调动日月阴阳二气，克万般邪魔恶鬼，以日月二气为妙法大印，化水化火，化火阴气退散，邪鬼无踪，化水平衡阴阳，温养身体，焚此符于仙家灵体可顶三年苦修，因其调动日精月华恰恰是仙家灵体精怪精灵最需要之宝物！法师来说练法后取此符中日精月华，可增修法效果！</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>805</div>
+                </div>
+                <div class="spell-card" onclick="openModal('九龙仙解术', '综合', `遣九龙龙神进入阳宅仙解灾厄煞气，运转提升阳宅风水，人在家中受龙神庇佑，化解不好阴宅风水在身上的影响，，龙神游荡在家中化解房间中不好风水，阴宅等带来的煞气，调整化解上三代人阴宅所带来的各种影响，如身体的问题，运气的问题！`, 832)">
+                    <span class="spell-category-tag">综合</span>
+                    <h3 class="spell-name">九龙仙解术</h3>
+                    <p class="spell-desc">遣九龙龙神进入阳宅仙解灾厄煞气，运转提升阳宅风水，人在家中受龙神庇佑，化解不好阴宅风水在身上的影响，，龙神游荡在家中化解房间中不好风水，阴宅等带来的煞气，调整化解上三代人阴宅所带来的各种影响，如身体的问题，运气的问题！</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>832</div>
+                </div>
+                <div class="spell-card" onclick="openModal('摄星成愿术', '综合', `此术是是古代巫师成愿所用，曾有祖师用此法，摄破军星君，许愿请星君庇佑小镇不被河水走蛟所害，当夜便梦见星君言：此蛟以剑斩。随后暴雨小镇河流走蛟，果然星君显灵，河上顺流一把宝剑，翻滚浪尖，听见一吼，斩杀蛟龙。`, 688)">
+                    <span class="spell-category-tag">综合</span>
+                    <h3 class="spell-name">摄星成愿术</h3>
+                    <p class="spell-desc">此术是是古代巫师成愿所用，曾有祖师用此法，摄破军星君，许愿请星君庇佑小镇不被河水走蛟所害，当夜便梦见星君言：此蛟以剑斩。随后暴雨小镇河流走蛟，果然星君显灵，河上顺流一把宝剑，翻滚浪尖，听见一吼，斩杀蛟龙。</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>688</div>
+                </div>
+                <div class="spell-card" onclick="openModal('坪玶（识山识水不识（人）(00:01:35): 但是火车是一会。不着急。好了，喝彩。', '综合', `元一森道人(00:01:18): 诶好了诶，我回来了，现在能听到吗？能听到声音吗？能听到声音吗？Oil.`, 805)">
+                    <span class="spell-category-tag">综合</span>
+                    <h3 class="spell-name">坪玶（识山识水不识（人）(00:01:35): 但是火车是一会。不着急。好了，喝彩。</h3>
+                    <p class="spell-desc">元一森道人(00:01:18): 诶好了诶，我回来了，现在能听到吗？能听到声音吗？能听到声音吗？Oil.</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>805</div>
+                </div>
+                <div class="spell-card" onclick="openModal('结邪鬼咒', '综合', `此咒非常简单，若是修阴法，会更加灵验，可让邪鬼恶鬼结在此人身上，让其各种倒霉，包括附近的阴鬼水鬼等都会注意到此人。`, 711)">
+                    <span class="spell-category-tag">综合</span>
+                    <h3 class="spell-name">结邪鬼咒</h3>
+                    <p class="spell-desc">此咒非常简单，若是修阴法，会更加灵验，可让邪鬼恶鬼结在此人身上，让其各种倒霉，包括附近的阴鬼水鬼等都会注意到此人。</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>711</div>
+                </div>
+                <div class="spell-card" onclick="openModal('念咒三遍，手比剑指，对笔虚画符一遍即可。', '综合', `此术为敕笔书天罡之法，笔中有星斗，行符有威灵，可驱邪治鬼画符摄神，比寻常毛笔画符更加威灵。且可以用于画诸般法脉之符，皆有星斗之力遁入其中，哪怕是小白画出之符，也有一二威灵，是天罡星神符笔之威！`, 774)">
+                    <span class="spell-category-tag">综合</span>
+                    <h3 class="spell-name">念咒三遍，手比剑指，对笔虚画符一遍即可。</h3>
+                    <p class="spell-desc">此术为敕笔书天罡之法，笔中有星斗，行符有威灵，可驱邪治鬼画符摄神，比寻常毛笔画符更加威灵。且可以用于画诸般法脉之符，皆有星斗之力遁入其中，哪怕是小白画出之符，也有一二威灵，是天罡星神符笔之威！</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>774</div>
+                </div>
+                <div class="spell-card" onclick="openModal('金童玉女定梦术', '综合', `黄纸朱书画符，画好后三支香描画符一遍，可盖三个印，不盖也可以使用。`, 701)">
+                    <span class="spell-category-tag">综合</span>
+                    <h3 class="spell-name">金童玉女定梦术</h3>
+                    <p class="spell-desc">黄纸朱书画符，画好后三支香描画符一遍，可盖三个印，不盖也可以使用。</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>701</div>
+                </div>
+                <div class="spell-card" onclick="openModal('藏山龙蛊符术', '综合', `黄纸墨书画符，画好后三支香描画符一遍，可盖三个印，不盖也可以使用。`, 810)">
+                    <span class="spell-category-tag">综合</span>
+                    <h3 class="spell-name">藏山龙蛊符术</h3>
+                    <p class="spell-desc">黄纸墨书画符，画好后三支香描画符一遍，可盖三个印，不盖也可以使用。</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>810</div>
+                </div>
+                <div class="spell-card" onclick="openModal('南斗济命术', '综合', `念咒语三遍，以剑指将符画在自己的手上，并观想天上南斗六星，将此符朝人打出即可。`, 769)">
+                    <span class="spell-category-tag">综合</span>
+                    <h3 class="spell-name">南斗济命术</h3>
+                    <p class="spell-desc">念咒语三遍，以剑指将符画在自己的手上，并观想天上南斗六星，将此符朝人打出即可。</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>769</div>
+                </div>
+                <div class="spell-card" onclick="openModal('五百药雷公术', '综合', `念咒语三遍，符画手上一遍，朝人或朝水中打入，水可以喝下，也可以按摩疼痛的地方。`, 823)">
+                    <span class="spell-category-tag">综合</span>
+                    <h3 class="spell-name">五百药雷公术</h3>
+                    <p class="spell-desc">念咒语三遍，符画手上一遍，朝人或朝水中打入，水可以喝下，也可以按摩疼痛的地方。</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>823</div>
+                </div>
+                <div class="spell-card" onclick="openModal('八百水龙碗', '综合', `八百水龙入经络，洗精伐髓，通彻经络之用，可用于去除法师食用牛肉后的副作用，或吞食体内病气，污浊之气，中邪之人也可以运用此术，吞食此人体内残存邪气，恢复自身阳气，恢复体魄。`, 738)">
+                    <span class="spell-category-tag">综合</span>
+                    <h3 class="spell-name">八百水龙碗</h3>
+                    <p class="spell-desc">八百水龙入经络，洗精伐髓，通彻经络之用，可用于去除法师食用牛肉后的副作用，或吞食体内病气，污浊之气，中邪之人也可以运用此术，吞食此人体内残存邪气，恢复自身阳气，恢复体魄。</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>738</div>
+                </div>
+                <div class="spell-card" onclick="openModal('6.太阳尊帝掌', '综合', `此术主神为太阳尊帝，也就是太阳神君，至阳至刚掌中放出金乌日光，比金光咒高强无数倍，是阴邪之物极为惧怕之物，哪怕是当地阴差也不敢随意被此光照射。练此法可加强自身神魂，凝练阳气练出太阳金光，且有太阳秘咒三字，开口诵咒推掌即开，十分迅速！`, 848)">
+                    <span class="spell-category-tag">综合</span>
+                    <h3 class="spell-name">6.太阳尊帝掌</h3>
+                    <p class="spell-desc">此术主神为太阳尊帝，也就是太阳神君，至阳至刚掌中放出金乌日光，比金光咒高强无数倍，是阴邪之物极为惧怕之物，哪怕是当地阴差也不敢随意被此光照射。练此法可加强自身神魂，凝练阳气练出太阳金光，且有太阳秘咒三字，开口诵咒推掌即开，十分迅速！</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>848</div>
+                </div>
+                <div class="spell-card" onclick="openModal('桃仙媚眼术', '综合', `念咒三遍，存想此符藏在眼中，发粉光即可。`, 751)">
+                    <span class="spell-category-tag">综合</span>
+                    <h3 class="spell-name">桃仙媚眼术</h3>
+                    <p class="spell-desc">念咒三遍，存想此符藏在眼中，发粉光即可。</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>751</div>
+                </div>
+                <div class="spell-card" onclick="openModal('天龙吐水术', '综合', `此术乃大乘水法，引天地龙神吐水显圣，结百般变化，聚天地五行之气入于水碗，内用养五脏五气，吞食体内病气。外用荡除仙魔精怪鬼，对邪法邪师有化解压制作用，若将此水弹于他人身上可转运消灾，比拟观音玉净瓶！大乘之法妙用在其法在其用，灵活变化，遇邪变为荡邪水，遇病变为荡病水，全看法师自身如何运用，上限极高，下限极低！`, 806)">
+                    <span class="spell-category-tag">综合</span>
+                    <h3 class="spell-name">天龙吐水术</h3>
+                    <p class="spell-desc">此术乃大乘水法，引天地龙神吐水显圣，结百般变化，聚天地五行之气入于水碗，内用养五脏五气，吞食体内病气。外用荡除仙魔精怪鬼，对邪法邪师有化解压制作用，若将此水弹于他人身上可转运消灾，比拟观音玉净瓶！大乘之法妙用在其法在其用，灵活变化，遇邪变为荡邪水，遇病变为荡病水，全看法师自身如何运用，上限极高，下限极低！</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>806</div>
+                </div>
+                <div class="spell-card" onclick="openModal('天巫白龙咒', '综合', `此为上古咒法，引天上星斗苍龙之宿，百兽之长是上古巫师摄服地上一切仙家精怪，调仇仙冤仇，结善精善缘所用之咒，每日初一十五持咒，可结十天虚空过往神明之善缘，地上一切走兽皆尊此咒法。`, 860)">
+                    <span class="spell-category-tag">综合</span>
+                    <h3 class="spell-name">天巫白龙咒</h3>
+                    <p class="spell-desc">此为上古咒法，引天上星斗苍龙之宿，百兽之长是上古巫师摄服地上一切仙家精怪，调仇仙冤仇，结善精善缘所用之咒，每日初一十五持咒，可结十天虚空过往神明之善缘，地上一切走兽皆尊此咒法。</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>860</div>
+                </div>
+                <div class="spell-card" onclick="openModal('用法：', '综合', `此术是魇术，只需要一把剪刀便可做到下魇，专破他人布置的风水局，再好的局也可受到影响，如网络上的两头石狮子，门高，青龙治水，等风水格局，一把剪刀便可让对方家里鸡犬不宁，包括此剪刀也是顶好的法器，对仙家灵体驱赶有强力的作用，包括驱赶邪祟仙家，间断仙家缘分等！此术妙用会在课上详说，广告只言片语不足以描述此法妙用！`, 810)">
+                    <span class="spell-category-tag">综合</span>
+                    <h3 class="spell-name">用法：</h3>
+                    <p class="spell-desc">此术是魇术，只需要一把剪刀便可做到下魇，专破他人布置的风水局，再好的局也可受到影响，如网络上的两头石狮子，门高，青龙治水，等风水格局，一把剪刀便可让对方家里鸡犬不宁，包括此剪刀也是顶好的法器，对仙家灵体驱赶有强力的作用，包括驱赶邪祟仙家，间断仙家缘分等！此术妙用会在课上详说，广告只言片语不足以描述此法妙用！</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>810</div>
+                </div>
+                <div class="spell-card" onclick="openModal('巫教斗君术（出师）-转写', '综合', `元一森道人(00:03:18): 天煞那么天煞呢，是有一个共同点，就是它不可测，不可测，什么叫不可测呢？就是我今天出去我买个菜，我有可能都会撞上。但是我撞上了，我也不知道我被撞上了，懂什么意思吗？这个就是天煞，就是我自己都不知道怎么回事，他可能就是一个星突然移到一个位置，然后对你产生的影响，唉，你就倒霉了，这就是天杀。`, 730)">
+                    <span class="spell-category-tag">综合</span>
+                    <h3 class="spell-name">巫教斗君术（出师）-转写</h3>
+                    <p class="spell-desc">元一森道人(00:03:18): 天煞那么天煞呢，是有一个共同点，就是它不可测，不可测，什么叫不可测呢？就是我今天出去我买个菜，我有可能都会撞上。但是我撞上了，我也不知道我被撞上了，懂什么意思吗？这个就是天煞，就是我自己都不知道怎么回事，他可能就是一个星突然移到一个位置，然后对你产生的影响，唉，你就倒霉了，这就是天杀。</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>730</div>
+                </div>
+                <div class="spell-card" onclick="openModal('司命迎风解煞术', '综合', `召请司命二神吹起神风，吹散一切邪魅。可庇佑吉祥，顺风顺水，万事安宁。`, 721)">
+                    <span class="spell-category-tag">综合</span>
+                    <h3 class="spell-name">司命迎风解煞术</h3>
+                    <p class="spell-desc">召请司命二神吹起神风，吹散一切邪魅。可庇佑吉祥，顺风顺水，万事安宁。</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>721</div>
+                </div>
+                <div class="spell-card" onclick="openModal('阴风恶神符', '综合', `此符象征一位恶神，名“浊召”乃是一位口吐恶风之恶神，此符便是以浊召恶神，驾驭邪风，收治怪恶邪风，且可安镇家门，不使歪风邪气进入家宅，若对门有放风水邪风则尽数返还，则恶神当门，魂魄不稳者则易头晕，则要慎用。`, 823)">
+                    <span class="spell-category-tag">综合</span>
+                    <h3 class="spell-name">阴风恶神符</h3>
+                    <p class="spell-desc">此符象征一位恶神，名“浊召”乃是一位口吐恶风之恶神，此符便是以浊召恶神，驾驭邪风，收治怪恶邪风，且可安镇家门，不使歪风邪气进入家宅，若对门有放风水邪风则尽数返还，则恶神当门，魂魄不稳者则易头晕，则要慎用。</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>823</div>
+                </div>
+                <div class="spell-card" onclick="openModal('用法：', '综合', `此仪轨可寄自身不好，各种怨念，。更可寄送孤亡魂魄直入幽冥之地且无任何阻拦，可直通阴府鬼门，如婴灵，亡魂，亲人等。金莲花开则福德庇佑，神力庇佑，后土亲身庇佑，让亡魂乃至自身一切不好，全部离去，亡魂得以投胎，自身不祥得以化解，且金莲会化作一缕阴德庇佑离去之人，若投胎则更容易转生为人，或落入善良之家，是比放生之法还要慈悲之法，是巫教缅怀先人，敬重祖辈之法。`, 820)">
+                    <span class="spell-category-tag">综合</span>
+                    <h3 class="spell-name">用法：</h3>
+                    <p class="spell-desc">此仪轨可寄自身不好，各种怨念，。更可寄送孤亡魂魄直入幽冥之地且无任何阻拦，可直通阴府鬼门，如婴灵，亡魂，亲人等。金莲花开则福德庇佑，神力庇佑，后土亲身庇佑，让亡魂乃至自身一切不好，全部离去，亡魂得以投胎，自身不祥得以化解，且金莲会化作一缕阴德庇佑离去之人，若投胎则更容易转生为人，或落入善良之家，是比放生之法还要慈悲之法，是巫教缅怀先人，敬重祖辈之法。</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>820</div>
+                </div>
+                <div class="spell-card" onclick="openModal('麒麟追文斗术', '综合', `麒麟为才气才子，追以文斗，增文运，开悟性，辅灵性，破愚钝，启慧心。符合以上诸多特性之人，被叫做麒麟才子，智夺文魁，帮助记忆力悟性差之人，调整更易记下东西，举一反三，逻辑清晰，学习能力提升，适合各行各业。`, 669)">
+                    <span class="spell-category-tag">综合</span>
+                    <h3 class="spell-name">麒麟追文斗术</h3>
+                    <p class="spell-desc">麒麟为才气才子，追以文斗，增文运，开悟性，辅灵性，破愚钝，启慧心。符合以上诸多特性之人，被叫做麒麟才子，智夺文魁，帮助记忆力悟性差之人，调整更易记下东西，举一反三，逻辑清晰，学习能力提升，适合各行各业。</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>669</div>
+                </div>
+                <div class="spell-card" onclick="openModal('用法：', '综合', `画符方法：黄纸朱书画符，画好后三支香描画一遍，将此符盖印（可盖道经师宝，太上老君，禁令，五行八卦印，巫尤星斗印等）`, 795)">
+                    <span class="spell-category-tag">综合</span>
+                    <h3 class="spell-name">用法：</h3>
+                    <p class="spell-desc">画符方法：黄纸朱书画符，画好后三支香描画一遍，将此符盖印（可盖道经师宝，太上老君，禁令，五行八卦印，巫尤星斗印等）</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>795</div>
+                </div>
+                <div class="spell-card" onclick="openModal('龙王仙府符', '综合', `画符方法：黄纸朱书画符，画好后三支香描画一遍，将此符盖印（可盖道经师宝，太上老君，禁令，五行八卦印，巫尤星斗印等）`, 803)">
+                    <span class="spell-category-tag">综合</span>
+                    <h3 class="spell-name">龙王仙府符</h3>
+                    <p class="spell-desc">画符方法：黄纸朱书画符，画好后三支香描画一遍，将此符盖印（可盖道经师宝，太上老君，禁令，五行八卦印，巫尤星斗印等）</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>803</div>
+                </div>
+                <div class="spell-card" onclick="openModal('值符解厄奇术', '综合', `奇门神：值符。主高贵，奇门贵神，奇门神百难解，百无禁忌之神。化奇门盘中一切阻碍，以值符化解八门八宫九星之灾，辅以奇门之盘，可化腐朽为神奇，若不会奇门则运用此符，提升贵人化解灾厄，提升自身原本的优势！`, 837)">
+                    <span class="spell-category-tag">综合</span>
+                    <h3 class="spell-name">值符解厄奇术</h3>
+                    <p class="spell-desc">奇门神：值符。主高贵，奇门贵神，奇门神百难解，百无禁忌之神。化奇门盘中一切阻碍，以值符化解八门八宫九星之灾，辅以奇门之盘，可化腐朽为神奇，若不会奇门则运用此符，提升贵人化解灾厄，提升自身原本的优势！</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>837</div>
+                </div>
+                <div class="spell-card" onclick="openModal('巫教三天五行总旨:蓐收七钉受恶术', '综合', `七颗神钉，钉于他人家宅财运，钉他人运气，被钉者家宅不安，对于风水和民间法来说是厌胜术也不为过，蓐收为金神，土生金，宅气为土生金而泄，而金又是凶戾之金，化为七钉扎入家宅，源源不断的消耗。本法只可惩戒恶人凶人，万不得轻易运用，否则后果自负！`, 793)">
+                    <span class="spell-category-tag">综合</span>
+                    <h3 class="spell-name">巫教三天五行总旨:蓐收七钉受恶术</h3>
+                    <p class="spell-desc">七颗神钉，钉于他人家宅财运，钉他人运气，被钉者家宅不安，对于风水和民间法来说是厌胜术也不为过，蓐收为金神，土生金，宅气为土生金而泄，而金又是凶戾之金，化为七钉扎入家宅，源源不断的消耗。本法只可惩戒恶人凶人，万不得轻易运用，否则后果自负！</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>793</div>
+                </div>
+                <div class="spell-card" onclick="openModal('巫教三天五行总旨:祝融火驾南宫术', '综合', `巫教三天五行总旨中最刚猛的火法，是专用于驱邪及升运的大法，可单独作为法事运用，也可结合。驱使神火，驾到南宫为祝融府邸，驱离火南火之精，焚烧身上一切邪祟邪气，更正运势，焚烧不正气场，并以南宫赐下火福，长久庇佑，变普通宅邸为祝融火宫，焚烧房间内一切善恶鬼魂，一并不留！不分内外家鬼，只要在此，皆为亵渎神明一律判其神火烧其魂飞魄散！`, 720)">
+                    <span class="spell-category-tag">综合</span>
+                    <h3 class="spell-name">巫教三天五行总旨:祝融火驾南宫术</h3>
+                    <p class="spell-desc">巫教三天五行总旨中最刚猛的火法，是专用于驱邪及升运的大法，可单独作为法事运用，也可结合。驱使神火，驾到南宫为祝融府邸，驱离火南火之精，焚烧身上一切邪祟邪气，更正运势，焚烧不正气场，并以南宫赐下火福，长久庇佑，变普通宅邸为祝融火宫，焚烧房间内一切善恶鬼魂，一并不留！不分内外家鬼，只要在此，皆为亵渎神明一律判其神火烧其魂飞魄散！</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>720</div>
+                </div>
+                <div class="spell-card" onclick="openModal('巫教三天五行总旨:蓐收立斧西宫术', '综合', `蓐收金神，小人恶口官非，背信弃义之人的克星，司正行正义，刑法之威神，行此法设立蓐收之宫殿，审判一切作恶小人，让其加倍得到惩戒，万事不顺，蓐收之神则变为靠山帮助善人行一切正义之事，破一切险阻，庇佑善信，破口舌，小人，恶口，敌人，毒害自身之毒虫！`, 778)">
+                    <span class="spell-category-tag">综合</span>
+                    <h3 class="spell-name">巫教三天五行总旨:蓐收立斧西宫术</h3>
+                    <p class="spell-desc">蓐收金神，小人恶口官非，背信弃义之人的克星，司正行正义，刑法之威神，行此法设立蓐收之宫殿，审判一切作恶小人，让其加倍得到惩戒，万事不顺，蓐收之神则变为靠山帮助善人行一切正义之事，破一切险阻，庇佑善信，破口舌，小人，恶口，敌人，毒害自身之毒虫！</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>778</div>
+                </div>
+                <div class="spell-card" onclick="openModal('巫教三天五行总旨：青童诛精持雷术', '综合', `驱使青雷，天发杀机，也是五行雷之中的木雷，本雷不同于其他五雷之法，本雷法专掌草木精怪，作恶可杀，行善可召，以句芒之令，以木雷速发杀机，杀一切作恶人间的草木精怪！是一惊蛰之雷为开头，司春之雷，摄杀成精仙灵树精！`, 693)">
+                    <span class="spell-category-tag">综合</span>
+                    <h3 class="spell-name">巫教三天五行总旨：青童诛精持雷术</h3>
+                    <p class="spell-desc">驱使青雷，天发杀机，也是五行雷之中的木雷，本雷不同于其他五雷之法，本雷法专掌草木精怪，作恶可杀，行善可召，以句芒之令，以木雷速发杀机，杀一切作恶人间的草木精怪！是一惊蛰之雷为开头，司春之雷，摄杀成精仙灵树精！</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>693</div>
+                </div>
+                <div class="spell-card" onclick="openModal('巫教三天五行总旨：玄冥敕水总诀', '综合', `加持一切水碗，水法，可变化万法以行使，结合一切水法一起运用，玄冥神君总敕神水之法，万用水法，一法当来万法用，请动玄冥神君与法师一并加持神水，加持水碗行驶妙法。`, 848)">
+                    <span class="spell-category-tag">综合</span>
+                    <h3 class="spell-name">巫教三天五行总旨：玄冥敕水总诀</h3>
+                    <p class="spell-desc">加持一切水碗，水法，可变化万法以行使，结合一切水法一起运用，玄冥神君总敕神水之法，万用水法，一法当来万法用，请动玄冥神君与法师一并加持神水，加持水碗行驶妙法。</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>848</div>
+                </div>
+                <div class="spell-card" onclick="openModal('巫教三天五行总旨：青童驱牛打煞诀', '综合', `春神句芒化身春童，坐下骑牛，手持青鞭驱赶一切自身或他人身上不祥之事，行法时可说明恶人身份，请句芒将自身的不祥驱赶于恶人身上，并让自身得到句芒赐福，焕发生机，好运连连，让停滞的事情又所起色，好转！驱赶掉在去年时的不好气场！`, 850)">
+                    <span class="spell-category-tag">综合</span>
+                    <h3 class="spell-name">巫教三天五行总旨：青童驱牛打煞诀</h3>
+                    <p class="spell-desc">春神句芒化身春童，坐下骑牛，手持青鞭驱赶一切自身或他人身上不祥之事，行法时可说明恶人身份，请句芒将自身的不祥驱赶于恶人身上，并让自身得到句芒赐福，焕发生机，好运连连，让停滞的事情又所起色，好转！驱赶掉在去年时的不好气场！</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>850</div>
+                </div>
+                <div class="spell-card" onclick="openModal('巫教三天总旨：祝融南府取火精术', '综合', `祝融火府取炼火精，本法行之，一平常修之，可增强自身使用火法的威严以及能力，火精极阳加持火法焚烧邪祟恶鬼，二祝融南府为法师庇佑祝融随时坐镇身后，显威严火神之象，震慑邪祟恶鬼邪魔！但常修火精，可能会让脾气变的和祝融类似，脾气爆裂，需配合玄冥之法调和！`, 744)">
+                    <span class="spell-category-tag">综合</span>
+                    <h3 class="spell-name">巫教三天总旨：祝融南府取火精术</h3>
+                    <p class="spell-desc">祝融火府取炼火精，本法行之，一平常修之，可增强自身使用火法的威严以及能力，火精极阳加持火法焚烧邪祟恶鬼，二祝融南府为法师庇佑祝融随时坐镇身后，显威严火神之象，震慑邪祟恶鬼邪魔！但常修火精，可能会让脾气变的和祝融类似，脾气爆裂，需配合玄冥之法调和！</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>744</div>
+                </div>
+                <div class="spell-card" onclick="openModal('巫教三天总旨：蓐收天禁咒术', '综合', `蓐收为刑法之神，本法可以他人罪恶判下恶咒咒诅，或给予法本下法口封，被其咒者，天禁不明，神灵不应，且本法是金神恶咒，专主杀伐，血光，恶灾。被咒者命中横灾爆发，殃及全家，且平常可以用此法对恶人下恶咒，本是极为狠戾的伤人恶咒之法，是古时候祖师会对恶人行惩戒所用！`, 824)">
+                    <span class="spell-category-tag">综合</span>
+                    <h3 class="spell-name">巫教三天总旨：蓐收天禁咒术</h3>
+                    <p class="spell-desc">蓐收为刑法之神，本法可以他人罪恶判下恶咒咒诅，或给予法本下法口封，被其咒者，天禁不明，神灵不应，且本法是金神恶咒，专主杀伐，血光，恶灾。被咒者命中横灾爆发，殃及全家，且平常可以用此法对恶人下恶咒，本是极为狠戾的伤人恶咒之法，是古时候祖师会对恶人行惩戒所用！</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>824</div>
+                </div>
+                <div class="spell-card" onclick="openModal('巫教三天总旨：玄冥伏雪藏冤术', '综合', `冬天为玄冥之管辖，大雪可埋藏世间游荡冤魂的煞气怨气邪气，在由玄冥大神化解，不让怨念爆发，不影响当地生人性情，伏雪以埋藏，压制当地的各种怨气，当今活人和游离亡魂，负面能量越来越重，一场大雪便可以将诸多不好尽数压制，敕天上雪云，下落大雪，大雪封藏！是积功累德滋养当地的妙法，冬天一过万物复苏，阴转为阳则变化生机！`, 695)">
+                    <span class="spell-category-tag">综合</span>
+                    <h3 class="spell-name">巫教三天总旨：玄冥伏雪藏冤术</h3>
+                    <p class="spell-desc">冬天为玄冥之管辖，大雪可埋藏世间游荡冤魂的煞气怨气邪气，在由玄冥大神化解，不让怨念爆发，不影响当地生人性情，伏雪以埋藏，压制当地的各种怨气，当今活人和游离亡魂，负面能量越来越重，一场大雪便可以将诸多不好尽数压制，敕天上雪云，下落大雪，大雪封藏！是积功累德滋养当地的妙法，冬天一过万物复苏，阴转为阳则变化生机！</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>695</div>
+                </div>
+                <div class="spell-card" onclick="openModal('巫教三天总旨：句芒摄风神术', '综合', `召请四时节气风神来此扶持法师行法，可帮助法师将野外行法时的一切不好吹走，且有困难时，随时起风来此辅助法师行法，若在野外有所疑惑，可由风神指引庇佑，将风神作为随时可调遣的天地神灵，随时庇佑法师，非一般的护法可比，风神游荡于天地，即喊即应，即用即灵，随时响应！`, 820)">
+                    <span class="spell-category-tag">综合</span>
+                    <h3 class="spell-name">巫教三天总旨：句芒摄风神术</h3>
+                    <p class="spell-desc">召请四时节气风神来此扶持法师行法，可帮助法师将野外行法时的一切不好吹走，且有困难时，随时起风来此辅助法师行法，若在野外有所疑惑，可由风神指引庇佑，将风神作为随时可调遣的天地神灵，随时庇佑法师，非一般的护法可比，风神游荡于天地，即喊即应，即用即灵，随时响应！</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>820</div>
+                </div>
+                <div class="spell-card" onclick="openModal('巫教石王敕金虎术', '综合', `石中有金虎，虎又为山君，一些山林之中，虎又为山神，同时还会有一些灵物充当山神之职责。敕石中金虎震慑山中山神恶鬼，打作恶山神，可将此石子打在地上，山中的精怪都会警惕一二，若是找到山神的本体，将石子埋入，则可压制山神，法师可将其教训。`, 809)">
+                    <span class="spell-category-tag">综合</span>
+                    <h3 class="spell-name">巫教石王敕金虎术</h3>
+                    <p class="spell-desc">石中有金虎，虎又为山君，一些山林之中，虎又为山神，同时还会有一些灵物充当山神之职责。敕石中金虎震慑山中山神恶鬼，打作恶山神，可将此石子打在地上，山中的精怪都会警惕一二，若是找到山神的本体，将石子埋入，则可压制山神，法师可将其教训。</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>809</div>
+                </div>
+                <div class="spell-card" onclick="openModal('巫教三天五行总旨：后土敕镇神宫术', '综合', `三天五行总旨中以后土最为沉稳，收阴纳藏，主管幽冥，后土到处，阴邪鬼祟之物皆遁藏，是为后土娘娘之神宫，大地安稳一切邪鬼皆被镇压，结此咒文可压一方土地山神城隍，但不可轻易动用，本法多为老法师用此镇压追杀当地作乱的山中精怪，将其扣押入神宫，由后土娘娘之神威扣押镇杀！是三天总旨的最后`, 697)">
+                    <span class="spell-category-tag">综合</span>
+                    <h3 class="spell-name">巫教三天五行总旨：后土敕镇神宫术</h3>
+                    <p class="spell-desc">三天五行总旨中以后土最为沉稳，收阴纳藏，主管幽冥，后土到处，阴邪鬼祟之物皆遁藏，是为后土娘娘之神宫，大地安稳一切邪鬼皆被镇压，结此咒文可压一方土地山神城隍，但不可轻易动用，本法多为老法师用此镇压追杀当地作乱的山中精怪，将其扣押入神宫，由后土娘娘之神威扣押镇杀！是三天总旨的最后</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>697</div>
+                </div>
+                <div class="spell-card" onclick="openModal('巫教三天五行总旨：玄冥敕驾北宫术', '综合', `巫教三天五行总旨中以玄冥之法最为变幻无常，专用于摄鬼拘魄，此为正行，玄冥最善压邪定正，驱使玄冥寒冬之气，摄一切鬼怪，北冥寒水之精，囚一切作恶鬼邪，以正气福佑人心，庇佑善人，寒冬万物休憩，万物收藏，纳当地邪气煞气不得乱动，可暂时压制，寒冬度过，便是春天，也可作为起运之起点，用法非常！`, 736)">
+                    <span class="spell-category-tag">综合</span>
+                    <h3 class="spell-name">巫教三天五行总旨：玄冥敕驾北宫术</h3>
+                    <p class="spell-desc">巫教三天五行总旨中以玄冥之法最为变幻无常，专用于摄鬼拘魄，此为正行，玄冥最善压邪定正，驱使玄冥寒冬之气，摄一切鬼怪，北冥寒水之精，囚一切作恶鬼邪，以正气福佑人心，庇佑善人，寒冬万物休憩，万物收藏，纳当地邪气煞气不得乱动，可暂时压制，寒冬度过，便是春天，也可作为起运之起点，用法非常！</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>736</div>
+                </div>
+                <div class="spell-card" onclick="openModal('巫教石王打九龙术', '综合', `上打九龙，下打恶头，恶神无道，便打神明本法可打地方邪庙邪神，石子加持神威，扔于庙中或神像之上，石王显威打一切不正恶神，或打不正妖邪，仙家，亡魂恶鬼，只需要将符画在石子之上便有神威加持！`, 683)">
+                    <span class="spell-category-tag">综合</span>
+                    <h3 class="spell-name">巫教石王打九龙术</h3>
+                    <p class="spell-desc">上打九龙，下打恶头，恶神无道，便打神明本法可打地方邪庙邪神，石子加持神威，扔于庙中或神像之上，石王显威打一切不正恶神，或打不正妖邪，仙家，亡魂恶鬼，只需要将符画在石子之上便有神威加持！</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>683</div>
+                </div>
+                <div class="spell-card" onclick="openModal('巫教三天五行总旨：句芒敕驾东宫术', '综合', `三天五行总旨中以句芒可收敛春时生气，万物皆在春天迸发生机，对人对万物生灵皆是如此，在春天用此法排出自身在前一年所积攒的毒气邪气病气，引春时生气纳入自身，破除随身沾染的病气邪气，甚至结合一些药草可达到破邪除秽的效果，且以春时滋养身体，加强自身魂魄的安稳程度！`, 738)">
+                    <span class="spell-category-tag">综合</span>
+                    <h3 class="spell-name">巫教三天五行总旨：句芒敕驾东宫术</h3>
+                    <p class="spell-desc">三天五行总旨中以句芒可收敛春时生气，万物皆在春天迸发生机，对人对万物生灵皆是如此，在春天用此法排出自身在前一年所积攒的毒气邪气病气，引春时生气纳入自身，破除随身沾染的病气邪气，甚至结合一些药草可达到破邪除秽的效果，且以春时滋养身体，加强自身魂魄的安稳程度！</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>738</div>
+                </div>
+                <div class="spell-card" onclick="openModal('巫教三天五行总旨：双虎压恶守门法', '综合', `奏请黑白二虎驻守门庭，两只恶虎可反对门，竞争对手，对门邪师所可以布置的风水煞气和阴气仙家！以恶制恶，双虎镇守，压制对店铺，商铺，家宅有所恶意的小人恶人，上门无故闹事者，心怀不轨亲戚者，进门便会不适，起心动念皆会受到双虎攻击，轻则倒霉，重则血光，双虎时常盘踞于门口，威壮门宅，加强家宅气势，法界所看门前两只猛虎盘踞，寻常鬼祟不敢上门！`, 793)">
+                    <span class="spell-category-tag">综合</span>
+                    <h3 class="spell-name">巫教三天五行总旨：双虎压恶守门法</h3>
+                    <p class="spell-desc">奏请黑白二虎驻守门庭，两只恶虎可反对门，竞争对手，对门邪师所可以布置的风水煞气和阴气仙家！以恶制恶，双虎镇守，压制对店铺，商铺，家宅有所恶意的小人恶人，上门无故闹事者，心怀不轨亲戚者，进门便会不适，起心动念皆会受到双虎攻击，轻则倒霉，重则血光，双虎时常盘踞于门口，威壮门宅，加强家宅气势，法界所看门前两只猛虎盘踞，寻常鬼祟不敢上门！</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>793</div>
+                </div>
+                <div class="spell-card" onclick="openModal('巫教三天五行总旨：后土阴将勾魂诀', '综合', `以后土大神令，召地府阴兵阴将，来此勾取善信身上作恶鬼怪，拉入地府，作恶厉鬼可就地拘拿，以阴制阴，阴兵阴将最擅长于擒拿制鬼，本身作为阴将，是比鬼怪要高出的等级，本法有所两用一为遣送鬼怪，二可强行拘收鬼怪仙家，让其魂留地府不得掏出，若有鬼怪逃离，亦可用此法远程搜查拘捕，专门针对逃窜躲藏恶鬼的利器，掘地三尺也要将其挖出！`, 723)">
+                    <span class="spell-category-tag">综合</span>
+                    <h3 class="spell-name">巫教三天五行总旨：后土阴将勾魂诀</h3>
+                    <p class="spell-desc">以后土大神令，召地府阴兵阴将，来此勾取善信身上作恶鬼怪，拉入地府，作恶厉鬼可就地拘拿，以阴制阴，阴兵阴将最擅长于擒拿制鬼，本身作为阴将，是比鬼怪要高出的等级，本法有所两用一为遣送鬼怪，二可强行拘收鬼怪仙家，让其魂留地府不得掏出，若有鬼怪逃离，亦可用此法远程搜查拘捕，专门针对逃窜躲藏恶鬼的利器，掘地三尺也要将其挖出！</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>723</div>
+                </div>
+                <div class="spell-card" onclick="openModal('巫教三天五行宗旨：春时纳风化丧术', '综合', `春时万物生发，引动春时变化为春风，吹散一切不祥，纳风藏气，用春时进行敕符加持，贴符之处，可结合风水纳气起到更强大的功效，人在春时则身体强健，春时庇佑化解煞气净化煞气，化为对人有利的春风春时，转凶为吉，若有人家中有晦气丧气，用此法引动春风吹散不好，家中横行病气，随身沾带阴气，人心情郁闷阴霾运用春时便可有一定程度的化解，化解身上的负面能量！`, 828)">
+                    <span class="spell-category-tag">综合</span>
+                    <h3 class="spell-name">巫教三天五行宗旨：春时纳风化丧术</h3>
+                    <p class="spell-desc">春时万物生发，引动春时变化为春风，吹散一切不祥，纳风藏气，用春时进行敕符加持，贴符之处，可结合风水纳气起到更强大的功效，人在春时则身体强健，春时庇佑化解煞气净化煞气，化为对人有利的春风春时，转凶为吉，若有人家中有晦气丧气，用此法引动春风吹散不好，家中横行病气，随身沾带阴气，人心情郁闷阴霾运用春时便可有一定程度的化解，化解身上的负面能量！</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>828</div>
+                </div>
+                <div class="spell-card" onclick="openModal('巫教三天五行宗旨：祝融圣火升运术', '综合', `本法是可以单独替代某一个升运法事的猛烈雷火之术，敕令烛火化圣火，圣火到处则百难皆消，若有邪祟见此火也会受到其影响，惧怕此火躁动不安，仇仙同理。用此火给人加持，不止可以迅速简单的升运，激发人体自身的阳气，散掉病气阴气，被加持之人会身上发热发汗，安心定神。而我的坛上也会常备此法，可以最简便的进行升运，调整善信的情况`, 773)">
+                    <span class="spell-category-tag">综合</span>
+                    <h3 class="spell-name">巫教三天五行宗旨：祝融圣火升运术</h3>
+                    <p class="spell-desc">本法是可以单独替代某一个升运法事的猛烈雷火之术，敕令烛火化圣火，圣火到处则百难皆消，若有邪祟见此火也会受到其影响，惧怕此火躁动不安，仇仙同理。用此火给人加持，不止可以迅速简单的升运，激发人体自身的阳气，散掉病气阴气，被加持之人会身上发热发汗，安心定神。而我的坛上也会常备此法，可以最简便的进行升运，调整善信的情况</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>773</div>
+                </div>
+                <div class="spell-card" onclick="openModal('巫教血头鬼王符', '综合', `本法狠戾，应学员要求传出一道，本符吞噬精怪，恶鬼，仙家。破他人坛场庙宇，吞食兵马。惩恶扬善，噬咬恶人，血头鬼王凶狠，对仙家精怪无任何慈悲之心，则即为杀伐，仙家鬼怪为鬼王血食，本符请到血头鬼王之威力，让法师行法斩精，同时用此符可能会让法师易怒显鬼王凶狠态度。不可轻易乱用。`, 831)">
+                    <span class="spell-category-tag">综合</span>
+                    <h3 class="spell-name">巫教血头鬼王符</h3>
+                    <p class="spell-desc">本法狠戾，应学员要求传出一道，本符吞噬精怪，恶鬼，仙家。破他人坛场庙宇，吞食兵马。惩恶扬善，噬咬恶人，血头鬼王凶狠，对仙家精怪无任何慈悲之心，则即为杀伐，仙家鬼怪为鬼王血食，本符请到血头鬼王之威力，让法师行法斩精，同时用此符可能会让法师易怒显鬼王凶狠态度。不可轻易乱用。</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>831</div>
+                </div>
+                <div class="spell-card" onclick="openModal('巫教三天五行宗旨：玄冥藏土归正术', '综合', `冬天一切毒虫皆收藏，对应人身，则为一切恶习 一切恶念，本法请水神玄冥亲降扶持，降于人身 三尺之上，收押一切不正恶习，不正恶念，扶起 自身一切正念，且帮助修法时不被恶念干扰，本 法可适用于任何年龄段，是玄冥正法`, 751)">
+                    <span class="spell-category-tag">综合</span>
+                    <h3 class="spell-name">巫教三天五行宗旨：玄冥藏土归正术</h3>
+                    <p class="spell-desc">冬天一切毒虫皆收藏，对应人身，则为一切恶习 一切恶念，本法请水神玄冥亲降扶持，降于人身 三尺之上，收押一切不正恶习，不正恶念，扶起 自身一切正念，且帮助修法时不被恶念干扰，本 法可适用于任何年龄段，是玄冥正法</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>751</div>
+                </div>
+                <div class="spell-card" onclick="openModal('巫教三天五行宗旨：句芒予春术', '综合', `春神正主为句芒，借此神之力，顾名思义给予万物春时生机，古时曾有传说见春神句芒，赐下十九年光阴，本法可将万物之气纳入身体，故名予春，排出身体中的毒气，浊气，同时经常容易受到惊吓的人，可用此法安稳心神，同时安稳魂魄，安神定心，滋养身体。但不可替代传统医学。`, 749)">
+                    <span class="spell-category-tag">综合</span>
+                    <h3 class="spell-name">巫教三天五行宗旨：句芒予春术</h3>
+                    <p class="spell-desc">春神正主为句芒，借此神之力，顾名思义给予万物春时生机，古时曾有传说见春神句芒，赐下十九年光阴，本法可将万物之气纳入身体，故名予春，排出身体中的毒气，浊气，同时经常容易受到惊吓的人，可用此法安稳心神，同时安稳魂魄，安神定心，滋养身体。但不可替代传统医学。</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>749</div>
+                </div>
+                <div class="spell-card" onclick="openModal('三天五行总旨：玄冥收归入河术', '综合', `本法是在河边运用的妙法，可将愿意归往过路亡魂引入河流之中，前往地府受的解脱，且符在鬼差眼中意为文书，可允许亡魂过得鬼门关。若本条河本身就有水鬼冤魂在，也就是所谓的水鬼，也可凭此符脱离河水前往地府投胎，治当地水鬼河流祸事频发，不会再频繁的出事情，实打实的利益当地的善行善举，巧发善心之事。`, 844)">
+                    <span class="spell-category-tag">综合</span>
+                    <h3 class="spell-name">三天五行总旨：玄冥收归入河术</h3>
+                    <p class="spell-desc">本法是在河边运用的妙法，可将愿意归往过路亡魂引入河流之中，前往地府受的解脱，且符在鬼差眼中意为文书，可允许亡魂过得鬼门关。若本条河本身就有水鬼冤魂在，也就是所谓的水鬼，也可凭此符脱离河水前往地府投胎，治当地水鬼河流祸事频发，不会再频繁的出事情，实打实的利益当地的善行善举，巧发善心之事。</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>844</div>
+                </div>
+                <div class="spell-card" onclick="openModal('三天五行总旨：祝融打神火术', '综合', `本法一般会用蜡烛，但是也是武法，武法就是闭气念咒语三遍，将符画在自己的手上，朝恶鬼打出即可。`, 722)">
+                    <span class="spell-category-tag">综合</span>
+                    <h3 class="spell-name">三天五行总旨：祝融打神火术</h3>
+                    <p class="spell-desc">本法一般会用蜡烛，但是也是武法，武法就是闭气念咒语三遍，将符画在自己的手上，朝恶鬼打出即可。</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>722</div>
+                </div>
+            </div>
+        </div>
+        <div class="category-section" data-category="财运">
+            <h2 class="category-title">财运法阵</h2>
+            <div class="spells-grid">
+                <div class="spell-card" onclick="openModal('巫教五路阴官赐财术', '财运', `此法可引地府阴官梦见相见，阴官查善功，记善德，以善功变为阳间善财，回馈善人身上，会以贵人，机缘，正偏财运，乃至于横财回报于善人，正像前辈在此法专门所提：今日君子修桥路，阴官他日赠金银。点出此法是善人善财所用！`, 1037)">
+                    <span class="spell-category-tag">财运</span>
+                    <h3 class="spell-name">巫教五路阴官赐财术</h3>
+                    <p class="spell-desc">此法可引地府阴官梦见相见，阴官查善功，记善德，以善功变为阳间善财，回馈善人身上，会以贵人，机缘，正偏财运，乃至于横财回报于善人，正像前辈在此法专门所提：今日君子修桥路，阴官他日赠金银。点出此法是善人善财所用！</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>1037</div>
+                </div>
+                <div class="spell-card" onclick="openModal('巫教五鬼运财术', '财运', `本为符法，有两种画符方式，一为黄符，二为白符，五鬼为五路阴鬼，主招偏财，他人身上之财，小人之财，黄符为正行，白符为偏行，只需要佩戴此符，五路阴鬼便会随符感召来此，帮你运转财运，招财旺利。用符时身体因人而已会有所体感，这是阴鬼的象征，本法没有任何副作用！`, 904)">
+                    <span class="spell-category-tag">财运</span>
+                    <h3 class="spell-name">巫教五鬼运财术</h3>
+                    <p class="spell-desc">本为符法，有两种画符方式，一为黄符，二为白符，五鬼为五路阴鬼，主招偏财，他人身上之财，小人之财，黄符为正行，白符为偏行，只需要佩戴此符，五路阴鬼便会随符感召来此，帮你运转财运，招财旺利。用符时身体因人而已会有所体感，这是阴鬼的象征，本法没有任何副作用！</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>904</div>
+                </div>
+                <div class="spell-card" onclick="openModal('开地门幽冥地库法', '财运', `本法请动幽冥地府，打开鬼门，调遣阴兵阴神，前来收取法师所准备的金银元宝纸钱，补充到人的地库阴库之中，若有冤亲债主也可以被本法所偿还，本法受阴神扶持由此法师可以得到阴神的护持，同时还阴债补阴库可以让自身财运事业运等诸多运势变好，同时减少运势中的无关是非口舌事故小人，归正自身受阴债所变得暴躁的脾气，和心性，本法操作简单，无需表文，小白既可以上手行法。`, 1026)">
+                    <span class="spell-category-tag">财运</span>
+                    <h3 class="spell-name">开地门幽冥地库法</h3>
+                    <p class="spell-desc">本法请动幽冥地府，打开鬼门，调遣阴兵阴神，前来收取法师所准备的金银元宝纸钱，补充到人的地库阴库之中，若有冤亲债主也可以被本法所偿还，本法受阴神扶持由此法师可以得到阴神的护持，同时还阴债补阴库可以让自身财运事业运等诸多运势变好，同时减少运势中的无关是非口舌事故小人，归正自身受阴债所变得暴躁的脾气，和心性，本法操作简单，无需表文，小白既可以上手行法。</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>1026</div>
+                </div>
+                <div class="spell-card" onclick="openModal('开地门幽冥地库法 讲课内容', '财运', `地库管你的财运的吉凶，也就是这个财运是否有阻碍有灾难，有小人影响，补充财库就可以解决同时冤亲债主也会得到缓解`, 951)">
+                    <span class="spell-category-tag">财运</span>
+                    <h3 class="spell-name">开地门幽冥地库法 讲课内容</h3>
+                    <p class="spell-desc">地库管你的财运的吉凶，也就是这个财运是否有阻碍有灾难，有小人影响，补充财库就可以解决同时冤亲债主也会得到缓解</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>951</div>
+                </div>
+                <div class="spell-card" onclick="openModal('黑山禁法：火煞朱旗禁', '财运', `朱旗为火，主调动火煞，游离人家，惩恶则主乱人灶台，烧家烧财烧运，火也为混乱之象，惩恶下此法，则家中作乱，易有争吵，冲突，家宅不宁，易有火灾，更会帮助恶人家宅火煞对人的影响，若正用，可收治家宅之中三角而形成的火煞，收治作乱之火。`, 1054)">
+                    <span class="spell-category-tag">财运</span>
+                    <h3 class="spell-name">黑山禁法：火煞朱旗禁</h3>
+                    <p class="spell-desc">朱旗为火，主调动火煞，游离人家，惩恶则主乱人灶台，烧家烧财烧运，火也为混乱之象，惩恶下此法，则家中作乱，易有争吵，冲突，家宅不宁，易有火灾，更会帮助恶人家宅火煞对人的影响，若正用，可收治家宅之中三角而形成的火煞，收治作乱之火。</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>1054</div>
+                </div>
+                <div class="spell-card" onclick="openModal('巫教金银二郎取金母术', '财运', `巧请金银二郎敕钱母，以钱生钱，以运生运，招揽一切财，横财，偏财，正财，无主之财，若死工资则为其提供升职加薪的契机，但需好好把握以及努力，本术需随身佩戴，钱母招财，郎君敛财，不漏外财，且操作简单，可为善信家人结缘，结下善缘善财！`, 895)">
+                    <span class="spell-category-tag">财运</span>
+                    <h3 class="spell-name">巫教金银二郎取金母术</h3>
+                    <p class="spell-desc">巧请金银二郎敕钱母，以钱生钱，以运生运，招揽一切财，横财，偏财，正财，无主之财，若死工资则为其提供升职加薪的契机，但需好好把握以及努力，本术需随身佩戴，钱母招财，郎君敛财，不漏外财，且操作简单，可为善信家人结缘，结下善缘善财！</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>895</div>
+                </div>
+                <div class="spell-card" onclick="openModal('巫山禁法一宗出师祭坛大法福利', '财运', `召请巫教之中的白马仙公，帮助唤财，唤回过去遗失的，无辜破损的钱财，在未来逐渐的出现的生活之中，同时帮助自己在原有的财运之上，增强财运的能力，逐渐增强个人的行动能力。`, 898)">
+                    <span class="spell-category-tag">财运</span>
+                    <h3 class="spell-name">巫山禁法一宗出师祭坛大法福利</h3>
+                    <p class="spell-desc">召请巫教之中的白马仙公，帮助唤财，唤回过去遗失的，无辜破损的钱财，在未来逐渐的出现的生活之中，同时帮助自己在原有的财运之上，增强财运的能力，逐渐增强个人的行动能力。</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>898</div>
+                </div>
+                <div class="spell-card" onclick="openModal('司命祈祝草纸灵术', '财运', `请司命大神加持草人纸人，让祈福，招财，文昌等法事所准备的纸人更加灵验，且有司命大神祝福，在命运中突破苦难，平复灾难,非一般的开光加持之术可比拟。适合用于任何法脉的祈福增益法事之中，且司命降福，法师可根据需要灵活对纸人草人进行祝福，是法师的必备技能之一`, 901)">
+                    <span class="spell-category-tag">财运</span>
+                    <h3 class="spell-name">司命祈祝草纸灵术</h3>
+                    <p class="spell-desc">请司命大神加持草人纸人，让祈福，招财，文昌等法事所准备的纸人更加灵验，且有司命大神祝福，在命运中突破苦难，平复灾难,非一般的开光加持之术可比拟。适合用于任何法脉的祈福增益法事之中，且司命降福，法师可根据需要灵活对纸人草人进行祝福，是法师的必备技能之一</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>901</div>
+                </div>
+                <div class="spell-card" onclick="openModal('巫教小金口术', '财运', `小说和民间皆有一些独特说法“金口玉言”“言出法随”这些话便是形容法术中的金口诀，本法运用只需要默念咒语，就可以运用，其用法万用，在法事中也可以进行辅助，如招财，旺运，贵人，转机等，本法全看法师的合理运用，且妙用无穷，随意运用。且巫教的金口诀，有天地的能量扶持，比所谓的市面的金口诀强了不止一星半点。`, 1025)">
+                    <span class="spell-category-tag">财运</span>
+                    <h3 class="spell-name">巫教小金口术</h3>
+                    <p class="spell-desc">小说和民间皆有一些独特说法“金口玉言”“言出法随”这些话便是形容法术中的金口诀，本法运用只需要默念咒语，就可以运用，其用法万用，在法事中也可以进行辅助，如招财，旺运，贵人，转机等，本法全看法师的合理运用，且妙用无穷，随意运用。且巫教的金口诀，有天地的能量扶持，比所谓的市面的金口诀强了不止一星半点。</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>1025</div>
+                </div>
+                <div class="spell-card" onclick="openModal('巫教如意金玉灯阵', '财运', `本法在任何时候皆可运用，合天合地合人，三方皆合是为如意之象，很多人皆知如意，但不知如意真谛，以如意拿取钱财，金玉满盆加持于人的身上，让其得以三合之力收财旺禄，同时可以在法阵之中放置一些荡秽过的物品，灯阵的招财能量会加持在物品之上可让法师结缘，且金玉灯阵的能量远大于普通的招财法事，本次是因为新年放出大福利，机会难得`, 981)">
+                    <span class="spell-category-tag">财运</span>
+                    <h3 class="spell-name">巫教如意金玉灯阵</h3>
+                    <p class="spell-desc">本法在任何时候皆可运用，合天合地合人，三方皆合是为如意之象，很多人皆知如意，但不知如意真谛，以如意拿取钱财，金玉满盆加持于人的身上，让其得以三合之力收财旺禄，同时可以在法阵之中放置一些荡秽过的物品，灯阵的招财能量会加持在物品之上可让法师结缘，且金玉灯阵的能量远大于普通的招财法事，本次是因为新年放出大福利，机会难得</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>981</div>
+                </div>
+                <div class="spell-card" onclick="openModal('独脚天子赐财开山术', '财运', `民俗文化中，独脚天子是群山之主，且是一位凶神，但是凶是对待一切不好之物，所以在各色神话中会赐给善信钱财，但是因为历史原因有被故意抹黑，而本处开山有两种含义，一为资源代表源源不断的财富，二为破开阻碍突破困难。本法可召请独脚天子，帮助吸收财气积攒财气财运，让这些财气财运在未来的某一时刻爆发，帮助善信突破阻碍困难。`, 1026)">
+                    <span class="spell-category-tag">财运</span>
+                    <h3 class="spell-name">独脚天子赐财开山术</h3>
+                    <p class="spell-desc">民俗文化中，独脚天子是群山之主，且是一位凶神，但是凶是对待一切不好之物，所以在各色神话中会赐给善信钱财，但是因为历史原因有被故意抹黑，而本处开山有两种含义，一为资源代表源源不断的财富，二为破开阻碍突破困难。本法可召请独脚天子，帮助吸收财气积攒财气财运，让这些财气财运在未来的某一时刻爆发，帮助善信突破阻碍困难。</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>1026</div>
+                </div>
+                <div class="spell-card" onclick="openModal('禁法虎神收恶财法', '财运', `既然有恶人小人来害，此法便请虎神来主持公道，只要对方敢来害或有害你的念头，虎神便一口咬下此人的运势补在你的身上，且本法对于恶人不算下法，所以查不出来，是妙用之法`, 1031)">
+                    <span class="spell-category-tag">财运</span>
+                    <h3 class="spell-name">禁法虎神收恶财法</h3>
+                    <p class="spell-desc">既然有恶人小人来害，此法便请虎神来主持公道，只要对方敢来害或有害你的念头，虎神便一口咬下此人的运势补在你的身上，且本法对于恶人不算下法，所以查不出来，是妙用之法</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>1031</div>
+                </div>
+                <div class="spell-card" onclick="openModal('巫教神公压煞神法', '财运', `本法可压住煞神对自己或善信的影响，如自身之中的神煞，对自身的影响变小减弱，可以在生活中更好的生活，如阴差阳错等对于事业上，钱财上的影响，或者十恶大败的败家子特质，都有一定的影响，但是切记，本法是暂时压制，并不是解决。`, 975)">
+                    <span class="spell-category-tag">财运</span>
+                    <h3 class="spell-name">巫教神公压煞神法</h3>
+                    <p class="spell-desc">本法可压住煞神对自己或善信的影响，如自身之中的神煞，对自身的影响变小减弱，可以在生活中更好的生活，如阴差阳错等对于事业上，钱财上的影响，或者十恶大败的败家子特质，都有一定的影响，但是切记，本法是暂时压制，并不是解决。</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>975</div>
+                </div>
+                <div class="spell-card" onclick="openModal('巫教土公提龙术', '财运', `巫教土公，并非土地公，而是五方大神土公，运用本法将土地山川藏在地下的龙脉龙神提出，将其龙气导引到我们自身或者阳宅阴宅，达到强大自身气运强大自身家宅家运，地气旺财，旺运，旺官，旺事业，旺家丁等，诸多旺法，加持在人身上，行地气加持之法威，但不可轻易加持在阴宅之上！阳宅与自身无事，更可庇佑自身，招财进宝！`, 979)">
+                    <span class="spell-category-tag">财运</span>
+                    <h3 class="spell-name">巫教土公提龙术</h3>
+                    <p class="spell-desc">巫教土公，并非土地公，而是五方大神土公，运用本法将土地山川藏在地下的龙脉龙神提出，将其龙气导引到我们自身或者阳宅阴宅，达到强大自身气运强大自身家宅家运，地气旺财，旺运，旺官，旺事业，旺家丁等，诸多旺法，加持在人身上，行地气加持之法威，但不可轻易加持在阴宅之上！阳宅与自身无事，更可庇佑自身，招财进宝！</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>979</div>
+                </div>
+                <div class="spell-card" onclick="openModal('巫教司命记德法', '财运', `上古文化中有两位神明，可主人生死寿命祸福，便是大小司命，本法可特请司命之神，记下我们在生活中的诸多善事，以祈求神明知道我们的德行，以增其寿并增旺好运`, 905)">
+                    <span class="spell-category-tag">财运</span>
+                    <h3 class="spell-name">巫教司命记德法</h3>
+                    <p class="spell-desc">上古文化中有两位神明，可主人生死寿命祸福，便是大小司命，本法可特请司命之神，记下我们在生活中的诸多善事，以祈求神明知道我们的德行，以增其寿并增旺好运</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>905</div>
+                </div>
+                <div class="spell-card" onclick="openModal('巫教祭太阳转运法', '财运', `巫教注重太阳，太阳拥有至高无上的能力，更是掌管天地生长的神明，而本法聚太阳的能量，为自身打开运势，生旺好运，驱赶恶运，包括沾染在身上的阴性能量，同时获得太阳的庇护以得到诸多好运，也可以用此法在起运等法事上进行加持运用。`, 947)">
+                    <span class="spell-category-tag">财运</span>
+                    <h3 class="spell-name">巫教祭太阳转运法</h3>
+                    <p class="spell-desc">巫教注重太阳，太阳拥有至高无上的能力，更是掌管天地生长的神明，而本法聚太阳的能量，为自身打开运势，生旺好运，驱赶恶运，包括沾染在身上的阴性能量，同时获得太阳的庇护以得到诸多好运，也可以用此法在起运等法事上进行加持运用。</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>947</div>
+                </div>
+                <div class="spell-card" onclick="openModal('禄神神煞术', '财运', `禄神代表了财禄，代表了一个人对财富的敏感性，更多是会为自己招揽财富，哪怕贫穷也不会贫穷到哪里，但禄神需要配合劳动才可以真正激发`, 933)">
+                    <span class="spell-category-tag">财运</span>
+                    <h3 class="spell-name">禄神神煞术</h3>
+                    <p class="spell-desc">禄神代表了财禄，代表了一个人对财富的敏感性，更多是会为自己招揽财富，哪怕贫穷也不会贫穷到哪里，但禄神需要配合劳动才可以真正激发</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>933</div>
+                </div>
+                <div class="spell-card" onclick="openModal('飞官司命术', '财运', `大司命与少司命，奉驾飞官退避百鬼，主提升官运，避开劫难，如小人口舌是非等阻碍。对背后恶人也有司命对其作为惩戒！`, 1057)">
+                    <span class="spell-category-tag">财运</span>
+                    <h3 class="spell-name">飞官司命术</h3>
+                    <p class="spell-desc">大司命与少司命，奉驾飞官退避百鬼，主提升官运，避开劫难，如小人口舌是非等阻碍。对背后恶人也有司命对其作为惩戒！</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>1057</div>
+                </div>
+                <div class="spell-card" onclick="openModal('植阴福禄法', '财运', `植阴福，乃是以祖先福德化为大树根苗，庇佑后人之术，后人所做善事会直接落入阴福福根，化作财禄福德，直接庇佑自家一脉，不会随意被其他旁支说影响。且阴福会作为自身运势的保障，哪怕运气再差，再受到外界的影响，都会有好运在身，不会差到谷底！且阴德会随着子孙的善行更好的庇佑后代，躲避灾祸，抵挡邪祟！ 用法：`, 891)">
+                    <span class="spell-category-tag">财运</span>
+                    <h3 class="spell-name">植阴福禄法</h3>
+                    <p class="spell-desc">植阴福，乃是以祖先福德化为大树根苗，庇佑后人之术，后人所做善事会直接落入阴福福根，化作财禄福德，直接庇佑自家一脉，不会随意被其他旁支说影响。且阴福会作为自身运势的保障，哪怕运气再差，再受到外界的影响，都会有好运在身，不会差到谷底！且阴德会随着子孙的善行更好的庇佑后代，躲避灾祸，抵挡邪祟！ 用法：</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>891</div>
+                </div>
+                <div class="spell-card" onclick="openModal('开金门补财进库法', '财运', `常说补财库补财库，补了财库又开始漏财库，漏财库又要补，极为麻烦，本法可以变化作用，有止漏财补财库开财门之法效，将你的财库补充完善，填补遗漏，完善自身财库补充财源财运，如果事业受损事业不畅可用，可以用此法补充财库打开金门财运充盈于自身，将天财库补充增强自身的各种财运，同时本法用法方便快捷，无需繁琐表文也可以搭配其他招财之法更能相得益彰，小白就可以运用此法来为他人善信，自己补充财库。`, 1057)">
+                    <span class="spell-category-tag">财运</span>
+                    <h3 class="spell-name">开金门补财进库法</h3>
+                    <p class="spell-desc">常说补财库补财库，补了财库又开始漏财库，漏财库又要补，极为麻烦，本法可以变化作用，有止漏财补财库开财门之法效，将你的财库补充完善，填补遗漏，完善自身财库补充财源财运，如果事业受损事业不畅可用，可以用此法补充财库打开金门财运充盈于自身，将天财库补充增强自身的各种财运，同时本法用法方便快捷，无需繁琐表文也可以搭配其他招财之法更能相得益彰，小白就可以运用此法来为他人善信，自己补充财库。</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>1057</div>
+                </div>
+                <div class="spell-card" onclick="openModal('开金门补财进库法 讲课内容', '财运', `念三遍，念完之后用三支香描符一遍就可以了，盖道经师宝印或者太上老君印都可以`, 912)">
+                    <span class="spell-category-tag">财运</span>
+                    <h3 class="spell-name">开金门补财进库法 讲课内容</h3>
+                    <p class="spell-desc">念三遍，念完之后用三支香描符一遍就可以了，盖道经师宝印或者太上老君印都可以</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>912</div>
+                </div>
+                <div class="spell-card" onclick="openModal('八门奇符：开门符', '财运', `奇门本为阵法，八门对应人可进入的八种状态，开门便是其中之一，开门代表开启，府衙大门门面所在，对人是脸面，对公司是门面，而开门可用于招财揽财，招揽人才，招揽自己想要得到的知识，若是配合其他七门，便可用八门布阵，行八门阵法`, 1034)">
+                    <span class="spell-category-tag">财运</span>
+                    <h3 class="spell-name">八门奇符：开门符</h3>
+                    <p class="spell-desc">奇门本为阵法，八门对应人可进入的八种状态，开门便是其中之一，开门代表开启，府衙大门门面所在，对人是脸面，对公司是门面，而开门可用于招财揽财，招揽人才，招揽自己想要得到的知识，若是配合其他七门，便可用八门布阵，行八门阵法</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>1034</div>
+                </div>
+                <div class="spell-card" onclick="openModal('恶星符魇术', '财运', `以天上与其相克的恶星照耀此人，刑冲破害可加恶人身，让其破财倒霉血光等各种灾殃在此人身上爆发，小用惩恶一人，大用可照人家宅，恶星照顶，也可霉运当头，恶星涵盖一个人诸多事宜，并且会在课上了解更多星象知识，以此拓展用途相辅相成！`, 1073)">
+                    <span class="spell-category-tag">财运</span>
+                    <h3 class="spell-name">恶星符魇术</h3>
+                    <p class="spell-desc">以天上与其相克的恶星照耀此人，刑冲破害可加恶人身，让其破财倒霉血光等各种灾殃在此人身上爆发，小用惩恶一人，大用可照人家宅，恶星照顶，也可霉运当头，恶星涵盖一个人诸多事宜，并且会在课上了解更多星象知识，以此拓展用途相辅相成！</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>1073</div>
+                </div>
+                <div class="spell-card" onclick="openModal('金斗收风术', '财运', `专收他人风水，他人风水布局所吸引的旺宅风水，又可布置在家中煞位，吸取家中煞气！可将他人家宅风水吉祥之气引入自家门庭之中，无形之中增强自家风水局气！`, 1006)">
+                    <span class="spell-category-tag">财运</span>
+                    <h3 class="spell-name">金斗收风术</h3>
+                    <p class="spell-desc">专收他人风水，他人风水布局所吸引的旺宅风水，又可布置在家中煞位，吸取家中煞气！可将他人家宅风水吉祥之气引入自家门庭之中，无形之中增强自家风水局气！</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>1006</div>
+                </div>
+                <div class="spell-card" onclick="openModal('飞毒蝎子符蛊', '财运', `专对小人放出蝎子符蛊，专蛰小人恶人，毒发运败，万事难成。此蛊有一特点，若对方行房事，则此蛊会暗中作祟，导致房事不顺或对方房事后运气减半，在西游中被称为“倒马毒”专克小人之蛊，在民间此蛊被用于整治红杏出墙的女子或在外沾花惹草的男人。`, 953)">
+                    <span class="spell-category-tag">财运</span>
+                    <h3 class="spell-name">飞毒蝎子符蛊</h3>
+                    <p class="spell-desc">专对小人放出蝎子符蛊，专蛰小人恶人，毒发运败，万事难成。此蛊有一特点，若对方行房事，则此蛊会暗中作祟，导致房事不顺或对方房事后运气减半，在西游中被称为“倒马毒”专克小人之蛊，在民间此蛊被用于整治红杏出墙的女子或在外沾花惹草的男人。</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>953</div>
+                </div>
+                <div class="spell-card" onclick="openModal('转运壁虎符蛊', '财运', `壁虎爬墙而走，四通八达，没有地方可以将其阻拦，寓意为路路通达，无难事将其阻拦。则为转运，若人运用，则转运避灾，去祸退小人，且对危机极为敏感。若遇困难，则更可发挥其作用，在困难之地安然无恙，寻得出路，更上层楼。`, 1057)">
+                    <span class="spell-category-tag">财运</span>
+                    <h3 class="spell-name">转运壁虎符蛊</h3>
+                    <p class="spell-desc">壁虎爬墙而走，四通八达，没有地方可以将其阻拦，寓意为路路通达，无难事将其阻拦。则为转运，若人运用，则转运避灾，去祸退小人，且对危机极为敏感。若遇困难，则更可发挥其作用，在困难之地安然无恙，寻得出路，更上层楼。</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>1057</div>
+                </div>
+                <div class="spell-card" onclick="openModal('十鬼遁阴门术', '财运', `此乃奇术，取自于奇门阵法，遁于鬼门，在鬼门处运用此法，小破阳宅闹家，大破阴宅破气，取十鬼搬运此处财运或搬外界破败之运入于屋子之中，进出自如且门神家神难以阻拦，哪怕是对方布置阵法也可用此法派鬼邪进入。`, 1057)">
+                    <span class="spell-category-tag">财运</span>
+                    <h3 class="spell-name">十鬼遁阴门术</h3>
+                    <p class="spell-desc">此乃奇术，取自于奇门阵法，遁于鬼门，在鬼门处运用此法，小破阳宅闹家，大破阴宅破气，取十鬼搬运此处财运或搬外界破败之运入于屋子之中，进出自如且门神家神难以阻拦，哪怕是对方布置阵法也可用此法派鬼邪进入。</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>1057</div>
+                </div>
+                <div class="spell-card" onclick="openModal('金蟾符蛊术', '财运', `炼金蟾为符蛊，身背金元如意财，更吞百毒灾，招财纳财，焚于家中请入符蛊，金蟾蛊显落家中，吞吐金银给予财源，吞毒吃虫生活中的小人恶人皆为毒虫，制约口舌暗箭伤人，符蛊有灵，庇佑家中年幼者，不被毒物所害，符蛊之术无任何副作用，是取古代巫师所养之灵前来庇佑！`, 983)">
+                    <span class="spell-category-tag">财运</span>
+                    <h3 class="spell-name">金蟾符蛊术</h3>
+                    <p class="spell-desc">炼金蟾为符蛊，身背金元如意财，更吞百毒灾，招财纳财，焚于家中请入符蛊，金蟾蛊显落家中，吞吐金银给予财源，吞毒吃虫生活中的小人恶人皆为毒虫，制约口舌暗箭伤人，符蛊有灵，庇佑家中年幼者，不被毒物所害，符蛊之术无任何副作用，是取古代巫师所养之灵前来庇佑！</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>983</div>
+                </div>
+                <div class="spell-card" onclick="openModal('巫教石王十银九子术', '财运', `此石子专打恶人，专打家运，敕过后的石子，可放于人家门前，只要恶人跨过便会中法，或打在恶人身上，石王便会将其惩戒，阻挡其好运好事发生，同时十银挡金钱，九子败家运，非不得已，不可运用，是石王五手最后一手。`, 1030)">
+                    <span class="spell-category-tag">财运</span>
+                    <h3 class="spell-name">巫教石王十银九子术</h3>
+                    <p class="spell-desc">此石子专打恶人，专打家运，敕过后的石子，可放于人家门前，只要恶人跨过便会中法，或打在恶人身上，石王便会将其惩戒，阻挡其好运好事发生，同时十银挡金钱，九子败家运，非不得已，不可运用，是石王五手最后一手。</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>1030</div>
+                </div>
+                <div class="spell-card" onclick="openModal('巫教三天五行总旨：春神赐金莲妙术', '财运', `春神句芒为法师善信赐下妙花金莲为其赐福，扭转运势，增强好运，财运，贵人运，本法可单独作为法事，也可加持在灯阵之上，被赐金花者增强财运贵人运事业运，赐金莲者得神明智清，增强文昌运，得以看破难题，突破阻碍，甚至法师若有疑问可有机缘顿悟，一法双效！`, 1058)">
+                    <span class="spell-category-tag">财运</span>
+                    <h3 class="spell-name">巫教三天五行总旨：春神赐金莲妙术</h3>
+                    <p class="spell-desc">春神句芒为法师善信赐下妙花金莲为其赐福，扭转运势，增强好运，财运，贵人运，本法可单独作为法事，也可加持在灯阵之上，被赐金花者增强财运贵人运事业运，赐金莲者得神明智清，增强文昌运，得以看破难题，突破阻碍，甚至法师若有疑问可有机缘顿悟，一法双效！</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>1058</div>
+                </div>
+                <div class="spell-card" onclick="openModal('巫教三天五行总旨：蓐收判恶纳金术', '财运', `请动蓐收神君将恶人近期财运给予到自身，提升自身财运，可加持到正财偏财之上，甚至横财，但所判下的财运则根据此人所做恶行而决定，且被判者无法用法或术追回，因是上古神明判决！天地共证上合天意，下合民心，是正义之举无任何副作用！`, 1051)">
+                    <span class="spell-category-tag">财运</span>
+                    <h3 class="spell-name">巫教三天五行总旨：蓐收判恶纳金术</h3>
+                    <p class="spell-desc">请动蓐收神君将恶人近期财运给予到自身，提升自身财运，可加持到正财偏财之上，甚至横财，但所判下的财运则根据此人所做恶行而决定，且被判者无法用法或术追回，因是上古神明判决！天地共证上合天意，下合民心，是正义之举无任何副作用！</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>1051</div>
+                </div>
+                <div class="spell-card" onclick="openModal('后土地煞制恶掌', '财运', `后土掌管大地，地煞对地方土地有着极为重大的影响，土地施工，家宅风水，有地煞则难安。事故频发家宅不宁。本掌可收可放，放出地煞扰乱地气，人无地气则难活，影响人的身体，影响家宅气运，影响财路亨通，极为凶戾，且连绵不绝。收可收治当地地煞，不得随意害人，更可以减弱家宅风水煞气。对于外出看风水者极为有利。收便称为制恶，放则为地煞，一阴一阳，可互相变化，更能了解阴阳变化之法！且作用不止于此，因本法太过狠厉，可影响他人阴宅福根，所以慎重使用！`, 995)">
+                    <span class="spell-category-tag">财运</span>
+                    <h3 class="spell-name">后土地煞制恶掌</h3>
+                    <p class="spell-desc">后土掌管大地，地煞对地方土地有着极为重大的影响，土地施工，家宅风水，有地煞则难安。事故频发家宅不宁。本掌可收可放，放出地煞扰乱地气，人无地气则难活，影响人的身体，影响家宅气运，影响财路亨通，极为凶戾，且连绵不绝。收可收治当地地煞，不得随意害人，更可以减弱家宅风水煞气。对于外出看风水者极为有利。收便称为制恶，放则为地煞，一阴一阳，可互相变化，更能了解阴阳变化之法！且作用不止于此，因本法太过狠厉，可影响他人阴宅福根，所以慎重使用！</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>995</div>
+                </div>
+                <div class="spell-card" onclick="openModal('巫教三天五行宗旨：祝融三星催火阵', '财运', `三火对应三星，日月星，点燃此灯阵，象征天地日月星合力庇佑，为天时。天时引动家宅地脉，为地利，三火是人间希望之火，为人和，天时地利人和则无往不破！增强家宅气运运势，破除一切危难险阻，邪祟不得靠近，日月星给予庇佑，转动运势，三火再旺自身精气神，身体安康化解灾难，是三天宗旨之中的万用灯阵！`, 1019)">
+                    <span class="spell-category-tag">财运</span>
+                    <h3 class="spell-name">巫教三天五行宗旨：祝融三星催火阵</h3>
+                    <p class="spell-desc">三火对应三星，日月星，点燃此灯阵，象征天地日月星合力庇佑，为天时。天时引动家宅地脉，为地利，三火是人间希望之火，为人和，天时地利人和则无往不破！增强家宅气运运势，破除一切危难险阻，邪祟不得靠近，日月星给予庇佑，转动运势，三火再旺自身精气神，身体安康化解灾难，是三天宗旨之中的万用灯阵！</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>1019</div>
+                </div>
+                <div class="spell-card" onclick="openModal('巫教三天总旨：蓐收持斧判恶法', '财运', `蓐收古代的杀伐之神，金神秋神，天之刑神，司掌杀伐，以蓐收之神威运用本法，判恶人奸人小人恶业罪行，因果惩戒更早到来，蓐收更会注意此人，若有害人之行，报应更深及消减祖先福德荫庇，阴间的祖先都不会好过，后果与业障翻倍让此人自食恶果，若之前有人故意害人可用此法惩戒之，且对你不会有任何影响，若司法公正，蓐收也会对法师更为看好，更加庇佑。若为善人则庇佑其破一切小人恶人险阻，得到蓐收的加持！`, 1026)">
+                    <span class="spell-category-tag">财运</span>
+                    <h3 class="spell-name">巫教三天总旨：蓐收持斧判恶法</h3>
+                    <p class="spell-desc">蓐收古代的杀伐之神，金神秋神，天之刑神，司掌杀伐，以蓐收之神威运用本法，判恶人奸人小人恶业罪行，因果惩戒更早到来，蓐收更会注意此人，若有害人之行，报应更深及消减祖先福德荫庇，阴间的祖先都不会好过，后果与业障翻倍让此人自食恶果，若之前有人故意害人可用此法惩戒之，且对你不会有任何影响，若司法公正，蓐收也会对法师更为看好，更加庇佑。若为善人则庇佑其破一切小人恶人险阻，得到蓐收的加持！</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>1026</div>
+                </div>
+            </div>
+        </div>
+        <div class="category-section" data-category="雷法">
+            <h2 class="category-title">雷法法阵</h2>
+            <div class="spells-grid">
+                <div class="spell-card" onclick="openModal('巫尤祭号令法', '雷法', `巫尤之中的祭号令之法，如五雷号令令牌，天皇号令令牌，以天雷敕炼号令天神，阴神，鬼祟，精怪，兵马，仙家，以雷为号无不听从，内有祖师威严，可用此令牌号令风雨。`, 1010)">
+                    <span class="spell-category-tag">雷法</span>
+                    <h3 class="spell-name">巫尤祭号令法</h3>
+                    <p class="spell-desc">巫尤之中的祭号令之法，如五雷号令令牌，天皇号令令牌，以天雷敕炼号令天神，阴神，鬼祟，精怪，兵马，仙家，以雷为号无不听从，内有祖师威严，可用此令牌号令风雨。</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>1010</div>
+                </div>
+                <div class="spell-card" onclick="openModal('巫法五雷拘阴气法', '雷法', `也用于治他人身上的虚病，五雷入他人身体，驱逐体内的诸多邪病，病气，附体所遗留下来的虚病，皆可以用此法调整改善。`, 1123)">
+                    <span class="spell-category-tag">雷法</span>
+                    <h3 class="spell-name">巫法五雷拘阴气法</h3>
+                    <p class="spell-desc">也用于治他人身上的虚病，五雷入他人身体，驱逐体内的诸多邪病，病气，附体所遗留下来的虚病，皆可以用此法调整改善。</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>1123</div>
+                </div>
+                <div class="spell-card" onclick="openModal('巫法起神雷监兵法', '雷法', `若有兵将兵马不服管制，可用此引动神雷，监各类兵马做事，若有懈怠之意，神雷霹雳，更好的完成诸多事宜，也可以用于仙家，以及灵体，对收摄的灵体有极强的压制作用，如自己收的孤魂野鬼，精怪等，皆十分有效。`, 1086)">
+                    <span class="spell-category-tag">雷法</span>
+                    <h3 class="spell-name">巫法起神雷监兵法</h3>
+                    <p class="spell-desc">若有兵将兵马不服管制，可用此引动神雷，监各类兵马做事，若有懈怠之意，神雷霹雳，更好的完成诸多事宜，也可以用于仙家，以及灵体，对收摄的灵体有极强的压制作用，如自己收的孤魂野鬼，精怪等，皆十分有效。</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>1086</div>
+                </div>
+                <div class="spell-card" onclick="openModal('十二辰阳箭法', '雷法', `本法对太阳正炁及五雷火的多种运用，是其他法不可及。太阳为至阳至刚的力量可破一切魑魅魍魉迷眼恶煞，五雷火是天地所开可焚万物不息的显现，是武法又是祭练法器之法，调动太阳的能量，行雷火之威。亦可遵循本法制出一把法箭，加持所有加持符法，本法箭随身携带用于敕符，画符，行法皆可，会有更强的威能因有太阳，和雷火加持，此法较为纯正属于古法一种！`, 1121)">
+                    <span class="spell-category-tag">雷法</span>
+                    <h3 class="spell-name">十二辰阳箭法</h3>
+                    <p class="spell-desc">本法对太阳正炁及五雷火的多种运用，是其他法不可及。太阳为至阳至刚的力量可破一切魑魅魍魉迷眼恶煞，五雷火是天地所开可焚万物不息的显现，是武法又是祭练法器之法，调动太阳的能量，行雷火之威。亦可遵循本法制出一把法箭，加持所有加持符法，本法箭随身携带用于敕符，画符，行法皆可，会有更强的威能因有太阳，和雷火加持，此法较为纯正属于古法一种！</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>1121</div>
+                </div>
+                <div class="spell-card" onclick="openModal('巫教天雷神打印', '雷法', `大家在我之前的课中，咒语上经常可以看见天雷字样，本法便是请天雷神下法于手掌，轰打邪祟恶鬼，且用此法之手，不可随意拍人，以防人魂魄受伤。`, 1151)">
+                    <span class="spell-category-tag">雷法</span>
+                    <h3 class="spell-name">巫教天雷神打印</h3>
+                    <p class="spell-desc">大家在我之前的课中，咒语上经常可以看见天雷字样，本法便是请天雷神下法于手掌，轰打邪祟恶鬼，且用此法之手，不可随意拍人，以防人魂魄受伤。</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>1151</div>
+                </div>
+                <div class="spell-card" onclick="openModal('天罡顶雷掌', '雷法', `念咒语三遍，将此符画在手上，观想神将存于掌中，随后朝邪魔打出，即可发神将前去，或发五雷打出。`, 1136)">
+                    <span class="spell-category-tag">雷法</span>
+                    <h3 class="spell-name">天罡顶雷掌</h3>
+                    <p class="spell-desc">念咒语三遍，将此符画在手上，观想神将存于掌中，随后朝邪魔打出，即可发神将前去，或发五雷打出。</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>1136</div>
+                </div>
+                <div class="spell-card" onclick="openModal('鸟头雷公神符', '雷法', `鸟头雷公最主快捷，是天地神雷中最神速的代表，此符请上古雷公：鸟头雷公的神威，入于符中，行霹雳之法，打一切邪魔恶鬼，可千里飞符瞬打邪魔，其中此雷乃是金雷！此术若在天空击打黄色雷霆时焚烧此符，若有缘分则会在雷中瞧见雷公真容！`, 1093)">
+                    <span class="spell-category-tag">雷法</span>
+                    <h3 class="spell-name">鸟头雷公神符</h3>
+                    <p class="spell-desc">鸟头雷公最主快捷，是天地神雷中最神速的代表，此符请上古雷公：鸟头雷公的神威，入于符中，行霹雳之法，打一切邪魔恶鬼，可千里飞符瞬打邪魔，其中此雷乃是金雷！此术若在天空击打黄色雷霆时焚烧此符，若有缘分则会在雷中瞧见雷公真容！</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>1093</div>
+                </div>
+                <div class="spell-card" onclick="openModal('龙首雷公布雷术', '雷法', `上古时代雷公皆为人首兽身，兽首人身，象征其超自然的力量，驾驭天罡神威！雷主天地神威，雷神雷公腾挪天地之中，布雷行法，展示天公神威，此术结下，小为结界安镇家宅，大为威慑八方之雷法！`, 1110)">
+                    <span class="spell-category-tag">雷法</span>
+                    <h3 class="spell-name">龙首雷公布雷术</h3>
+                    <p class="spell-desc">上古时代雷公皆为人首兽身，兽首人身，象征其超自然的力量，驾驭天罡神威！雷主天地神威，雷神雷公腾挪天地之中，布雷行法，展示天公神威，此术结下，小为结界安镇家宅，大为威慑八方之雷法！</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>1110</div>
+                </div>
+                <div class="spell-card" onclick="openModal('小五行雷正气术', '雷法', `天地自有五行之气，五行运变五雷之气，在天显象，在地成形，人体五脏合为五行，以以五脏纳天地五行五雷，五行之气入身体之中可运作调理五脏，增长五雷之威，强身健体，排毒明心，特别是修炼出错之人，长修可找回自身明智不会随意被鬼邪蒙蔽，因修此雷法心中凝结一丝正气，定自身魂魄，心中有正气，万法皆灵`, 1033)">
+                    <span class="spell-category-tag">雷法</span>
+                    <h3 class="spell-name">小五行雷正气术</h3>
+                    <p class="spell-desc">天地自有五行之气，五行运变五雷之气，在天显象，在地成形，人体五脏合为五行，以以五脏纳天地五行五雷，五行之气入身体之中可运作调理五脏，增长五雷之威，强身健体，排毒明心，特别是修炼出错之人，长修可找回自身明智不会随意被鬼邪蒙蔽，因修此雷法心中凝结一丝正气，定自身魂魄，心中有正气，万法皆灵</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>1033</div>
+                </div>
+                <div class="spell-card" onclick="openModal('五雷空吼术', '雷法', `五雷是天地显现的怒音，怒音藏在喉中，开五雷之音，如雷神真言，狮虎吼鸣，增强一切咒文的威力，如吐雷音，运用雷法震人神魂，震慑鬼魂，运用在咒语和沟通之上更能摄人心神！`, 1194)">
+                    <span class="spell-category-tag">雷法</span>
+                    <h3 class="spell-name">五雷空吼术</h3>
+                    <p class="spell-desc">五雷是天地显现的怒音，怒音藏在喉中，开五雷之音，如雷神真言，狮虎吼鸣，增强一切咒文的威力，如吐雷音，运用雷法震人神魂，震慑鬼魂，运用在咒语和沟通之上更能摄人心神！</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>1194</div>
+                </div>
+                <div class="spell-card" onclick="openModal('五雷正气罐术', '雷法', `准备一个罐子荡秽，随后用朱砂在罐子上面画符，画好后双手捧住对其念咒语七遍即可使用。`, 1049)">
+                    <span class="spell-category-tag">雷法</span>
+                    <h3 class="spell-name">五雷正气罐术</h3>
+                    <p class="spell-desc">准备一个罐子荡秽，随后用朱砂在罐子上面画符，画好后双手捧住对其念咒语七遍即可使用。</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>1049</div>
+                </div>
+                <div class="spell-card" onclick="openModal('九牛雷公符', '雷法', `黄纸朱书画符，画好后三支香描画符一遍，可盖三个印，不盖也可以使用。`, 1108)">
+                    <span class="spell-category-tag">雷法</span>
+                    <h3 class="spell-name">九牛雷公符</h3>
+                    <p class="spell-desc">黄纸朱书画符，画好后三支香描画符一遍，可盖三个印，不盖也可以使用。</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>1108</div>
+                </div>
+                <div class="spell-card" onclick="openModal('祭五雷天将术', '雷法', `半个小时后，此火凝练成符讳，遁入心中，深呼吸吐气即可。`, 1118)">
+                    <span class="spell-category-tag">雷法</span>
+                    <h3 class="spell-name">祭五雷天将术</h3>
+                    <p class="spell-desc">半个小时后，此火凝练成符讳，遁入心中，深呼吸吐气即可。</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>1118</div>
+                </div>
+                <div class="spell-card" onclick="openModal('三天总旨：春雷起阳纳身术', '雷法', `春有惊蛰节气，是一年之中可数的最佳修炼雷法的日子，诸多法门都会有在此天修炼雷法的法密所在，惊蛰纳天地第一道春雷入体内，激发自身雷法之威，增幅自身所炼的所有雷法威能，在惊蛰时运用此法最佳，平日打雷同样可用，纳雷入丹田破自身中一切邪气，去邪起阳双目有神，自带雷威，感召天地雷神雷公，惊蛰春雷现，天地万物生！`, 1145)">
+                    <span class="spell-category-tag">雷法</span>
+                    <h3 class="spell-name">三天总旨：春雷起阳纳身术</h3>
+                    <p class="spell-desc">春有惊蛰节气，是一年之中可数的最佳修炼雷法的日子，诸多法门都会有在此天修炼雷法的法密所在，惊蛰纳天地第一道春雷入体内，激发自身雷法之威，增幅自身所炼的所有雷法威能，在惊蛰时运用此法最佳，平日打雷同样可用，纳雷入丹田破自身中一切邪气，去邪起阳双目有神，自带雷威，感召天地雷神雷公，惊蛰春雷现，天地万物生！</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>1145</div>
+                </div>
+            </div>
+        </div>
+        <div class="category-section" data-category="驱邪">
+            <h2 class="category-title">驱邪法阵</h2>
+            <div class="spells-grid">
+                <div class="spell-card" onclick="openModal('巫教五百天雷收邪诀', '驱邪', `本法通天雷之法，惩恶收邪，召请五百天雷齐齐轰杀邪祟恶鬼，此天雷乃是巫教雷神所发所打，对待作恶邪祟邪师和各种阴鬼恶煞皆有极强的压制能力，其中古语契合雷法法密，行法者身如雷神愤怒之象，则可号令五百天雷随法师心意调用斩邪，或可以天雷囚禁鬼祟受鬼除邪！五百天雷随心运作，变化雷神降凡收邪！`, 866)">
+                    <span class="spell-category-tag">驱邪</span>
+                    <h3 class="spell-name">巫教五百天雷收邪诀</h3>
+                    <p class="spell-desc">本法通天雷之法，惩恶收邪，召请五百天雷齐齐轰杀邪祟恶鬼，此天雷乃是巫教雷神所发所打，对待作恶邪祟邪师和各种阴鬼恶煞皆有极强的压制能力，其中古语契合雷法法密，行法者身如雷神愤怒之象，则可号令五百天雷随法师心意调用斩邪，或可以天雷囚禁鬼祟受鬼除邪！五百天雷随心运作，变化雷神降凡收邪！</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>866</div>
+                </div>
+                <div class="spell-card" onclick="openModal('十二路妖雷术', '驱邪', `普天之下雷法万千，则不止雷法五雷对应五种状况，五种不同的生命形态，而妖雷则是最为无情或可称为最狠戾的雷法之一，妖顾名思义，是一切精怪魍魉非人力而成之物，妖雷专杀各路鬼祟，此为大乘雷法之一，上杀龙神凤仙，下斩草头恶精，然此雷法是精怪之克星，则十分凶戾，是否修行皆需自我定夺！`, 913)">
+                    <span class="spell-category-tag">驱邪</span>
+                    <h3 class="spell-name">十二路妖雷术</h3>
+                    <p class="spell-desc">普天之下雷法万千，则不止雷法五雷对应五种状况，五种不同的生命形态，而妖雷则是最为无情或可称为最狠戾的雷法之一，妖顾名思义，是一切精怪魍魉非人力而成之物，妖雷专杀各路鬼祟，此为大乘雷法之一，上杀龙神凤仙，下斩草头恶精，然此雷法是精怪之克星，则十分凶戾，是否修行皆需自我定夺！</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>913</div>
+                </div>
+                <div class="spell-card" onclick="openModal('催五行术', '驱邪', `此术催五脏五行生气，补五脏亏损，内正脏器，外驱邪魔，正自身五脏之气，外纳天地灵气，内化五行生机。以此法打入身体之中，改正自身生气，配合穴道经络运用可更加顺利调整五脏之气。可以此退邪气，附体仙家等。`, 929)">
+                    <span class="spell-category-tag">驱邪</span>
+                    <h3 class="spell-name">催五行术</h3>
+                    <p class="spell-desc">此术催五脏五行生气，补五脏亏损，内正脏器，外驱邪魔，正自身五脏之气，外纳天地灵气，内化五行生机。以此法打入身体之中，改正自身生气，配合穴道经络运用可更加顺利调整五脏之气。可以此退邪气，附体仙家等。</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>929</div>
+                </div>
+                <div class="spell-card" onclick="openModal('巫教三天总旨：玄冥北府掠精术', '驱邪', `古籍有记载，玄冥之北府，幽冥也。可收敛恶人魂魄，作恶精怪，仙家，邪祟将其在北府之中兴使杀伐，让恶人魂魄永不得出，死后受到玄冥之神的管制，哪怕死后有怨气，也难以害人，同时挂起寒风伤其恶人魂魄，卷走其怨气，入北府怨气不消则不得轮回！`, 877)">
+                    <span class="spell-category-tag">驱邪</span>
+                    <h3 class="spell-name">巫教三天总旨：玄冥北府掠精术</h3>
+                    <p class="spell-desc">古籍有记载，玄冥之北府，幽冥也。可收敛恶人魂魄，作恶精怪，仙家，邪祟将其在北府之中兴使杀伐，让恶人魂魄永不得出，死后受到玄冥之神的管制，哪怕死后有怨气，也难以害人，同时挂起寒风伤其恶人魂魄，卷走其怨气，入北府怨气不消则不得轮回！</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>877</div>
+                </div>
+                <div class="spell-card" onclick="openModal('巫教三天总旨：祝融发火龙术', '驱邪', `请到祝融火神，发出脚下之火龙，火龙到处驱逐邪祟恶鬼厄运，将其退掉或者焚烧掉，且可加持在灯阵之上，火龙庇佑灯阵对应善信，为此人催旺运势，火旺人旺，火兴人兴，且一些阻拦皆会自行破除，或用此法放出祝融火龙追邪灭祟，速发火龙杀机，可杀伐可庇佑，火龙发神威！`, 832)">
+                    <span class="spell-category-tag">驱邪</span>
+                    <h3 class="spell-name">巫教三天总旨：祝融发火龙术</h3>
+                    <p class="spell-desc">请到祝融火神，发出脚下之火龙，火龙到处驱逐邪祟恶鬼厄运，将其退掉或者焚烧掉，且可加持在灯阵之上，火龙庇佑灯阵对应善信，为此人催旺运势，火旺人旺，火兴人兴，且一些阻拦皆会自行破除，或用此法放出祝融火龙追邪灭祟，速发火龙杀机，可杀伐可庇佑，火龙发神威！</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>832</div>
+                </div>
+                <div class="spell-card" onclick="openModal('三天五行总旨：后土地神掌', '驱邪', `后土是为地母地神，阴神之主，本掌善恶并用，善可简单的渡解当地的凶恶鬼怪，让当地鬼头敬畏一二，恶可打灭邪祟恶鬼恶人，摧打恶人地气，地气不足心神不宁，疑神疑鬼，寝食难安，是为善恶并行之法。善用此掌者，可得当方附近山神土地的扶持和注视，后面行法会更加如意，当地的神明也会给予一分薄面。`, 817)">
+                    <span class="spell-category-tag">驱邪</span>
+                    <h3 class="spell-name">三天五行总旨：后土地神掌</h3>
+                    <p class="spell-desc">后土是为地母地神，阴神之主，本掌善恶并用，善可简单的渡解当地的凶恶鬼怪，让当地鬼头敬畏一二，恶可打灭邪祟恶鬼恶人，摧打恶人地气，地气不足心神不宁，疑神疑鬼，寝食难安，是为善恶并行之法。善用此掌者，可得当方附近山神土地的扶持和注视，后面行法会更加如意，当地的神明也会给予一分薄面。</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>817</div>
+                </div>
+                <div class="spell-card" onclick="openModal('三天五行总旨：祝融起火坛术', '驱邪', `什么是火坛，其实不是真实的坛，而是借天火，打出鬼怪眼中的火坛去冲杀邪祟恶鬼邪兵坛场，亦可以对他人家所在的家神及供奉的仙家打出。若对坛场的蜡烛上打出起火坛，火中带神，可对接近坛场的邪祟打出天火以此震慑，可以保护坛场，和法师行法不受大的干扰，同时运用此法调动祝融大神还有天火，用法时可能会变得愤怒，但是因人而异。`, 993)">
+                    <span class="spell-category-tag">驱邪</span>
+                    <h3 class="spell-name">三天五行总旨：祝融起火坛术</h3>
+                    <p class="spell-desc">什么是火坛，其实不是真实的坛，而是借天火，打出鬼怪眼中的火坛去冲杀邪祟恶鬼邪兵坛场，亦可以对他人家所在的家神及供奉的仙家打出。若对坛场的蜡烛上打出起火坛，火中带神，可对接近坛场的邪祟打出天火以此震慑，可以保护坛场，和法师行法不受大的干扰，同时运用此法调动祝融大神还有天火，用法时可能会变得愤怒，但是因人而异。</p>
+                    <div class="spell-price"><span>结缘价 ¥</span>993</div>
                 </div>
             </div>
         </div>
     </div>
-
-    <script src="spells_data.js"></script>
-    <script src="calendar.js"></script>
-    <script src="app.js"></script>
+    
+    <!-- 弹窗 -->
+    <div class="modal" id="spellModal" onclick="closeModal(event)">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <span class="modal-close" onclick="closeModal()">&times;</span>
+            <h2 class="modal-title" id="modalTitle"></h2>
+            <div class="modal-category" id="modalCategory"></div>
+            <div class="modal-desc" id="modalDesc"></div>
+            <div class="modal-price"><span>结缘价 ¥</span><span id="modalPrice"></span></div>
+            <p class="modal-note">注：以上仅为用途介绍，具体法门传承需拜师学习</p>
+        </div>
+    </div>
+    
+    <footer>
+        <p>元一森秘传 · 传承上古巫法</p>
+        <p style="font-size: 0.8rem; margin-top: 10px;">仅供学习交流，请理性看待民俗文化</p>
+    </footer>
+    
+    <script>
+        // 签文数据
+        const fortunes = [{"type": "大吉", "content": "紫微星照，福禄双全，诸事顺遂，心想事成。", "color": "#FFD700"}, {"type": "吉", "content": "天官赐福，百无禁忌，贵人相助，前程似锦。", "color": "#FFA500"}, {"type": "中吉", "content": "月德呈祥，平安喜乐，稳中求进，福运绵长。", "color": "#87CEEB"}, {"type": "平", "content": "诸事平平，守旧为宜，静观其变，以静待动。", "color": "#C0C0C0"}, {"type": "小凶", "content": "运势微滞，谨慎行事，防患未然，可保安康。", "color": "#808080"}, {"type": "凶", "content": "岁破当头，诸事不宜，谨言慎行，避祸就福。", "color": "#4a4a4a"}, {"type": "大凶", "content": "凶星临命，宜静不宜动，修身养性，以待时机。", "color": "#2a2a2a"}];
+        
+        // 抽签功能
+        function drawFortune() {
+            const result = document.getElementById('fortuneResult');
+            const typeEl = document.getElementById('fortuneType');
+            const contentEl = document.getElementById('fortuneContent');
+            
+            // 随机选择
+            const fortune = fortunes[Math.floor(Math.random() * fortunes.length)];
+            
+            typeEl.textContent = fortune.type;
+            typeEl.style.color = fortune.color;
+            contentEl.textContent = fortune.content;
+            
+            result.classList.add('show');
+            result.style.borderColor = fortune.color;
+        }
+        
+        // 弹窗功能
+        function openModal(name, category, desc, price) {
+            document.getElementById('modalTitle').textContent = name;
+            document.getElementById('modalCategory').textContent = category + ' · 元一森秘传';
+            document.getElementById('modalDesc').textContent = desc;
+            document.getElementById('modalPrice').textContent = price;
+            document.getElementById('spellModal').classList.add('show');
+        }
+        
+        function closeModal(event) {
+            if (!event || event.target.id === 'spellModal' || event.target.className === 'modal-close') {
+                document.getElementById('spellModal').classList.remove('show');
+            }
+        }
+        
+        // 分类筛选
+        document.querySelectorAll('nav li').forEach(item => {
+            item.addEventListener('click', function() {
+                // 更新导航状态
+                document.querySelectorAll('nav li').forEach(li => li.classList.remove('active'));
+                this.classList.add('active');
+                
+                const category = this.getAttribute('data-category');
+                
+                // 显示/隐藏分类
+                document.querySelectorAll('.category-section').forEach(section => {
+                    if (category === 'all' || section.getAttribute('data-category') === category) {
+                        section.classList.remove('hidden');
+                    } else {
+                        section.classList.add('hidden');
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 </html>
