@@ -82,86 +82,260 @@
             color: var(--dark-bg);
         }
         
-        /* 通胜日历区域 */
-        .tongsheng-section {
-            max-width: 1000px;
+        /* 每日摇签区域 */
+        .qian-section {
+            max-width: 800px;
             margin: 30px auto;
             padding: 0 20px;
         }
         
-        .tongsheng-header {
-            background: var(--primary-red);
+        .qian-container {
+            background: linear-gradient(145deg, #fff 0%, #faf8f3 100%);
+            border-radius: 15px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+            overflow: hidden;
+            border: 2px solid var(--primary-gold);
+        }
+        
+        .qian-header {
+            background: linear-gradient(135deg, var(--primary-red), #6b0011);
             color: white;
-            padding: 20px;
+            padding: 25px 20px;
             text-align: center;
-            border-radius: 10px 10px 0 0;
+            position: relative;
         }
         
-        .tongsheng-header h2 {
+        .qian-header::before,
+        .qian-header::after {
+            content: '☯';
+            position: absolute;
+            font-size: 2rem;
+            color: var(--primary-gold);
+            opacity: 0.5;
+        }
+        
+        .qian-header::before { left: 30px; top: 50%; transform: translateY(-50%); }
+        .qian-header::after { right: 30px; top: 50%; transform: translateY(-50%); }
+        
+        .qian-header h2 {
             font-size: 1.8rem;
-            margin-bottom: 10px;
-        }
-        
-        .tongsheng-date {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 20px;
-            margin-top: 15px;
-        }
-        
-        .tongsheng-date button {
-            background: var(--primary-gold);
-            border: none;
-            color: var(--dark-bg);
-            padding: 8px 15px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 1.2rem;
-        }
-        
-        .tongsheng-body {
-            background: white;
-            padding: 20px;
-            border-radius: 0 0 10px 10px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-        }
-        
-        .calendar-info {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-        
-        .info-card {
-            background: #faf8f3;
-            padding: 15px;
-            border-radius: 8px;
-            border-left: 4px solid var(--primary-gold);
-        }
-        
-        .info-card h3 {
-            color: var(--primary-red);
-            font-size: 0.9rem;
             margin-bottom: 5px;
         }
         
-        .info-card p {
-            font-size: 1.1rem;
+        .qian-header p {
+            color: var(--primary-gold);
+            font-size: 0.9rem;
+        }
+        
+        .qian-body {
+            padding: 30px;
+        }
+        
+        /* 摇签按钮 */
+        .shake-btn {
+            display: block;
+            width: 100%;
+            max-width: 280px;
+            margin: 0 auto 30px;
+            padding: 18px 40px;
+            background: linear-gradient(135deg, var(--primary-red), #6b0011);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.3rem;
+            font-family: inherit;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 5px 20px rgba(139, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .shake-btn::before {
+            content: '🔮';
+            margin-right: 10px;
+        }
+        
+        .shake-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(139, 0, 0, 0.4);
+        }
+        
+        .shake-btn:active {
+            transform: translateY(0);
+        }
+        
+        .shake-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        
+        .shake-btn.shaking {
+            animation: shake 0.5s ease-in-out 3;
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
+        }
+        
+        /* 签文结果 */
+        .qian-result {
+            display: none;
+            animation: fadeIn 0.6s ease;
+        }
+        
+        .qian-result.show {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* 签类型标识 */
+        .qian-type {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        
+        .qian-badge {
+            display: inline-block;
+            padding: 12px 35px;
+            border-radius: 30px;
+            font-size: 1.4rem;
+            font-weight: 700;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+        }
+        
+        .qian-badge.shang {
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            color: #8B4513;
+        }
+        
+        .qian-badge.zhong {
+            background: linear-gradient(135deg, #87CEEB, #4682B4);
+            color: white;
+        }
+        
+        .qian-badge.xia {
+            background: linear-gradient(135deg, #696969, #2F4F4F);
+            color: white;
+        }
+        
+        /* 签诗 */
+        .qian-poem {
+            background: linear-gradient(145deg, #fff9f0 0%, #f5efe6 100%);
+            border: 2px solid var(--primary-gold);
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 25px;
+            text-align: center;
+            position: relative;
+        }
+        
+        .qian-poem::before {
+            content: '签诗';
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--primary-gold);
+            color: var(--dark-bg);
+            padding: 3px 20px;
+            border-radius: 15px;
+            font-size: 0.85rem;
             font-weight: 600;
         }
         
+        .qian-poem .poem-text {
+            font-size: 1.15rem;
+            line-height: 2;
+            color: var(--text-dark);
+            font-weight: 500;
+        }
+        
+        .qian-poem .poem-title {
+            font-size: 1.1rem;
+            color: var(--primary-red);
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+        
+        /* 解签 */
+        .qian-explain {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-left: 4px solid var(--primary-red);
+        }
+        
+        .qian-explain h3 {
+            color: var(--primary-red);
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .qian-explain p {
+            color: #555;
+            line-height: 1.9;
+        }
+        
+        /* 运势 */
+        .fortune-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        
+        .fortune-item {
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            border: 1px solid #eee;
+            transition: all 0.3s;
+        }
+        
+        .fortune-item:hover {
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+        
+        .fortune-item h4 {
+            font-size: 0.9rem;
+            color: #888;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .fortune-item .stars {
+            font-size: 1.1rem;
+            letter-spacing: 2px;
+        }
+        
+        .stars.good { color: var(--primary-red); }
+        .stars.normal { color: #D4AF37; }
+        .stars.bad { color: #999; }
+        
+        /* 宜忌 */
         .yi-ji-section {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            margin-top: 20px;
+            gap: 15px;
         }
         
         .yi-box, .ji-box {
-            padding: 15px;
-            border-radius: 8px;
+            padding: 18px;
+            border-radius: 10px;
         }
         
         .yi-box {
@@ -175,12 +349,46 @@
         }
         
         .yi-box h4, .ji-box h4 {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
         
         .yi-box h4 { color: #4a7c59; }
         .ji-box h4 { color: #c41e3a; }
+        
+        .yi-box p, .ji-box p {
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+        
+        /* 重置按钮 */
+        .reset-hint {
+            text-align: center;
+            margin-top: 20px;
+            color: #888;
+            font-size: 0.85rem;
+        }
+        
+        .reset-btn {
+            background: transparent;
+            border: 1px solid var(--primary-gold);
+            color: var(--primary-gold);
+            padding: 8px 25px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+            margin-left: 10px;
+        }
+        
+        .reset-btn:hover {
+            background: var(--primary-gold);
+            color: var(--dark-bg);
+        }
         
         /* 法术分类区域 */
         .spells-section {
@@ -382,6 +590,8 @@
             header h1 { font-size: 1.8rem; }
             .yi-ji-section { grid-template-columns: 1fr; }
             .spells-grid { grid-template-columns: 1fr; }
+            .fortune-grid { grid-template-columns: 1fr; }
+            .qian-header::before, .qian-header::after { display: none; }
         }
     </style>
 </head>
@@ -405,55 +615,20 @@
         </ul>
     </nav>
     
-    <!-- 通胜日历 -->
-    <section class="tongsheng-section">
-        <div class="tongsheng-header">
-            <h2>通胜日历</h2>
-            <div class="tongsheng-date">
-                <button onclick="changeMonth(-1)">◀</button>
-                <span id="current-date" style="font-size: 1.5rem;">2026年2月7日</span>
-                <button onclick="changeMonth(1)">▶</button>
+    <!-- 每日摇签 -->
+    <section class="qian-section">
+        <div class="qian-container">
+            <div class="qian-header">
+                <h2>🎋 每日摇签</h2>
+                <p>诚心问卜 · 指点迷津</p>
             </div>
-        </div>
-        <div class="tongsheng-body">
-            <div class="calendar-info">
-                <div class="info-card">
-                    <h3>农历</h3>
-                    <p id="lunar-date">乙巳年正月二十</p>
-                </div>
-                <div class="info-card">
-                    <h3>干支</h3>
-                    <p id="ganzhi">乙巳年 戊寅月 丁未日</p>
-                </div>
-                <div class="info-card">
-                    <h3>节气</h3>
-                    <p id="jieqi">立春后</p>
-                </div>
-                <div class="info-card">
-                    <h3>冲煞</h3>
-                    <p id="chongsha">冲牛煞西</p>
-                </div>
-            </div>
-            
-            <div class="calendar-info">
-                <div class="info-card">
-                    <h3>吉神</h3>
-                    <p id="jishen">天德合 月德合 四相 王日</p>
-                </div>
-                <div class="info-card">
-                    <h3>凶煞</h3>
-                    <p id="xiongsha">游祸 天吏 五虚 白虎</p>
-                </div>
-            </div>
-            
-            <div class="yi-ji-section">
-                <div class="yi-box">
-                    <h4>宜</h4>
-                    <p id="yi-list">祭祀 祈福 求嗣 开光 出行 解除 伐木 拆卸 修造 动土 起基 安床 纳畜 入殓 破土</p>
-                </div>
-                <div class="ji-box">
-                    <h4>忌</h4>
-                    <p id="ji-list">嫁娶 移徙 作灶 掘井</p>
+            <div class="qian-body">
+                <button class="shake-btn" id="shakeBtn" onclick="drawQian()">
+                    摇一摇求签
+                </button>
+                
+                <div class="qian-result" id="qianResult">
+                    <!-- 动态生成签文 -->
                 </div>
             </div>
         </div>
@@ -498,9 +673,138 @@
     </footer>
     
     <script>
-        // 法术数据
+        // ==================== 签文数据 ====================
+        const qianData = {
+            shang: [
+                {
+                    title: "第一签 · 乾天在上",
+                    poem: "日出东方照九州，\n乾坤朗朗万事休。\n贵人相助逢时运，\n福禄双全不用求。",
+                    explain: "此签大吉之象，如日中天，万事亨通。得天时地利人和，凡事顺遂。贵人暗中相助，不必强求，自有福缘到来。",
+                    fortune: { wealth: "★★★★★", career: "★★★★★", love: "★★★★☆", health: "★★★★★" },
+                    yi: "求财、签约、出行、求职、婚嫁、置业",
+                    ji: "妄动、口舌、贪念、夜行"
+                },
+                {
+                    title: "第三签 · 龙凤呈祥",
+                    poem: "龙凤呈祥瑞气生，\n家宅安宁百事亨。\n贵人扶持天降福，\n金银满库福禄增。",
+                    explain: "祥瑞之兆，家宅平安，诸事顺遂。有贵人扶持，财运亨通，宜把握时机，积极进取。",
+                    fortune: { wealth: "★★★★★", career: "★★★★☆", love: "★★★★★", health: "★★★★☆" },
+                    yi: "婚嫁、添丁、置业、投资、合作",
+                    ji: "口舌、争斗、疑心"
+                },
+                {
+                    title: "第九签 · 三阳开泰",
+                    poem: "三阳开泰运初通，\n否极泰来喜气浓。\n守得云开见月明，\n时来运转万事从。",
+                    explain: "否极泰来之象，霉运已尽，好运将至。过去的不顺即将过去，未来光明可期，宜坚持信念。",
+                    fortune: { wealth: "★★★★☆", career: "★★★★★", love: "★★★★☆", health: "★★★★☆" },
+                    yi: "转型、创业、求医、考试、远行",
+                    ji: "守旧、犹豫、消极"
+                },
+                {
+                    title: "第十二签 · 紫气东来",
+                    poem: "紫气东来福满门，\n贵人接引上天恩。\n功名事业双双至，\n家宅康宁福禄存。",
+                    explain: "紫气东来，大吉之兆。有贵人提携，事业功名皆有所成。家宅平安，福禄绵长。",
+                    fortune: { wealth: "★★★★★", career: "★★★★★", love: "★★★★☆", health: "★★★★★" },
+                    yi: "升职、考试、签约、婚嫁、拜谒贵人",
+                    ji: "孤傲、自满、懈怠"
+                },
+                {
+                    title: "第十八签 · 天赐良缘",
+                    poem: "天赐良缘喜事频，\n花开并蒂结同心。\n百年好合鸳鸯配，\n琴瑟和鸣乐太平。",
+                    explain: "姻缘天定，佳偶天成。单身者有望遇良缘，已婚者感情和睦。凡事有人相助，喜气盈门。",
+                    fortune: { wealth: "★★★★☆", career: "★★★☆☆", love: "★★★★★", health: "★★★★☆" },
+                    yi: "相亲、约会、求婚、订婚、结婚",
+                    ji: "急躁、挑剔、冷漠"
+                }
+            ],
+            zhong: [
+                {
+                    title: "第二签 · 静水流深",
+                    poem: "静水流深未有声，\n韬光养晦待时兴。\n凡事守旧休妄动，\n循序渐进自然成。",
+                    explain: "此签中平之象，宜静不宜动。当下时机未到，当韬光养晦，静待时机。凡事循序渐进，不可急于求成。",
+                    fortune: { wealth: "★★★☆☆", career: "★★★☆☆", love: "★★★☆☆", health: "★★★★☆" },
+                    yi: "守旧、学习、积累、静养、反思",
+                    ji: "冒进、投资、跳槽、口舌"
+                },
+                {
+                    title: "第五签 · 守株待兔",
+                    poem: "守株待兔非良策，\n主动出击方有成。\n机会来时须把握，\n莫待无花空折枝。",
+                    explain: "守旧等待不如主动出击。机会稍纵即逝，需积极把握。凡事预则立，不预则废。",
+                    fortune: { wealth: "★★★☆☆", career: "★★★★☆", love: "★★☆☆☆", health: "★★★☆☆" },
+                    yi: "主动、求职、学习、健身、断舍离",
+                    ji: "等待、依赖、懒惰、拖延"
+                },
+                {
+                    title: "第七签 · 波澜不惊",
+                    poem: "波澜不惊水面平，\n风平浪静好行舟。\n虽然无大喜来到，\n也无灾殃与祸侵。",
+                    explain: "平淡之签，无大喜亦无忧。生活平稳，宜守成不宜扩张。保持现状，静待时机。",
+                    fortune: { wealth: "★★★☆☆", career: "★★★☆☆", love: "★★★☆☆", health: "★★★★☆" },
+                    yi: "守成、日常、整理、修养、储蓄",
+                    ji: "投资、冒险、扩张、借贷"
+                },
+                {
+                    title: "第十五签 · 如履薄冰",
+                    poem: "如履薄冰步步惊，\n谨慎行事保安宁。\n虽有小人来暗算，\n心存正念祸不侵。",
+                    explain: "当前处境需谨慎，有小人暗中使绊。只要心存正念，谨慎行事，终能化险为夷。",
+                    fortune: { wealth: "★★☆☆☆", career: "★★★☆☆", love: "★★★☆☆", health: "★★★☆☆" },
+                    yi: "谨慎、低调、核查、防备、静思",
+                    ji: "轻信、张扬、借贷、担保"
+                },
+                {
+                    title: "第二十一签 · 柳暗花明",
+                    poem: "柳暗花明又一村，\n困境之中有转圜。\n莫因一时失意苦，\n须知雨后见青天。",
+                    explain: "困境中有转机，失意是暂时的。坚持下去，必有柳暗花明之时。宜保持乐观心态。",
+                    fortune: { wealth: "★★★☆☆", career: "★★★☆☆", love: "★★★★☆", health: "★★★☆☆" },
+                    yi: "坚持、求助、变通、就医、沟通",
+                    ji: "放弃、自闭、固执、消沉"
+                }
+            ],
+            xia: [
+                {
+                    title: "第四签 · 风雨飘摇",
+                    poem: "风雨飘摇浪打舟，\n行船遇险莫强求。\n暂且收帆归港湾，\n待得天晴再出游。",
+                    explain: "运势低迷，诸事不顺，如风雨中的小船。此时宜退守，不宜进取，静待时机再作打算。",
+                    fortune: { wealth: "★★☆☆☆", career: "★★☆☆☆", love: "★☆☆☆☆", health: "★★☆☆☆" },
+                    yi: "静守、退避、养生、反思、断舍离",
+                    ji: "投资、出行、签约、婚嫁、争执"
+                },
+                {
+                    title: "第六签 · 镜花水月",
+                    poem: "镜花水月空悠悠，\n求名求利两无由。\n莫把幻当真中事，\n脚踏实地是良谋。",
+                    explain: "所求皆为空幻，如镜花水月。提醒不要沉迷于虚妄，应脚踏实地，务实为上。",
+                    fortune: { wealth: "★☆☆☆☆", career: "★★☆☆☆", love: "★☆☆☆☆", health: "★★★☆☆" },
+                    yi: "自省、学习、务实、储蓄、早睡",
+                    ji: "投机、借贷、赌博、酒色"
+                },
+                {
+                    title: "第十一签 · 乌云遮月",
+                    poem: "乌云遮月暗无光，\n行事多阻好心伤。\n小人当道君须避，\n且把心情暂收藏。",
+                    explain: "时运不济，小人当道。诸事受阻，心情低落。宜韬光养晦，避其锋芒，等待云开月明。",
+                    fortune: { wealth: "★☆☆☆☆", career: "★★☆☆☆", love: "★★☆☆☆", health: "★★☆☆☆" },
+                    yi: "静养、避祸、读书、早睡、独处",
+                    ji: "投资、合作、求职、远行、争执"
+                },
+                {
+                    title: "第十六签 · 破镜难圆",
+                    poem: "破镜难圆事已去，\n覆水难收莫再提。\n往事如烟随它去，\n重整旗鼓待新机。",
+                    explain: "有些事情已成过去，无法挽回。与其沉溺于过去，不如放下执念，重新出发。",
+                    fortune: { wealth: "★★☆☆☆", career: "★★☆☆☆", love: "★☆☆☆☆", health: "★★★☆☆" },
+                    yi: "放下、整理、学习、健身、规划",
+                    ji: "纠缠、回头、执念、挥霍"
+                },
+                {
+                    title: "第二十签 · 逆水行舟",
+                    poem: "逆水行舟用力多，\n费尽辛苦又如何。\n不如守旧安心过，\n待得来年好运过。",
+                    explain: "当前运势不佳，做事事倍功半。宜暂时守旧，不宜强行进取。养精蓄锐，等待来年。",
+                    fortune: { wealth: "★☆☆☆☆", career: "★★☆☆☆", love: "★★☆☆☆", health: "★★☆☆☆" },
+                    yi: "守旧、储蓄、养生、学习、早睡",
+                    ji: "投资、跳槽、创业、借贷、远行"
+                }
+            ]
+        };
+
+        // ==================== 法术数据 ====================
         const spellsData = [
-            // 财运类
             { id: 1, name: "开金门补财进库法", category: "财运", purpose: "开启个人财库，补足财运不足，使财源广进，适合财运不佳、求财不顺者", suitable: "财运低迷、求财困难、做生意者", notes: "需诚心祈求，配合行善积德" },
             { id: 2, name: "开地门幽冥地库法", category: "财运", purpose: "开启地府财库，接引阴财，增强偏财运，适合需要大笔资金周转者", suitable: "需要资金周转、投资求财者", notes: "此法较为特殊，需谨慎使用" },
             { id: 3, name: "禁法虎神收恶财法", category: "财运", purpose: "收回被他人骗取或亏欠的钱财，适用于追讨债务", suitable: "被欠债、被骗财者", notes: "用于正当讨债，不可滥用" },
@@ -509,12 +813,10 @@
             { id: 6, name: "黑山禁法八猿取财术", category: "财运", purpose: "以八猿之力取财，增强财运", suitable: "求财、招财者", notes: "需心存善念" },
             { id: 7, name: "黑山禁法金银二郎取金母术", category: "财运", purpose: "召唤金银二郎神取金母之财", suitable: "求财、富贵者", notes: "需诚心" },
             
-            // 桃花类
             { id: 8, name: "黑山禁法青红二狐摄魅术", category: "桃花", purpose: "增强个人魅力，招桃花，改善人际关系", suitable: "单身求偶、人缘不佳者", notes: "需心正，不可玩弄感情" },
             { id: 9, name: "黑山禁法狐媚禁", category: "桃花", purpose: "克制狐媚邪术，保护自身感情", suitable: "感情受骗、被第三者插足者", notes: "用于正当防卫" },
             { id: 10, name: "巫教小金口术", category: "桃花", purpose: "增强口才，促进人际和谐，招贵人", suitable: "需要谈判、求人办事者", notes: "需真诚待人" },
             
-            // 护身类
             { id: 11, name: "巫教龙虎将军水", category: "护身", purpose: "以龙虎将军之力护身，驱邪避凶", suitable: "经常走夜路、体质虚弱者", notes: "需随身携带" },
             { id: 12, name: "九黎巫尤巫公敕身术", category: "护身", purpose: "巫公亲自敕封，护身保命，百邪不侵", suitable: "需要强大护身者", notes: "需定期加持" },
             { id: 13, name: "巫教金镜挡师术", category: "护身", purpose: "以金镜为器，阻挡邪师诅咒", suitable: "被人诅咒、受人暗算者", notes: "需配合符咒使用" },
@@ -522,41 +824,133 @@
             { id: 15, name: "巫教天罡除魅法", category: "护身", purpose: "以天罡正气驱除魅邪，清净身心", suitable: "被邪魅侵扰、心神不宁者", notes: "需在清净处进行" },
             { id: 16, name: "巫教雷公渡解术", category: "护身", purpose: "借雷公之力渡化解厄，消除业障", suitable: "业障深重、灾祸连连者", notes: "需真心忏悔" },
             
-            // 驱邪类
             { id: 17, name: "黑山禁法送横死鬼术", category: "驱邪", purpose: "超度横死之鬼，化解怨气", suitable: "家中有横死者、鬼魅作祟者", notes: "需心存慈悲" },
             { id: 18, name: "巫教落叶点打", category: "驱邪", purpose: "武法护身，点打驱邪", suitable: "习武者、需要武力护身者", notes: "需有武术基础" },
             { id: 19, name: "巫教神公压煞神法", category: "驱邪", purpose: "以神公之力压制煞神，镇宅安家", suitable: "家宅不安、煞气重者", notes: "需配合镇宅物品" },
             { id: 20, name: "黑山禁法蛇王禁", category: "驱邪", purpose: "以蛇王之力施展禁法，化解蛇煞", suitable: "遇蛇煞、被蛇灵侵扰者", notes: "需谨慎操作" },
             { id: 21, name: "黑山禁法黄斑恶虎诀", category: "驱邪", purpose: "召唤黄斑恶虎之力，驱邪镇煞", suitable: "需要强力驱邪者", notes: "此法威力较大" },
             
-            // 雷法类
             { id: 22, name: "巫法起神雷监兵法", category: "雷法", purpose: "召唤神雷监兵，驱邪镇煞", suitable: "需要雷法驱邪者", notes: "需在雷雨天气效果更佳" },
             { id: 23, name: "巫教五百天雷收邪诀", category: "雷法", purpose: "以五百天雷之力收摄邪祟", suitable: "邪祟缠身、妖魔作祟者", notes: "此法威力巨大" },
             { id: 24, name: "巫教雷王降神术", category: "雷法", purpose: "请雷王降临，施展雷法", suitable: "需要雷法加持者", notes: "需有雷法基础" },
             { id: 25, name: "巫法五雷拘阴气法", category: "雷法", purpose: "以五雷之力拘收阴气，平衡阴阳", suitable: "阴气过重、阴阳失调者", notes: "需配合呼吸法" },
             { id: 26, name: "黑山禁法八十八雷摄灵术", category: "雷法", purpose: "召唤八十八道天雷，震慑邪灵", suitable: "需要强力雷法者", notes: "此法极其强大，需慎用" },
             
-            // 祈福类
             { id: 27, name: "巫教金鸡鸣榜术", category: "祈福", purpose: "祈求功名，金榜题名", suitable: "求学、考试、升职者", notes: "需勤奋努力" },
             { id: 28, name: "巫教如意金玉灯阵", category: "祈福", purpose: "布置灯阵，祈福纳祥", suitable: "新年祈福、重大节日", notes: "需连续供奉" },
             { id: 29, name: "司命小乾坤灯", category: "祈福", purpose: "以司命星君之力祈福延寿", suitable: "祈福延寿、消灾解厄者", notes: "需诚心供奉" },
             { id: 30, name: "巫教通行祭神鬼术", category: "祈福", purpose: "通行神鬼两界，祈求庇佑", suitable: "需要神鬼庇佑者", notes: "需有通灵基础" },
             { id: 31, name: "巫教祭祖火仪", category: "祈福", purpose: "以火祭祀祖先，祈求祖先庇佑", suitable: "清明节、重阳节祭祖", notes: "需心怀敬意" },
             
-            // 健康类
             { id: 32, name: "巫教起阴阳禁水碗", category: "健康", purpose: "以阴阳禁水治病消灾", suitable: "身体不适、疾病缠身者", notes: "需配合医药" },
             { id: 33, name: "巫教回阳蛋", category: "健康", purpose: "回阳救逆，起死回生", suitable: "阳气虚弱、濒临危险者", notes: "此法用于急救" },
             { id: 34, name: "巫教灵巫水术", category: "健康", purpose: "炼制灵水，净化身心", suitable: "身心疲惫、需要净化者", notes: "需配合冥想" },
             { id: 35, name: "巫教太一水术", category: "健康", purpose: "以太一神力炼水，强身健体", suitable: "身体虚弱、需要调理者", notes: "需长期饮用" },
             
-            // 其他
             { id: 36, name: "巫教摄阴阳法", category: "其他", purpose: "摄取阴阳二气，调和身心", suitable: "修行者、需要调和阴阳者", notes: "需有修行基础" },
             { id: 37, name: "巫教火祈游魂法", category: "其他", purpose: "以火祭祀游魂，超度亡灵", suitable: "家中有游魂、需要超度者", notes: "需心存慈悲" },
             { id: 38, name: "司命祈祝草纸灵术", category: "其他", purpose: "以草纸为媒，祈求司命庇佑", suitable: "需要祈福转运者", notes: "需诚心祈求" },
             { id: 39, name: "斗光解地煞术", category: "其他", purpose: "以斗光之力解地煞", suitable: "犯地煞、运势不佳者", notes: "需在特定时辰" },
         ];
-        
-        // 渲染法术卡片
+
+        // ==================== 摇签功能 ====================
+        function drawQian() {
+            const btn = document.getElementById('shakeBtn');
+            const resultDiv = document.getElementById('qianResult');
+            
+            // 按钮动画
+            btn.classList.add('shaking');
+            btn.disabled = true;
+            btn.textContent = '摇签中...';
+            
+            // 隐藏之前的结果
+            resultDiv.classList.remove('show');
+            
+            setTimeout(() => {
+                // 随机决定签类型（上签45%，中签35%，下签20%）
+                const rand = Math.random();
+                let type;
+                if (rand < 0.45) type = 'shang';
+                else if (rand < 0.80) type = 'zhong';
+                else type = 'xia';
+                
+                // 从对应类型中随机选择一条签
+                const qianList = qianData[type];
+                const qian = qianList[Math.floor(Math.random() * qianList.length)];
+                
+                // 渲染签文
+                renderQian(qian, type);
+                
+                // 显示结果
+                resultDiv.classList.add('show');
+                
+                // 恢复按钮
+                btn.classList.remove('shaking');
+                btn.textContent = '再摇一签';
+                btn.disabled = false;
+                
+            }, 1500);
+        }
+
+        function renderQian(qian, type) {
+            const typeNames = { shang: '上签', zhong: '中签', xia: '下签' };
+            const resultDiv = document.getElementById('qianResult');
+            
+            resultDiv.innerHTML = `
+                <div class="qian-type">
+                    <span class="qian-badge ${type}">${typeNames[type]}</span>
+                </div>
+                
+                <div class="qian-poem">
+                    <div class="poem-title">${qian.title}</div>
+                    <div class="poem-text">${qian.poem.replace(/\n/g, '<br>')}</div>
+                </div>
+                
+                <div class="qian-explain">
+                    <h3>📜 解签</h3>
+                    <p>${qian.explain}</p>
+                </div>
+                
+                <div class="fortune-grid">
+                    <div class="fortune-item">
+                        <h4>💰 财运</h4>
+                        <div class="stars ${getStarClass(qian.fortune.wealth)}">${qian.fortune.wealth}</div>
+                    </div>
+                    <div class="fortune-item">
+                        <h4>💼 事业</h4>
+                        <div class="stars ${getStarClass(qian.fortune.career)}">${qian.fortune.career}</div>
+                    </div>
+                    <div class="fortune-item">
+                        <h4>💕 感情</h4>
+                        <div class="stars ${getStarClass(qian.fortune.love)}">${qian.fortune.love}</div>
+                    </div>
+                    <div class="fortune-item">
+                        <h4>🏥 健康</h4>
+                        <div class="stars ${getStarClass(qian.fortune.health)}">${qian.fortune.health}</div>
+                    </div>
+                </div>
+                
+                <div class="yi-ji-section">
+                    <div class="yi-box">
+                        <h4>✅ 今日宜</h4>
+                        <p>${qian.yi}</p>
+                    </div>
+                    <div class="ji-box">
+                        <h4>❌ 今日忌</h4>
+                        <p>${qian.ji}</p>
+                    </div>
+                </div>
+            `;
+        }
+
+        function getStarClass(stars) {
+            const count = (stars.match(/★/g) || []).length;
+            if (count >= 4) return 'good';
+            if (count >= 3) return 'normal';
+            return 'bad';
+        }
+
+        // ==================== 法术展示功能 ====================
         function renderSpells(category = 'all') {
             const grid = document.getElementById('spells-grid');
             const filtered = category === 'all' 
@@ -579,7 +973,6 @@
             `).join('');
         }
         
-        // 打开弹窗
         function openModal(id) {
             const spell = spellsData.find(s => s.id === id);
             if (!spell) return;
@@ -592,12 +985,10 @@
             document.getElementById('spell-modal').classList.add('active');
         }
         
-        // 关闭弹窗
         function closeModal() {
             document.getElementById('spell-modal').classList.remove('active');
         }
         
-        // 分类切换
         document.querySelectorAll('nav li').forEach(li => {
             li.addEventListener('click', function() {
                 document.querySelectorAll('nav li').forEach(l => l.classList.remove('active'));
@@ -606,22 +997,9 @@
             });
         });
         
-        // 点击弹窗外部关闭
         document.getElementById('spell-modal').addEventListener('click', function(e) {
             if (e.target === this) closeModal();
         });
-        
-        // 切换月份（简化版）
-        let currentMonth = 1;
-        function changeMonth(delta) {
-            currentMonth += delta;
-            if (currentMonth > 12) currentMonth = 1;
-            if (currentMonth < 1) currentMonth = 12;
-            
-            const months = ['正月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '冬月', '腊月'];
-            document.getElementById('current-date').textContent = `2026年${currentMonth}月`;
-            document.getElementById('lunar-date').textContent = `乙巳年${months[currentMonth-1]}`;
-        }
         
         // 初始化
         renderSpells();
